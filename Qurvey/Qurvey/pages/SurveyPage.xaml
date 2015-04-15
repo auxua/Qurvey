@@ -1,7 +1,7 @@
-﻿<?xml version="1.0" encoding="utf-8" ?>
-<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
-             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             x:Class="Qurvey.pages.WelcomePage">
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms" 
+	xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml" 
+	x:Class="Qurvey.pages.SurveyPage">
     <ContentPage.Padding>
         30, 20, 20, 0
     </ContentPage.Padding>
@@ -13,15 +13,16 @@
                HorizontalOptions="Center"
                VerticalOptions="CenterAndExpand" >
                     <Label.Text>
-                        Welcome to Qurvey
+                        How do you like this App?
                     </Label.Text>
                 </Label>
-
+                <ListView x:Name="listView">
+                </ListView>
 
                 <Label FontAttributes="None"
                FontSize="Medium"
                HorizontalOptions="Center"
-               VerticalOptions="StartAndExpand" >
+               VerticalOptions="StartAndExpand" x:Name="label" >
                     <Label.Text>
                         Stuff about this App and so on...
                     </Label.Text>

@@ -6,17 +6,17 @@ using Xamarin.Forms;
 
 namespace Qurvey
 {
-    public class RootPage : MasterDetailPage
-    {
-        /// <summary>
-        /// Create the Root Page
-        /// Define master and Detail as wenn as the default Detail page
-        /// </summary>
-        public RootPage()
-        {
-            var menuPage = new MenuPage();
-            // The effective navigation gets assigned
-            menuPage.Menu.ItemSelected += (sender, e) =>
+	public class RootPage : MasterDetailPage
+	{
+		/// <summary>
+		/// Create the Root Page
+		/// Define master and Detail as wenn as the default Detail page
+		/// </summary>
+		public RootPage ()
+		{
+			var menuPage = new MenuPage ();
+			// The effective navigation gets assigned
+			menuPage.Menu.ItemSelected += (sender, e) =>
             {
                 // Before Navigating, recolor the cell
                 if (menuPage.Menu.selected != null)
@@ -31,243 +31,289 @@ namespace Qurvey
                 NavigateTo(e.SelectedItem as NavMenuItem);
             };
 
-            Master = menuPage;
-            // Set default Detail page
-            Detail = new NavigationPage(new pages.WelcomePage());
-        }
+			Master = menuPage;
+			// Set default Detail page
+			Detail = new NavigationPage (new pages.WelcomePage ());
+		}
 
-        /// <summary>
-        /// Depending on the selected item, go to the corresponding page
-        /// </summary>
-        /// <param name="menu">the menuitem, that was selected</param>
-        void NavigateTo(NavMenuItem menu)
-        {
+		/*public void OnMenuItemSelected (object sender, EventArgs e)
+		{
+			// Before Navigating, recolor the cell
+			if (menuPage.Menu.selected != null) {
+				menuPage.Menu.selected.SetColors (true);
+			}
 
-            try
-            {
-                Page displayPage = (Page)Activator.CreateInstance(menu.TargetType);
-                Detail = new NavigationPage(displayPage);
+			// Select new
+			menuPage.Menu.selected = (menuPage.Menu.SelectedItem as NavMenuItem);
+			menuPage.Menu.selected.SetColors (false);
 
-                IsPresented = false;
-            }
-            catch (Exception e)
-            {
-                Device.BeginInvokeOnMainThread(() => { DisplayAlert("Error", "Could not load Page: "+e.Message, "Damn!"); });
-            }
+			NavigateTo (e.SelectedItem as NavMenuItem);
+		}*/
 
-        }
-    }
+		/// <summary>
+		/// Depending on the selected item, go to the corresponding page
+		/// </summary>
+		/// <param name="menu">the menuitem, that was selected</param>
+		void NavigateTo (NavMenuItem menu)
+		{
+
+			try {
+				Page displayPage = (Page)Activator.CreateInstance (menu.TargetType);
+				Detail = new NavigationPage (displayPage);
+
+				IsPresented = false;
+			} catch (Exception e) {
+				Device.BeginInvokeOnMainThread (() => {
+					DisplayAlert ("Error", "Could not load Page: " + e.Message, "Damn!");
+				});
+			}
+
+		}
+	}
 
 
-    /// <summary>
-    /// The MenuPage is the Master Page of the MasterDetailPage.
-    /// It contains the menu and gets colored correctly
-    /// </summary>
-    public class MenuPage : ContentPage
-    {
-        public MenuListView Menu { get; set; }
+	/// <summary>
+	/// The MenuPage is the Master Page of the MasterDetailPage.
+	/// It contains the menu and gets colored correctly
+	/// </summary>
+	public class MenuPage : ContentPage
+	{
+		public MenuListView Menu { get; set; }
 
-        public MenuPage()
-        {
-            Icon = "list.png";
-            Title = "Navigation"; // The Title property must be set.
-            // Use RWTH-Blue for Background
-            BackgroundColor = Color.FromHex("00549F");
+		public MenuListView CoursesMenu { get; set; }
 
-            Menu = new MenuListView();
+		public MenuPage ()
+		{
+			Icon = "list.png";
+			Title = "Navigation"; // The Title property must be set.
+			// Use RWTH-Blue for Background
+			BackgroundColor = Color.FromHex ("00549F");
 
-            var menuLabel = new ContentView
-            {
-                // Allow a bit padding to provide a better view
-                Padding = new Thickness(10, 36, 0, 5),
-                Content = new Label
-                {
-                    // This color looks good on the Blue background
-                    TextColor = Color.FromHex("DCDCDC"),
-                    Text = "Menu",
-                    FontSize = Device.GetNamedSize(NamedSize.Large, typeof(Label)),
-                    FontAttributes = FontAttributes.Bold
-                }
-            };
+			Menu = new MenuListView (new MenuListData ());
+			CoursesMenu = new MenuListView (new CoursesListData ());
 
-            // Create the Layout of the page
-            var layout = new StackLayout
-            {
-                Spacing = 0,
-                VerticalOptions = LayoutOptions.FillAndExpand
-            };
-            layout.Children.Add(menuLabel);
-            layout.Children.Add(Menu);
+			var menuLabel = new ContentView {
+				// Allow a bit padding to provide a better view
+				Padding = new Thickness (10, 5, 0, 5),
+				Content = new Label {
+					// This color looks good on the Blue background
+					TextColor = Color.FromHex ("DCDCDC"),
+					Text = "Settings",
+					FontSize = Device.GetNamedSize (NamedSize.Large, typeof(Label)),
+					FontAttributes = FontAttributes.Bold
+				}
+			};
 
-            Content = layout;
-        }
-    }
+			var coursesLabel = new ContentView {
+				// Allow a bit padding to provide a better view
+				Padding = new Thickness (10, 36, 0, 5),
+				Content = new Label {
+					// This color looks good on the Blue background
+					TextColor = Color.FromHex ("DCDCDC"),
+					Text = "Courses",
+					FontSize = Device.GetNamedSize (NamedSize.Large, typeof(Label)),
+					FontAttributes = FontAttributes.Bold
+				}
+			};
 
-    /// <summary>
-    /// The MenuItem represents the menuitems and stores the corresponding target page.
-    /// It can be extended by an Icon, e.g.
-    /// </summary>
-    public class NavMenuItem : INotifyPropertyChanged
-    {
-        /// <summary>
-        /// The Title that is shown
-        /// </summary>
-        public string Title { get; set; }
+			// Create the Layout of the page
+			var layout = new StackLayout {
+				Spacing = 0,
+				VerticalOptions = LayoutOptions.FillAndExpand
+			};
+			layout.Children.Add (coursesLabel);
+			layout.Children.Add (CoursesMenu);
+			layout.Children.Add (menuLabel);
+			layout.Children.Add (Menu);
 
-        /// <summary>
-        /// The Icon besides the Menu item title
-        /// </summary>
-        public string Icon { get; set; }
+			Content = layout;
+		}
+	}
 
-        /// <summary>
-        /// The page that should be opened when selecting this item
-        /// </summary>
-        public Type TargetType { get; set; }
+	/// <summary>
+	/// The MenuItem represents the menuitems and stores the corresponding target page.
+	/// It can be extended by an Icon, e.g.
+	/// </summary>
+	public class NavMenuItem : INotifyPropertyChanged
+	{
+		/// <summary>
+		/// The Title that is shown
+		/// </summary>
+		public string Title { get; set; }
 
-        // below: Event(handling) for (de)selecting the cell.
-        // This is used for creating consistency in color schemes between different platforms
+		/// <summary>
+		/// The Icon besides the Menu item title
+		/// </summary>
+		public string Icon { get; set; }
 
-        public event PropertyChangedEventHandler PropertyChanged;
+		/// <summary>
+		/// The page that should be opened when selecting this item
+		/// </summary>
+		public Type TargetType { get; set; }
 
-        private Color _backgroundColor;
+		// below: Event(handling) for (de)selecting the cell.
+		// This is used for creating consistency in color schemes between different platforms
 
-        public Color BackgroundColor
-        {
-            get { return _backgroundColor; }
-            set
-            {
-                _backgroundColor = value;
+		public event PropertyChangedEventHandler PropertyChanged;
 
-                if (PropertyChanged != null)
-                {
-                    PropertyChanged(this, new PropertyChangedEventArgs("BackgroundColor"));
-                }
-            }
-        }
+		private Color _backgroundColor;
 
-        public void SetColors(bool isSelected)
-        {
-            if (isSelected)
-            {
-                // Use RWTH-Blue
-                BackgroundColor = Color.FromHex("00549F");
-            }
-            else
-            {
-                // Use RWTH light-blue
-                BackgroundColor = Color.FromHex("8EBAE5");
-            }
-        }
-    }
+		public Color BackgroundColor {
+			get { return _backgroundColor; }
+			set {
+				_backgroundColor = value;
 
-    /// <summary>
-    /// The view (cell) used in the menu for the menu item.
-    /// Inherits from ViewCell the get access to the Layout
-    /// (inherited from Imagecell in the past for possibility of images in some time)
-    /// </summary>
-    public class MenuImageCell : ViewCell
-    {
+				if (PropertyChanged != null) {
+					PropertyChanged (this, new PropertyChangedEventArgs ("BackgroundColor"));
+				}
+			}
+		}
 
-        public MenuImageCell()
-            : base()
-        {
-            Label Text = new Label
-            {
-                TextColor = Color.FromHex("DCDCDC"),
-                XAlign = TextAlignment.Start,
-                YAlign = TextAlignment.Center
-            };
-            Text.SetBinding(Label.TextProperty, "Title");
+		public void SetColors (bool isSelected)
+		{
+			if (isSelected) {
+				// Use RWTH-Blue
+				BackgroundColor = Color.FromHex ("00549F");
+			} else {
+				// Use RWTH light-blue
+				BackgroundColor = Color.FromHex ("8EBAE5");
+			}
+		}
+	}
 
-            Label pad = new Label
-            {
-                Text = " "
-            };
+	/// <summary>
+	/// The view (cell) used in the menu for the menu item.
+	/// Inherits from ViewCell the get access to the Layout
+	/// (inherited from Imagecell in the past for possibility of images in some time)
+	/// </summary>
+	public class MenuImageCell : ViewCell
+	{
 
-            Image image = new Image
-            {
-                // Backup: Default icon to set
-                //Source = "info.png",
-                HeightRequest = 30,
-            };
-            image.SetBinding(Image.SourceProperty, "Icon");
+		public MenuImageCell ()
+			: base ()
+		{
+			Label Text = new Label {
+				TextColor = Color.FromHex ("DCDCDC"),
+				XAlign = TextAlignment.Start,
+				YAlign = TextAlignment.Center
+			};
+			Text.SetBinding (Label.TextProperty, "Title");
 
-            var layout = new StackLayout
-            {
-                Orientation = StackOrientation.Horizontal,
-                HorizontalOptions = LayoutOptions.Start,
-                VerticalOptions = LayoutOptions.Center,
-                Children = { pad, image, pad, Text }
-            };
-            layout.SetBinding(Layout.BackgroundColorProperty, new Binding("BackgroundColor"));
+			Label pad = new Label {
+				Text = " "
+			};
 
-            if (Device.OS == TargetPlatform.WinPhone)
-                layout.HeightRequest = 50;
+			Image image = new Image {
+				// Backup: Default icon to set
+				//Source = "info.png",
+				HeightRequest = 30,
+			};
+			image.SetBinding (Image.SourceProperty, "Icon");
 
-            View = layout;
-        }
-    }
+			var layout = new StackLayout {
+				Orientation = StackOrientation.Horizontal,
+				HorizontalOptions = LayoutOptions.Start,
+				VerticalOptions = LayoutOptions.Center,
+				Children = { pad, image, pad, Text }
+			};
+			layout.SetBinding (Layout.BackgroundColorProperty, new Binding ("BackgroundColor"));
 
-    /// <summary>
-    /// The menu is created using a adapted Listview.
-    /// By that most of the stuff is already done by default ;)
-    /// </summary>
-    public class MenuListView : ListView
-    {
-        public NavMenuItem selected { get; set; }
+			if (Device.OS == TargetPlatform.WinPhone)
+				layout.HeightRequest = 50;
 
-        public MenuListView()
-        {
-            List<NavMenuItem> data = new MenuListData();
+			View = layout;
+		}
+	}
 
-            ItemsSource = data;
-            VerticalOptions = LayoutOptions.FillAndExpand;
-            BackgroundColor = Color.Transparent;
+	/// <summary>
+	/// The menu is created using a adapted Listview.
+	/// By that most of the stuff is already done by default ;)
+	/// </summary>
+	public class MenuListView : ListView
+	{
+		public NavMenuItem selected { get; set; }
 
-            // Set Bindings
-            var cell = new DataTemplate(typeof(MenuImageCell));
-            cell.SetBinding(TextCell.TextProperty, "Title");
-            // Image Binding possible in here..
-            // cell.SetBinding(ImageCell.ImageSourceProperty, "IconSource");
+		public MenuListView (List<NavMenuItem> data)
+		{
+			ItemsSource = data;
+			VerticalOptions = LayoutOptions.FillAndExpand;
+			BackgroundColor = Color.Transparent;
 
-            ItemTemplate = cell;
-            // The first item is selected - the lines 2 and 3 are only for the color-fix...
-            //SelectedItem = data[0];
-            data[0].SetColors(false);
-            selected = data[0];
-        }
-    }
+			// Set Bindings
+			var cell = new DataTemplate (typeof(MenuImageCell));
+			cell.SetBinding (TextCell.TextProperty, "Title");
+			// Image Binding possible in here..
+			// cell.SetBinding(ImageCell.ImageSourceProperty, "IconSource");
 
-    /// <summary>
-    /// Here, we provide the technical navigation.
-    /// The Title and corresponding pages are added to the menu.
-    /// </summary>
-    public class MenuListData : List<NavMenuItem>
-    {
-        public MenuListData()
-        {
-            this.Add(new NavMenuItem()
-            {
-                Title = "Welcome",
-                Icon = "info.png",
-                TargetType = typeof(pages.WelcomePage)
-            });
+			ItemTemplate = cell;
+			// The first item is selected - the lines 2 and 3 are only for the color-fix...
+			//SelectedItem = data[0];
+			data [0].SetColors (false);
+			selected = data [0];
+		}
+	}
 
-            this.Add(new NavMenuItem()
-            {
-                Title = "Config",
-                Icon = "info.png",
-                TargetType = typeof(pages.ConfigPage)
-            });
+	/// <summary>
+	/// Here, we provide the technical navigation.
+	/// The Title and corresponding pages are added to the menu.
+	/// </summary>
+	public class MenuListData : List<NavMenuItem>
+	{
+		public MenuListData ()
+		{
+			this.Add (new NavMenuItem () {
+				Title = "Config",
+				Icon = "info.png",
+				TargetType = typeof(pages.ConfigPage)
+			});
 
-            this.Add(new NavMenuItem()
-            {
-                Title = "About",
-                Icon = "info.png",
-                TargetType = typeof(pages.WelcomePage)
-            });
+			this.Add (new NavMenuItem () {
+				Title = "About",
+				Icon = "info.png",
+				TargetType = typeof(pages.WelcomePage)
+			});
 
-        }
-    }
+			this.Add (new NavMenuItem () {
+				Title = "SurveyPage",
+				Icon = "info.png",
+				TargetType = typeof(pages.SurveyPage)
+			});
 
+			this.Add (new NavMenuItem () {
+				Title = "CoursePage",
+				Icon = "info.png",
+				TargetType = typeof(pages.CoursePage)
+			});
+		}
+	}
+
+	/// <summary>
+	/// Here, we provide the courses navigation.
+	/// The Title and corresponding pages are added to the menu.
+	/// </summary>
+	public class CoursesListData : List<NavMenuItem>
+	{
+		public CoursesListData ()
+		{
+			this.Add (new NavMenuItem () {
+				Title = "L2P App Development",
+				Icon = "l2plogo.png",
+				TargetType = typeof(pages.WelcomePage)
+			});
+
+			this.Add (new NavMenuItem () {
+				Title = "Machine Learning",
+				Icon = "l2plogo.png",
+				TargetType = typeof(pages.WelcomePage)
+			});
+
+			this.Add (new NavMenuItem () {
+				Title = "Model Checking",
+				Icon = "l2plogo.png",
+				TargetType = typeof(pages.WelcomePage)
+			});
+
+
+		}
+	}
 }
