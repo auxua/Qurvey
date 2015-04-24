@@ -267,6 +267,13 @@ namespace Qurvey
 				TargetType = typeof(pages.ConfigPage)
 			});
 
+            this.Add(new NavMenuItem()
+            {
+                Title = "Authorize",
+                Icon = "info.png",
+                TargetType = typeof(pages.AuthorizePage)
+            });
+
 			this.Add (new NavMenuItem () {
 				Title = "About",
 				Icon = "info.png",

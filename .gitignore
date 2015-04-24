@@ -197,3 +197,5 @@ FakesAssemblies/
 
 # Exclude Settings of concrete implementation for security reasons but provide Sample
 Settings.cs
+QurveyConfig.cs
+Config.cs
