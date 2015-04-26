@@ -73,53 +73,52 @@ namespace Qurvey.pages
             Content = scrollView;
 		}
 
-        private void OnRefreshClicked(object sender, EventArgs e)
+        private async void OnRefreshClicked(object sender, EventArgs e)
         {
-            var ret = api.AuthenticationManager.GenerateAccessTokenFromRefreshToken();
+            var ret = await api.AuthenticationManager.GenerateAccessTokenFromRefreshTokenAsync();
             Device.BeginInvokeOnMainThread(() => { statusLabel.Text += "\n ret:" + ret; });
         }
 
-        private void OnRoleClicked(object sender, EventArgs e)
+        private async void OnRoleClicked(object sender, EventArgs e)
         {
-            var answer = api.RESTCalls.L2PViewUserRole("14ws-44150");
+            var answer = await api.RESTCalls.L2PViewUserRoleAsync("14ws-44150");
 
             Device.BeginInvokeOnMainThread(() => { statusLabel.Text += "\n Role:" + answer.role; });
         }
 
-        private void OnOneCourseClicked(object sender, EventArgs e)
+        private async void OnOneCourseClicked(object sender, EventArgs e)
         {
-            var answer = api.RESTCalls.L2PViewCourseInfo("14ws-44150");
+            var answer = await api.RESTCalls.L2PViewCourseInfoAsync("14ws-44150");
             
             Device.BeginInvokeOnMainThread(() => { statusLabel.Text += "\n "+answer.courseTitle; });
         }
 
-        private void OnCoursesClicked(object sender, EventArgs e)
+        private async void OnCoursesClicked(object sender, EventArgs e)
         {
-            var answer = api.RESTCalls.L2PViewAllCourseInfo();
+            var answer = await api.RESTCalls.L2PViewAllCourseInfoAsync();
             
             Device.BeginInvokeOnMainThread(() => { statusLabel.Text += "\n "+answer.dataset.Count; });
         }
 
-        private void OnPingButClicked(object sender, EventArgs e)
+        private async void OnPingButClicked(object sender, EventArgs e)
         {
-            // Wait
-             var answer = api.RESTCalls.L2PPingCall("TEst?");
+            var answer = await api.RESTCalls.L2PPingCallAsync("Test?");
             //api.RESTCalls.L2PViewCourseInfo("15ss-51408");
             Device.BeginInvokeOnMainThread(() => { statusLabel.Text += "\n " + answer; });
         }
 
-        private void OnCheckButtonClicked(object sender, EventArgs e)
+        private async void OnCheckButtonClicked(object sender, EventArgs e)
         {
-            var answer = api.AuthenticationManager.CheckAuthenticationProgress();
+            var answer = await api.AuthenticationManager.CheckAuthenticationProgressAsync();
             
             Device.BeginInvokeOnMainThread(() => { statusLabel.Text += "\n "+answer; });
         }
 
-        void OnStartButtonClicked(Object sender, EventArgs e)
+        async void OnStartButtonClicked(Object sender, EventArgs e)
         {
             //var rest = new api.RESTCalls();
             //var answer = api.RESTCalls.OAuthInitCall();
-            var answer = api.AuthenticationManager.StartAuthenticationProcess();
+            var answer = await api.AuthenticationManager.StartAuthenticationProcessAsync();
 
             //Console.WriteLine(answer);
             

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Text;
 using System.Runtime.CompilerServices;
 using System.Threading;
+using System.Threading.Tasks;
 
 using Newtonsoft.Json;
 using Qurvey.api.DataModel;
@@ -57,7 +58,7 @@ namespace Qurvey.api
                 else 
                 {
                     // No Access Token, but refreshToken
-                    GenerateAccessTokenFromRefreshToken();
+                    GenerateAccessTokenFromRefreshTokenAsync();
                     return;
                 }
             }
@@ -65,7 +66,7 @@ namespace Qurvey.api
             if (Config.getRefreshToken() == "")
             {
                 // No refreshtoken, but holding an Access Token - Check Token
-                CheckAccessToken();
+                CheckAccessTokenAsync();
                 if (Config.getAccessToken() == "")
                 {
                     // Holding a valid AccesToken now
@@ -81,36 +82,44 @@ namespace Qurvey.api
 
         }
 
+
+        private static Mutex CheckAccessTokenMutex = new Mutex();
         /// <summary>
         /// Checks the AccessToken against the tokenInfo REST-Service.
         /// If it fails, the accessToken is removed automatically
         /// </summary>
-        [MethodImpl(MethodImplOptions.Synchronized)]
-        private static void CheckAccessToken()
+        //[MethodImpl(MethodImplOptions.Synchronized)]
+        private async static void CheckAccessTokenAsync()
         {
+            // use mutex for sync
+            CheckAccessTokenMutex.WaitOne();
             string call = "{ \"client_id:\" \""+Config.ClientID+"\" \"access_token\": \""+Config.getAccessToken()+"\" }";
 
-            var answer = RESTCalls.RestCall<OAuthTokenInfo>(call, Config.OAuthTokenInfoEndPoint, true);
+            var answer = await RESTCalls.RestCallAsync<OAuthTokenInfo>(call, Config.OAuthTokenInfoEndPoint, true);
             
             if (answer.state != "valid")
             {
                 // Invalid Token - delete it
                 Config.setAccessToken("");
             }
+            CheckAccessTokenMutex.ReleaseMutex();
         }
 
         # endregion
 
         # region Authorization Process
 
+        private static Mutex StartAuthMutex = new Mutex();
+
         /// <summary>
         /// Starts the Autehntication Process
         /// </summary>
         /// <returns>returns the verifaication URL for this app or an empty string on fails</returns>
-        [MethodImpl(MethodImplOptions.Synchronized)]
-        public static string StartAuthenticationProcess()
+        //[MethodImpl(MethodImplOptions.Synchronized)]
+        public async static Task<string> StartAuthenticationProcessAsync()
         {
-            var answer = OAuthInitCall();
+            StartAuthMutex.WaitOne();
+            var answer = await OAuthInitCallAsync();
             if (answer.status == "ok")
             {
                 // call was successfull!
@@ -119,22 +128,27 @@ namespace Qurvey.api
                 setState(AuthenticationState.WAITING);
                 Thread t = new Thread(new ThreadStart(ExpireThread));
                 t.Start();
+                StartAuthMutex.ReleaseMutex();
                 return url;
             }
             // Failed
+            StartAuthMutex.ReleaseMutex();
             return "";
         }
 
         private static int expireTimeWaitingProcess;
 
+        private static Mutex CheckAuthMutex = new Mutex();
+
         /// <summary>
         /// Checks whether the users has already authenticated the app (Part of the Authentication process!)
         /// </summary>
         /// <returns></returns>
-        [MethodImpl(MethodImplOptions.Synchronized)]
-        public static bool CheckAuthenticationProgress()
+        //[MethodImpl(MethodImplOptions.Synchronized)]
+        public async static Task<bool> CheckAuthenticationProgressAsync()
         {
-            var answer = TokenCall();
+            CheckAuthMutex.WaitOne();
+            var answer = await TokenCallAsync();
             if (answer.status.StartsWith("Fail:") || answer.status.StartsWith("Error:"))
             {
                 // Not working!
@@ -145,28 +159,37 @@ namespace Qurvey.api
             Config.setAccessToken(answer.access_token);
             Config.setRefreshToken(answer.refresh_token);
             setState(AuthenticationState.ACTIVE);
+            CheckAuthMutex.ReleaseMutex();
             return true;
         }
+
+        private static Mutex InitAuthMutex = new Mutex();
 
         /// <summary>
         /// Initiates the Authorization process
         /// </summary>
         /// <returns>The answer on the Initial Call to Endpoint or an empty answer if something went wrong! (having a status field Fail: (Error message) )</returns>
-        [MethodImpl(MethodImplOptions.Synchronized)]
-        internal static OAuthRequestData OAuthInitCall()
+        //[MethodImpl(MethodImplOptions.Synchronized)]
+        internal async static Task<OAuthRequestData> OAuthInitCallAsync()
         {
+            InitAuthMutex.WaitOne();
             string parsedContent = "{ \"client_id\": \"" + Config.ClientID + "\", \"scope\": \"l2p.rwth campus.rwth l2p2013.rwth\" }";
-            var answer = RESTCalls.RestCall<OAuthRequestData>(parsedContent, Config.OAuthEndPoint, true);
+            var answer = await RESTCalls.RestCallAsync<OAuthRequestData>(parsedContent, Config.OAuthEndPoint, true);
+            InitAuthMutex.ReleaseMutex();
             return answer;
         }
+
+
+        private static Mutex TokenCallMutex = new Mutex();
 
         /// <summary>
         /// Calls the /token Endpoint to check status of authorization process
         /// </summary>
         /// <returns>The answer to the Call or an artificial answer containing an Error Descripstion in the status-field</returns>
-        [MethodImpl(MethodImplOptions.Synchronized)]
-        private static OAuthTokenRequestData TokenCall()
+        //[MethodImpl(MethodImplOptions.Synchronized)]
+        private async static Task<OAuthTokenRequestData> TokenCallAsync()
         {
+            TokenCallMutex.WaitOne();
             try
             {
                 var req = new OAuthTokenRequestSendData();
@@ -176,7 +199,8 @@ namespace Qurvey.api
 
                 string postData = JsonConvert.SerializeObject(req);
 
-                var answer = RESTCalls.RestCall<OAuthTokenRequestData>(postData, Config.OAuthTokenEndPoint, true);
+                var answer = await RESTCalls.RestCallAsync<OAuthTokenRequestData>(postData, Config.OAuthTokenEndPoint, true);
+                TokenCallMutex.ReleaseMutex();
                 return answer;
             }
             catch (Exception e)
@@ -184,6 +208,7 @@ namespace Qurvey.api
                 var t = e.Message;
                 var pseudo = new OAuthTokenRequestData();
                 pseudo.status = "Fail: " + t;
+                TokenCallMutex.ReleaseMutex();
                 return pseudo;
             }
         }
@@ -203,12 +228,19 @@ namespace Qurvey.api
         # endregion
 
 
-        [MethodImpl(MethodImplOptions.Synchronized)]
-        public static bool GenerateAccessTokenFromRefreshToken()
+        private static Mutex RefreshhMutex = new Mutex();
+
+        /// <summary>
+        /// Uses the current RefreshToken to get an Access Token
+        /// </summary>
+        /// <returns>true, if the call was successfull</returns>
+        //[MethodImpl(MethodImplOptions.Synchronized)]
+        public async static Task<bool> GenerateAccessTokenFromRefreshTokenAsync()
         {
+            RefreshhMutex.WaitOne();
             string callBody = "{ \"client_id\": \"" + Config.ClientID + "\", \"refresh_token\": \"" + Config.getRefreshToken() + "\", \"grant_type\":\"refresh_token\" }";
-            var answer = RESTCalls.RestCall<OAuthTokenRequestData>(callBody, Config.OAuthTokenEndPoint, true);
-            if ((answer.error == null))
+            var answer = await RESTCalls.RestCallAsync<OAuthTokenRequestData>(callBody, Config.OAuthTokenEndPoint, true);
+            if ((answer.error == null) && (!answer.status.StartsWith("error")) && (answer.expires_in>0))
             {
                 //Console.WriteLine("Got a new Token!");
                 Config.setAccessToken(answer.access_token);
@@ -216,9 +248,11 @@ namespace Qurvey.api
                 //TokenExpireTime = 10;
                 Refresher = new Thread(new ThreadStart(TokenRefresherThread));
                 Refresher.Start();
+                RefreshhMutex.ReleaseMutex();
                 return true;
             }
             // Failed!
+            RefreshhMutex.ReleaseMutex();
             return false;
         }
 
@@ -230,7 +264,7 @@ namespace Qurvey.api
             //Console.WriteLine("Startet Refresh-Thread");
             Thread.Sleep(TokenExpireTime*1000);
             //Console.WriteLine("Refreshing!");
-            GenerateAccessTokenFromRefreshToken();
+            GenerateAccessTokenFromRefreshTokenAsync();
         }
 
 
