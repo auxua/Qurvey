@@ -1,0 +1,1 @@
+﻿<%@ ServiceHost Language="C#" Debug="true" Service="Qurvey.Backend.SurveyService" CodeBehind="SurveyService.svc.cs" %>
