@@ -1,0 +1,15 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms" xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml" x:Class="Qurvey.pages.BackendPage">
+	<ContentPage.Padding>
+        30, 20, 20, 0
+    </ContentPage.Padding>
+    <StackLayout Orientation="Vertical" VerticalOptions="StartAndExpand">
+        <ScrollView Orientation="Vertical" VerticalOptions="StartAndExpand">
+                <Label FontAttributes="Bold"
+               FontSize="Large"
+               HorizontalOptions="Center"
+               VerticalOptions="CenterAndExpand" x:Name="dataLabel" >
+                </Label>
+        </ScrollView>
+    </StackLayout>
+</ContentPage>
