@@ -275,6 +275,12 @@ namespace Qurvey
             });
 
 			this.Add (new NavMenuItem () {
+				Title = "BackendPage",
+				Icon = "info.png",
+				TargetType = typeof(pages.BackendPage)
+			});
+
+			this.Add (new NavMenuItem () {
 				Title = "About",
 				Icon = "info.png",
 				TargetType = typeof(pages.WelcomePage)
