@@ -12,7 +12,8 @@ namespace Qurvey.Backend
     public interface ISurveyService
     {
         [OperationContract]
-        string GetData(int value);
+        [WebGet(UriTemplate="Data/{value}", ResponseFormat= WebMessageFormat.Json)]
+        string GetData(string value);
 
         [OperationContract]
         string AddSurvey(Survey survey);
