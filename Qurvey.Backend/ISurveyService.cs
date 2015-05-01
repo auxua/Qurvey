@@ -26,5 +26,11 @@ namespace Qurvey.Backend
 
         [OperationContract]
         Survey[] GetSurveys();
+
+        [OperationContract]
+        void AddVote(Vote vote);
+
+        [OperationContract]
+        Result[] GetVoteResult(Survey survey);
     }
 }

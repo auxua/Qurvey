@@ -1,10 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Runtime.Serialization;
-using System.ServiceModel;
-using System.ServiceModel.Web;
-using System.Text;
 
 namespace Qurvey.Backend
 {
@@ -23,23 +18,38 @@ namespace Qurvey.Backend
             {
                 throw new ArgumentNullException();
             }
-            //return survey.Id.ToString() + survey.Question;
             using (var db = new SurveyContext())
             {
                 db.Surveys.Add(survey);
                 db.SaveChanges();
-                    return "0";
+                return "0";
             }
         }
 
         public void UpdateSurvey(Survey survey)
         {
-            throw new NotImplementedException();
+            if (survey == null)
+            {
+                throw new ArgumentNullException();
+            }
+            using (var db = new SurveyContext())
+            {
+                db.Entry(survey).State = System.Data.Entity.EntityState.Modified;
+                db.SaveChanges();
+            }
         }
 
         public void DeleteSurvey(Survey survey)
         {
-            throw new NotImplementedException();
+            if (survey == null)
+            {
+                throw new ArgumentNullException();
+            }
+            using (var db = new SurveyContext())
+            {
+                db.Surveys.Remove(survey);
+                db.SaveChanges();
+            }
         }
 
         public Survey[] GetSurveys()
@@ -50,6 +60,37 @@ namespace Qurvey.Backend
                             orderby s.Created descending
                             select s;
                 return query.ToArray<Survey>();
+            }
+        }
+
+        public void AddVote(Vote vote)
+        {
+            if (vote == null)
+            {
+                throw new ArgumentNullException();
+            }
+            using (var db = new SurveyContext())
+            {
+                db.Votes.Add(vote);
+                db.SaveChanges();
+            }
+        }
+
+        public Result[] GetVoteResult(Survey survey)
+        {
+            if (survey == null)
+            {
+                throw new ArgumentNullException();
+            }
+            using (var db = new SurveyContext())
+            {
+                var query = db.Votes.Where(v => v.SurveyId == survey.Id)
+                    .GroupBy(v => v.AnswerId, v => v.UserId, (answer, users) => new Result
+                    {
+                        AnswerId = answer,
+                        Count = users.Count()
+                    });
+                return query.ToArray<Result>();
             }
         }
     }
