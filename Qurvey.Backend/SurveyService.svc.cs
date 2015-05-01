@@ -12,7 +12,7 @@ namespace Qurvey.Backend
     // NOTE: In order to launch WCF Test Client for testing this service, please select SurveyService.svc or SurveyService.svc.cs at the Solution Explorer and start debugging.
     public class SurveyService : ISurveyService
     {
-        public string GetData(int value)
+        public string GetData(string value)
         {
             return string.Format("You entered: {0}", value);
         }
