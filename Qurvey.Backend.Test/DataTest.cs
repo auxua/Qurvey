@@ -119,19 +119,24 @@ namespace Qurvey.Backend.Test
 
             using (var db = new SurveyContext())
             {
-                var query = db.Votes.Where(v => v.Survey.Id == s.Id)
-                    .GroupBy(v => v.Answer, v => v.UserId, (answer, users) => new Result(answer, users.Count()))
-                    .OrderBy(r => r.Answer.Position);
-                Result[] res = query.ToArray<Result>();
+                Result[] res = db.getResultsFor(s);
                 Assert.IsNotNull(res);
-                Assert.IsTrue(res.Length == 3);
+                Assert.IsTrue(res.Length == 2);
                 Assert.IsTrue(res[0].Answer.AnswerText == "Answer 1");
                 Assert.IsTrue(res[0].Count == 2);
-                Assert.IsTrue(res[1].Answer.AnswerText == "Answer 2");
-                Assert.IsTrue(res[1].Count == 0);
-                Assert.IsTrue(res[2].Answer.AnswerText == "Answer 4");
-                Assert.IsTrue(res[2].Count == 1);
+                Assert.IsTrue(res[1].Answer.AnswerText == "Answer 3");
+                Assert.IsTrue(res[1].Count == 1);
 
+                Vote[] votes = db.Votes.Where(v => v.Survey.Id == s.Id || v.Survey.Id == s2.Id).ToArray<Vote>();
+                foreach (Vote v in votes)
+                {
+                    db.Votes.Remove(v);
+                }
+                db.SaveChanges();
+            }
+
+            using (var db = new SurveyContext())
+            {
                 db.Surveys.Attach(s);
                 db.Surveys.Remove(s);
                 db.Surveys.Attach(s2);
