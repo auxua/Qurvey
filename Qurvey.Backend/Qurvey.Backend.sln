@@ -7,6 +7,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Qurvey.Backend", "Qurvey.Ba
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Qurvey.Backend.Test", "..\Qurvey.Backend.Test\Qurvey.Backend.Test.csproj", "{DD42EF74-B57C-4645-A05E-C4408F61B506}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Qurvey.Shared", "..\Qurvey.Shared\Qurvey.Shared.csproj", "{773B082B-63D4-433F-BA0E-1781C5F4788A}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -21,6 +23,10 @@ Global
 		{DD42EF74-B57C-4645-A05E-C4408F61B506}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{DD42EF74-B57C-4645-A05E-C4408F61B506}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{DD42EF74-B57C-4645-A05E-C4408F61B506}.Release|Any CPU.Build.0 = Release|Any CPU
+		{773B082B-63D4-433F-BA0E-1781C5F4788A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{773B082B-63D4-433F-BA0E-1781C5F4788A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{773B082B-63D4-433F-BA0E-1781C5F4788A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{773B082B-63D4-433F-BA0E-1781C5F4788A}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

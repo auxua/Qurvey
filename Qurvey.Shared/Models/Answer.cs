@@ -1,13 +1,17 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿#if BACKEND
+using System.ComponentModel.DataAnnotations;
+#endif
 using System.Runtime.Serialization;
 
-namespace Qurvey.Backend
+namespace Qurvey.Shared.Models
 {
     [DataContract]
     public class Answer
     {
         [DataMember]
+#if BACKEND
         [Key]
+#endif
         public int Id { get; set; }
 
         [DataMember]
@@ -21,7 +25,8 @@ namespace Qurvey.Backend
 
         }
 
-        public Answer(string answerText) : this()
+        public Answer(string answerText)
+            : this()
         {
             this.AnswerText = answerText;
         }
