@@ -112,6 +112,14 @@
     <Compile Include="Migrations\201505131108574_AddSurveyAsKeyForVote5.Designer.cs">
       <DependentUpon>201505131108574_AddSurveyAsKeyForVote5.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201505131651140_MoreSurveyFields.cs" />
+    <Compile Include="Migrations\201505131651140_MoreSurveyFields.Designer.cs">
+      <DependentUpon>201505131651140_MoreSurveyFields.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201505131653029_MoreSurveyFields2.cs" />
+    <Compile Include="Migrations\201505131653029_MoreSurveyFields2.Designer.cs">
+      <DependentUpon>201505131653029_MoreSurveyFields2.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="SurveyService.svc.cs">
       <DependentUpon>SurveyService.svc</DependentUpon>
@@ -162,6 +170,12 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201505131108574_AddSurveyAsKeyForVote5.resx">
       <DependentUpon>201505131108574_AddSurveyAsKeyForVote5.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201505131651140_MoreSurveyFields.resx">
+      <DependentUpon>201505131651140_MoreSurveyFields.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201505131653029_MoreSurveyFields2.resx">
+      <DependentUpon>201505131653029_MoreSurveyFields2.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
