@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Runtime.Serialization;
@@ -23,6 +22,9 @@ namespace Qurvey.Backend
         public DateTime Modified { get; set; }
 
         [DataMember]
+        public string Course { get; set; }
+
+        [DataMember]
         //public Answer[] Answers { get; set; }
         public virtual ICollection<Answer> Answers { get; set; }
 
@@ -43,13 +45,13 @@ namespace Qurvey.Backend
             this.Question = question;
         }
 
-        public void addAnswer(string answerText)
+        public void addAnswer(string answerText, int position)
         {
             if (Answers == null)
             {
                 Answers = new List<Answer>();
             }
-            this.Answers.Add(new Answer(answerText));
+            this.Answers.Add(new Answer(answerText, position));
         }
 
         public override bool Equals(object obj)

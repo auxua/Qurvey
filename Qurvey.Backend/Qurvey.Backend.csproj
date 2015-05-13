@@ -89,6 +89,30 @@
     <Compile Include="Migrations\201505130800158_AnswersAsCollection.Designer.cs">
       <DependentUpon>201505130800158_AnswersAsCollection.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201505131038341_AddAnswerPosition.cs" />
+    <Compile Include="Migrations\201505131038341_AddAnswerPosition.Designer.cs">
+      <DependentUpon>201505131038341_AddAnswerPosition.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201505131051418_AddSurveyAsKeyForVote.cs" />
+    <Compile Include="Migrations\201505131051418_AddSurveyAsKeyForVote.Designer.cs">
+      <DependentUpon>201505131051418_AddSurveyAsKeyForVote.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201505131059345_AddSurveyAsKeyForVote2.cs" />
+    <Compile Include="Migrations\201505131059345_AddSurveyAsKeyForVote2.Designer.cs">
+      <DependentUpon>201505131059345_AddSurveyAsKeyForVote2.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201505131106485_AddSurveyAsKeyForVote3.cs" />
+    <Compile Include="Migrations\201505131106485_AddSurveyAsKeyForVote3.Designer.cs">
+      <DependentUpon>201505131106485_AddSurveyAsKeyForVote3.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201505131107458_AddSurveyAsKeyForVote4.cs" />
+    <Compile Include="Migrations\201505131107458_AddSurveyAsKeyForVote4.Designer.cs">
+      <DependentUpon>201505131107458_AddSurveyAsKeyForVote4.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201505131108574_AddSurveyAsKeyForVote5.cs" />
+    <Compile Include="Migrations\201505131108574_AddSurveyAsKeyForVote5.Designer.cs">
+      <DependentUpon>201505131108574_AddSurveyAsKeyForVote5.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Result.cs" />
     <Compile Include="SurveyService.svc.cs">
@@ -124,6 +148,24 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201505130800158_AnswersAsCollection.resx">
       <DependentUpon>201505130800158_AnswersAsCollection.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201505131038341_AddAnswerPosition.resx">
+      <DependentUpon>201505131038341_AddAnswerPosition.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201505131051418_AddSurveyAsKeyForVote.resx">
+      <DependentUpon>201505131051418_AddSurveyAsKeyForVote.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201505131059345_AddSurveyAsKeyForVote2.resx">
+      <DependentUpon>201505131059345_AddSurveyAsKeyForVote2.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201505131106485_AddSurveyAsKeyForVote3.resx">
+      <DependentUpon>201505131106485_AddSurveyAsKeyForVote3.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201505131107458_AddSurveyAsKeyForVote4.resx">
+      <DependentUpon>201505131107458_AddSurveyAsKeyForVote4.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201505131108574_AddSurveyAsKeyForVote5.resx">
+      <DependentUpon>201505131108574_AddSurveyAsKeyForVote5.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>
