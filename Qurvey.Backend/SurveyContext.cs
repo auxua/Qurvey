@@ -15,8 +15,9 @@ namespace Qurvey.Backend
 
         public Result[] getResultsFor(Survey survey)
         {
-            var query = this.Votes.Where(v => v.Survey.Equals(survey))
-                    .GroupBy(v => v.Answer, v => v.UserId, (answer, users) => new Result(answer,users.Count()));
+            var query = this.Votes.Where(v => v.Survey.Id == survey.Id)
+                   .GroupBy(v => v.Answer, v => v.UserId, (answer, users) => new Result() { Answer = answer, Count = users.Count() })
+                   .OrderBy(r => r.Answer.Position);
             return query.ToArray<Result>();
         }
     }

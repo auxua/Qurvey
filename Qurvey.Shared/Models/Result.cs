@@ -11,7 +11,7 @@ namespace Qurvey.Shared.Models
         [DataMember]
         public int Count { get; set; }
 
-        protected Result()
+        public Result()
         {
 
         }
