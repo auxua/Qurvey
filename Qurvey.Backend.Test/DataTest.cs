@@ -1,7 +1,5 @@
-﻿using System;
-using Qurvey.Backend;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
-using System.Data.Entity;
+﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Qurvey.Shared.Models;
 using System.Collections.Generic;
 using System.Linq;
 

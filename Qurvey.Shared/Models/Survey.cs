@@ -10,6 +10,8 @@ namespace Qurvey.Shared.Models
     [DataContract]
     public class Survey : IEquatable<Survey>
     {
+        public enum SurveyStatus { NotPublished, Published, Terminated };
+
         [DataMember]
 #if BACKEND
         [Key]
@@ -29,8 +31,10 @@ namespace Qurvey.Shared.Models
         public string Course { get; set; }
 
         [DataMember]
-        //public Answer[] Answers { get; set; }
         public virtual ICollection<Answer> Answers { get; set; }
+
+        [DataMember]
+        public SurveyStatus Status { get; set; }
 
         public bool Equals(Survey other)
         {

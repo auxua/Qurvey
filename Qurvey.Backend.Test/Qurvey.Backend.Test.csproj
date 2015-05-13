@@ -68,6 +68,10 @@
       <Project>{75e9beee-0c0c-411c-82c9-4ee9b935450b}</Project>
       <Name>Qurvey.Backend</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Qurvey.Shared\Qurvey.Shared.csproj">
+      <Project>{773b082b-63d4-433f-ba0e-1781c5f4788a}</Project>
+      <Name>Qurvey.Shared</Name>
+    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
