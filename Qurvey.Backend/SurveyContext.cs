@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using Qurvey.Shared.Models;
+using System.Collections.Generic;
 using System.Data.Entity;
 using System.Linq;
 

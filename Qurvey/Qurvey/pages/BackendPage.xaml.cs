@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using Qurvey.api;
 using Xamarin.Forms;
 using System.Threading.Tasks;
+using Qurvey.Shared.Models;
 
 namespace Qurvey.pages
 {
@@ -11,7 +12,9 @@ namespace Qurvey.pages
 		public BackendPage ()
 		{
 			InitializeComponent ();
-			getData ();
+			var s = new Survey ("Frage");
+			//getData ();
+			dataLabel.Text = s.Question;
 		}
 
 		private async void getData() {

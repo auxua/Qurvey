@@ -103,4 +103,10 @@
   <Target Name="AfterBuild">
   </Target>
   -->
+  <ItemGroup>
+    <ProjectReference Include="..\..\Qurvey.Shared\Qurvey.Shared2.csproj">
+      <Project>{33C5DE4A-702F-4ED9-9ECB-DF10510AE425}</Project>
+      <Name>Qurvey.Shared2</Name>
+    </ProjectReference>
+  </ItemGroup>
 </Project>

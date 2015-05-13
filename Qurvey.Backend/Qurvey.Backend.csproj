@@ -72,7 +72,6 @@
     <Content Include="Web.config" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Answer.cs" />
     <Compile Include="Migrations\201504301530354_InitialCreate.cs" />
     <Compile Include="Migrations\201504301530354_InitialCreate.Designer.cs">
       <DependentUpon>201504301530354_InitialCreate.cs</DependentUpon>
@@ -114,15 +113,12 @@
       <DependentUpon>201505131108574_AddSurveyAsKeyForVote5.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
-    <Compile Include="Result.cs" />
     <Compile Include="SurveyService.svc.cs">
       <DependentUpon>SurveyService.svc</DependentUpon>
     </Compile>
     <Compile Include="ISurveyService.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Survey.cs" />
     <Compile Include="SurveyContext.cs" />
-    <Compile Include="Vote.cs" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
@@ -167,6 +163,12 @@
     <EmbeddedResource Include="Migrations\201505131108574_AddSurveyAsKeyForVote5.resx">
       <DependentUpon>201505131108574_AddSurveyAsKeyForVote5.cs</DependentUpon>
     </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Qurvey.Shared\Qurvey.Shared.csproj">
+      <Project>{773b082b-63d4-433f-ba0e-1781c5f4788a}</Project>
+      <Name>Qurvey.Shared</Name>
+    </ProjectReference>
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

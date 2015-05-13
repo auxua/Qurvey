@@ -1,13 +1,16 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿#if BACKEND
+using System.ComponentModel.DataAnnotations;
+#endif
 using System.Runtime.Serialization;
 
-namespace Qurvey.Backend
+namespace Qurvey.Shared.Models
 {
     [DataContract]
     public class Vote
     {
-
+#if BACKEND
         [Key]
+#endif
         public int Id { get; set; }
 
         [DataMember]

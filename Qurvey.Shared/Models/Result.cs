@@ -1,14 +1,14 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
+﻿using System.Runtime.Serialization;
 
-namespace Qurvey.Backend
+namespace Qurvey.Shared.Models
 {
+    [DataContract]
     public class Result
     {
+        [DataMember]
         public Answer Answer { get; set; }
 
+        [DataMember]
         public int Count { get; set; }
 
         protected Result()

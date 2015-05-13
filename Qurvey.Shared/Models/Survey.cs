@@ -1,15 +1,19 @@
 ﻿using System;
 using System.Collections.Generic;
+#if BACKEND
 using System.ComponentModel.DataAnnotations;
+#endif
 using System.Runtime.Serialization;
 
-namespace Qurvey.Backend
+namespace Qurvey.Shared.Models
 {
     [DataContract]
     public class Survey : IEquatable<Survey>
     {
         [DataMember]
+#if BACKEND
         [Key]
+#endif
         public int Id { get; set; }
 
         [DataMember]
@@ -35,10 +39,11 @@ namespace Qurvey.Backend
 
         protected Survey()
         {
-          
+
         }
 
-        public Survey(string question) : this()
+        public Survey(string question)
+            : this()
         {
             Answers = new List<Answer>();
             this.Created = this.Modified = DateTime.Now;
