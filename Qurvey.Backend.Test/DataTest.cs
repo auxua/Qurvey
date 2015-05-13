@@ -54,9 +54,9 @@ namespace Qurvey.Backend.Test
             Survey survey = new Survey(Title);
             survey.Answers =
                 new List<Answer>();
-            survey.Answers.Add(new Answer("Answer 1"));
-            survey.Answers.Add(new Answer("Answer 2"));
-            survey.Answers.Add(new Answer("Answer 3"));
+            survey.Answers.Add(new Answer("Answer 1", 0));
+            survey.Answers.Add(new Answer("Answer 2", 1));
+            survey.Answers.Add(new Answer("Answer 3", 2));
             return survey;
         }
 
@@ -89,6 +89,55 @@ namespace Qurvey.Backend.Test
                     db.Votes.Remove(v);
                 }
                 db.Surveys.Remove(survey);
+                db.SaveChanges();
+            }
+
+            Assert.IsNull(GetTestSurveyFromDb());
+        }
+
+        [TestMethod]
+        public void TestResultComputation()
+        {
+            Assert.IsNull(GetTestSurveyFromDb());
+
+            Survey s = CreateTestSurvey();
+            Survey s2 = CreateTestSurvey();
+            s2.Question += "2";
+            using (var db = new SurveyContext())
+            {
+                db.Surveys.Add(s);
+                db.Surveys.Add(s2);
+                db.SaveChanges();
+                Vote v1 = new Vote("User1", s, s.Answers.ElementAt(0));
+                db.Votes.Add(v1);
+                Vote v2 = new Vote("User2", s, s.Answers.ElementAt(2));
+                db.Votes.Add(v2);
+                Vote v3 = new Vote("User3", s, s.Answers.ElementAt(0));
+                db.Votes.Add(v3);
+                Vote v4 = new Vote("User3", s2, s2.Answers.ElementAt(0));
+                db.Votes.Add(v4);
+                db.SaveChanges();
+            }
+
+            using (var db = new SurveyContext())
+            {
+                var query = db.Votes.Where(v => v.Survey.Id == s.Id)
+                    .GroupBy(v => v.Answer, v => v.UserId, (answer, users) => new Result(answer, users.Count()))
+                    .OrderBy(r => r.Answer.Position);
+                Result[] res = query.ToArray<Result>();
+                Assert.IsNotNull(res);
+                Assert.IsTrue(res.Length == 3);
+                Assert.IsTrue(res[0].Answer.AnswerText == "Answer 1");
+                Assert.IsTrue(res[0].Count == 2);
+                Assert.IsTrue(res[1].Answer.AnswerText == "Answer 2");
+                Assert.IsTrue(res[1].Count == 0);
+                Assert.IsTrue(res[2].Answer.AnswerText == "Answer 4");
+                Assert.IsTrue(res[2].Count == 1);
+
+                db.Surveys.Attach(s);
+                db.Surveys.Remove(s);
+                db.Surveys.Attach(s2);
+                db.Surveys.Remove(s2);
                 db.SaveChanges();
             }
         }

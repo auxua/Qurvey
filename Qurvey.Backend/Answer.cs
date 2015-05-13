@@ -1,10 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.Linq;
+﻿using System.ComponentModel.DataAnnotations;
 using System.Runtime.Serialization;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Qurvey.Backend
 {
@@ -18,6 +13,9 @@ namespace Qurvey.Backend
         [DataMember]
         public string AnswerText { get; set; }
 
+        [DataMember]
+        public int Position { get; set; }
+
         protected Answer()
         {
 
@@ -26,6 +24,12 @@ namespace Qurvey.Backend
         public Answer(string answerText) : this()
         {
             this.AnswerText = answerText;
+        }
+
+        public Answer(string answerText, int position)
+            : this(answerText)
+        {
+            this.Position = position;
         }
     }
 }

@@ -1,21 +1,23 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.Linq;
+﻿using System.ComponentModel.DataAnnotations;
 using System.Runtime.Serialization;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Qurvey.Backend
 {
     [DataContract]
     public class Vote
     {
-        [DataMember]
+
         [Key]
+        public int Id { get; set; }
+
+        [DataMember]
+        //[Key]
+        //[Column(Order=1)]
         public string UserId { get; set; }
 
         [DataMember]
+        //[Key]
+        //[Column(Order = 2)]
         public Survey Survey { get; set; }
 
         [DataMember]
