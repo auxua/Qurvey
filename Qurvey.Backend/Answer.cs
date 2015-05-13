@@ -17,5 +17,15 @@ namespace Qurvey.Backend
 
         [DataMember]
         public string AnswerText { get; set; }
+
+        protected Answer()
+        {
+
+        }
+
+        public Answer(string answerText) : this()
+        {
+            this.AnswerText = answerText;
+        }
     }
 }

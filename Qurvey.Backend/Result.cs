@@ -7,7 +7,7 @@ namespace Qurvey.Backend
 {
     public class Result
     {
-        public int AnswerId { get; set; }
+        public Answer Answer { get; set; }
 
         public int Count { get; set; }
     }

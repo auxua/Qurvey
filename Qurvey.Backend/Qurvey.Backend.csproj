@@ -73,6 +73,23 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Answer.cs" />
+    <Compile Include="Migrations\201504301530354_InitialCreate.cs" />
+    <Compile Include="Migrations\201504301530354_InitialCreate.Designer.cs">
+      <DependentUpon>201504301530354_InitialCreate.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201505130741409_Version2.cs" />
+    <Compile Include="Migrations\201505130741409_Version2.Designer.cs">
+      <DependentUpon>201505130741409_Version2.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201505130752192_AnswerTest.cs" />
+    <Compile Include="Migrations\201505130752192_AnswerTest.Designer.cs">
+      <DependentUpon>201505130752192_AnswerTest.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201505130800158_AnswersAsCollection.cs" />
+    <Compile Include="Migrations\201505130800158_AnswersAsCollection.Designer.cs">
+      <DependentUpon>201505130800158_AnswersAsCollection.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Result.cs" />
     <Compile Include="SurveyService.svc.cs">
       <DependentUpon>SurveyService.svc</DependentUpon>
@@ -94,6 +111,20 @@
     <None Include="Web.Release.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Migrations\201504301530354_InitialCreate.resx">
+      <DependentUpon>201504301530354_InitialCreate.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201505130741409_Version2.resx">
+      <DependentUpon>201505130741409_Version2.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201505130752192_AnswerTest.resx">
+      <DependentUpon>201505130752192_AnswerTest.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201505130800158_AnswersAsCollection.resx">
+      <DependentUpon>201505130800158_AnswersAsCollection.cs</DependentUpon>
+    </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

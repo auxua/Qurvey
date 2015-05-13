@@ -16,9 +16,22 @@ namespace Qurvey.Backend
         public string UserId { get; set; }
 
         [DataMember]
-        public int SurveyId { get; set; }
+        public Survey Survey { get; set; }
 
         [DataMember]
-        public int AnswerId { get; set; }
+        public Answer Answer { get; set; }
+
+        protected Vote()
+        {
+
+        }
+
+        public Vote(string userId, Survey survey, Answer answer)
+            : this()
+        {
+            this.UserId = userId;
+            this.Survey = survey;
+            this.Answer = answer;
+        }
     }
 }

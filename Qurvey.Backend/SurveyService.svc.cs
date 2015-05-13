@@ -84,10 +84,10 @@ namespace Qurvey.Backend
             }
             using (var db = new SurveyContext())
             {
-                var query = db.Votes.Where(v => v.SurveyId == survey.Id)
-                    .GroupBy(v => v.AnswerId, v => v.UserId, (answer, users) => new Result
+                var query = db.Votes.Where(v => v.Survey.Equals(survey))
+                    .GroupBy(v => v.Answer, v => v.UserId, (answer, users) => new Result
                     {
-                        AnswerId = answer,
+                        Answer = answer,
                         Count = users.Count()
                     });
                 return query.ToArray<Result>();
