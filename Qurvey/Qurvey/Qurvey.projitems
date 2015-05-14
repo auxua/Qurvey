@@ -39,6 +39,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)pages\BackendPage.xaml.cs">
       <DependentUpon>BackendPage.xaml</DependentUpon>
     </Compile>
+    <Compile Include="$(MSBuildThisFileDirectory)api\Backend.cs" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="$(MSBuildThisFileDirectory)pages\ConfigPage.xaml">

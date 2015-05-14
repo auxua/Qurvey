@@ -12,8 +12,7 @@ using Qurvey.api.DataModel;
 namespace Qurvey.api
 {
     class RESTCalls
-    {
-
+	{
         #region generic calls
 
         /// <summary>
@@ -32,7 +31,6 @@ namespace Qurvey.api
         {
             try
             {
-                
                 if (post)
                 {
                     var http = (HttpWebRequest)WebRequest.Create(new Uri(endpoint));
@@ -64,9 +62,7 @@ namespace Qurvey.api
                         //string content = response.Content.ReadAsStringAsync().Result;
                         //Console.WriteLine(content);
                         return answer;
-
                     }
-
                 }
                 else
                 {

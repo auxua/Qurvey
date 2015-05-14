@@ -1,11 +1,6 @@
 ﻿using Qurvey.Shared.Models;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Runtime.Serialization;
 using System.ServiceModel;
 using System.ServiceModel.Web;
-using System.Text;
 
 namespace Qurvey.Backend
 {
@@ -17,21 +12,27 @@ namespace Qurvey.Backend
         string GetData(string value);
 
         [OperationContract]
-        string AddSurvey(Survey survey);
+        [WebInvoke(Method="POST", ResponseFormat=WebMessageFormat.Json, RequestFormat=WebMessageFormat.Json, BodyStyle=WebMessageBodyStyle.Bare, UriTemplate="savesurvey")]
+        string SaveSurvey(Survey survey);
 
         [OperationContract]
-        void UpdateSurvey(Survey survey);
+        [WebInvoke(Method = "POST", ResponseFormat = WebMessageFormat.Json, RequestFormat = WebMessageFormat.Json, BodyStyle = WebMessageBodyStyle.Bare, UriTemplate = "deletesurvey")]
+        string DeleteSurvey(Survey survey);
 
         [OperationContract]
-        void DeleteSurvey(Survey survey);
+        [WebInvoke(Method = "POST", ResponseFormat = WebMessageFormat.Json, RequestFormat = WebMessageFormat.Json, BodyStyle = WebMessageBodyStyle.Bare, UriTemplate = "getsurveys")]
+        Survey[] GetSurveys(string course);
 
         [OperationContract]
-        Survey[] GetSurveys();
+        [WebInvoke(Method = "POST", ResponseFormat = WebMessageFormat.Json, RequestFormat = WebMessageFormat.Json, BodyStyle = WebMessageBodyStyle.Bare, UriTemplate = "savevote")]
+        string SaveVote(Vote vote);
 
         [OperationContract]
-        void AddVote(Vote vote);
+        [WebInvoke(Method = "POST", ResponseFormat = WebMessageFormat.Json, RequestFormat = WebMessageFormat.Json, BodyStyle = WebMessageBodyStyle.Bare, UriTemplate = "deletevote")]
+        string DeleteVote(Vote vote);
 
         [OperationContract]
+        [WebInvoke(Method = "POST", ResponseFormat = WebMessageFormat.Json, RequestFormat = WebMessageFormat.Json, BodyStyle = WebMessageBodyStyle.Bare, UriTemplate = "getvoteresult")]
         Result[] GetVoteResult(Survey survey);
     }
 }
