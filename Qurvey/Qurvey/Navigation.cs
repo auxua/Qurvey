@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Text;
 using Xamarin.Forms;
@@ -78,9 +79,10 @@ namespace Qurvey
 	/// </summary>
 	public class MenuPage : ContentPage
 	{
-		public MenuListView Menu { get; set; }
+		//public MenuListView Menu { get; set; }
+        public GroupedMenuListView Menu { get; set; }
 
-		public MenuListView CoursesMenu { get; set; }
+		//public MenuListView CoursesMenu { get; set; }
 
 		public MenuPage ()
 		{
@@ -89,8 +91,8 @@ namespace Qurvey
 			// Use RWTH-Blue for Background
 			BackgroundColor = Color.FromHex ("00549F");
 
-			Menu = new MenuListView (new MenuListData ());
-			CoursesMenu = new MenuListView (new CoursesListData ());
+			//Menu = new MenuListView (new MenuListData ());
+			//CoursesMenu = new MenuListView (new CoursesListData ());
 
 			var menuLabel = new ContentView {
 				// Allow a bit padding to provide a better view
@@ -98,12 +100,12 @@ namespace Qurvey
 				Content = new Label {
 					// This color looks good on the Blue background
 					TextColor = Color.FromHex ("DCDCDC"),
-					Text = "Settings",
+					Text = "Main Menu",
 					FontSize = Device.GetNamedSize (NamedSize.Large, typeof(Label)),
 					FontAttributes = FontAttributes.Bold
 				}
 			};
-
+            /*
 			var coursesLabel = new ContentView {
 				// Allow a bit padding to provide a better view
 				Padding = new Thickness (10, 36, 0, 5),
@@ -114,17 +116,18 @@ namespace Qurvey
 					FontSize = Device.GetNamedSize (NamedSize.Large, typeof(Label)),
 					FontAttributes = FontAttributes.Bold
 				}
-			};
+			};*/
+
+            var data = new MenuListGroupedData();
+            Menu = new GroupedMenuListView(data);
 
 			// Create the Layout of the page
 			var layout = new StackLayout {
 				Spacing = 0,
 				VerticalOptions = LayoutOptions.FillAndExpand
 			};
-			layout.Children.Add (coursesLabel);
-			layout.Children.Add (CoursesMenu);
 			layout.Children.Add (menuLabel);
-			layout.Children.Add (Menu);
+            layout.Children.Add(Menu);
 
 			Content = layout;
 		}
@@ -225,6 +228,19 @@ namespace Qurvey
 		}
 	}
 
+    /// <summary>
+    /// Simple Representation of the Groups for Listview-Group-Binding
+    /// </summary>
+    public class NavigationGroup : ObservableCollection<NavMenuItem>
+    {
+        public string GroupName { get; private set; }
+        
+        public NavigationGroup(string gTitle)
+        {
+            GroupName = gTitle;
+        }
+    }
+
 	/// <summary>
 	/// The menu is created using a adapted Listview.
 	/// By that most of the stuff is already done by default ;)
@@ -252,6 +268,100 @@ namespace Qurvey
 			selected = data [0];
 		}
 	}
+
+    public class GroupedMenuListView : ListView
+    {
+        public NavMenuItem selected { get; set; }
+
+        public GroupedMenuListView (ObservableCollection<NavigationGroup> data)
+        {
+            IsGroupingEnabled = true;
+            //GroupDisplayBinding = new Binding("GroupName");
+            //GroupShortNameBinding = new Binding("GroupName");
+            GroupHeaderTemplate = new DataTemplate(typeof(HeaderCell));
+
+            ItemsSource = data;
+            VerticalOptions = LayoutOptions.FillAndExpand;
+            BackgroundColor = Color.Transparent;
+
+            // Set Bindings
+            var cell = new DataTemplate(typeof(MenuImageCell));
+            cell.SetBinding(TextCell.TextProperty, "Title");
+            // Image Binding possible in here..
+            // cell.SetBinding(ImageCell.ImageSourceProperty, "IconSource");
+
+            ItemTemplate = cell;
+            // The first item is selected - the lines 2 and 3 are only for the color-fix...
+            //SelectedItem = data[0];
+            data[0][0].SetColors(false);
+            selected = data[0][0];
+        }
+    }
+
+    public class MenuListGroupedData : ObservableCollection<NavigationGroup>
+    {
+        public MenuListGroupedData()
+        {
+            NavigationGroup mainGroup = new NavigationGroup("Main Menu");
+            NavigationGroup courseGroup = new NavigationGroup("Courses");
+
+            NavMenuItem NavConfig = new NavMenuItem()
+            {
+                Title = "Config",
+                Icon = "info.png",
+                TargetType = typeof(pages.ConfigPage)
+            };
+
+            NavMenuItem NavAuthorize = new NavMenuItem()
+            {
+                Title = "Authorize",
+                Icon = "info.png",
+                TargetType = typeof(pages.AuthorizePage)
+            };
+
+            NavMenuItem NavCoursePage = new NavMenuItem()
+            {
+                Title = "Course Page",
+                Icon = "l2plogo.png",
+                TargetType = typeof(pages.CoursePage)
+            };
+
+            mainGroup.Add(NavConfig);
+            mainGroup.Add(NavAuthorize);
+            courseGroup.Add(NavCoursePage);
+
+            this.Add(mainGroup);
+            this.Add(courseGroup);
+        }
+    }
+
+    public class HeaderCell : ViewCell
+    {
+        public HeaderCell()
+        {
+            Height = 25;
+
+            var title = new Label
+            {
+                FontSize = Device.GetNamedSize(NamedSize.Small, this),
+                FontAttributes = FontAttributes.Bold,
+                TextColor = Color.White,
+                VerticalOptions = LayoutOptions.Center
+            };
+
+            title.SetBinding(Label.TextProperty, "GroupName");
+
+            View = new StackLayout
+            {
+                HorizontalOptions = LayoutOptions.FillAndExpand,
+                HeightRequest = 25,
+                BackgroundColor = Color.FromRgb(52, 152, 218),
+                Padding = 5,
+                Orientation = StackOrientation.Horizontal,
+                Children = { title }
+            };
+        }
+    }
 
 	/// <summary>
 	/// Here, we provide the technical navigation.

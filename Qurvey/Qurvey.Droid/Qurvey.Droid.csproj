@@ -22,7 +22,7 @@
     </JavaMaximumHeapSize>
     <JavaOptions />
     <NuGetPackageImportStamp>ec2887f6</NuGetPackageImportStamp>
-    <TargetFrameworkVersion>v4.4</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v5.0</TargetFrameworkVersion>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>

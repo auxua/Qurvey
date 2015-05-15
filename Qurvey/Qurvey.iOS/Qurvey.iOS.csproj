@@ -148,6 +148,12 @@
   <ItemGroup>
     <BundleResource Include="Resources\list.png" />
   </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\Qurvey.Shared\Qurvey.Shared2.csproj">
+      <Project>{33c5de4a-702f-4ed9-9ecb-df10510ae425}</Project>
+      <Name>Qurvey.Shared2</Name>
+    </ProjectReference>
+  </ItemGroup>
   <Import Project="..\Qurvey\Qurvey.projitems" Label="Shared" Condition="Exists('..\Qurvey\Qurvey.projitems')" />
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\iOS\Xamarin.iOS.CSharp.targets" />
   <Import Project="..\..\packages\Xamarin.Forms.1.4.2.6355\build\portable-win+net45+wp80+win81+wpa81+MonoAndroid10+MonoTouch10+Xamarin.iOS10\Xamarin.Forms.targets" Condition="Exists('..\..\packages\Xamarin.Forms.1.4.2.6355\build\portable-win+net45+wp80+win81+wpa81+MonoAndroid10+MonoTouch10+Xamarin.iOS10\Xamarin.Forms.targets')" />
