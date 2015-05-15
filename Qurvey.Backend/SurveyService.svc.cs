@@ -4,8 +4,6 @@ using System.Linq;
 
 namespace Qurvey.Backend
 {
-    // NOTE: You can use the "Rename" command on the "Refactor" menu to change the class name "SurveyService" in code, svc and config file together.
-    // NOTE: In order to launch WCF Test Client for testing this service, please select SurveyService.svc or SurveyService.svc.cs at the Solution Explorer and start debugging.
     public class SurveyService : ISurveyService
     {
         public string GetData(string value)
@@ -13,7 +11,7 @@ namespace Qurvey.Backend
             return string.Format("You entered: {0}", value);
         }
 
-        public string AddSurvey(Survey survey)
+        public string SaveSurvey(Survey survey)
         {
             if (survey == null)
             {
@@ -21,26 +19,20 @@ namespace Qurvey.Backend
             }
             using (var db = new SurveyContext())
             {
-                db.Surveys.Add(survey);
-                db.SaveChanges();
-                return "0";
-            }
-        }
-
-        public void UpdateSurvey(Survey survey)
-        {
-            if (survey == null)
-            {
-                throw new ArgumentNullException();
-            }
-            using (var db = new SurveyContext())
-            {
-                db.Entry(survey).State = System.Data.Entity.EntityState.Modified;
+                if (survey.Id == 0)
+                {
+                    db.Surveys.Add(survey);
+                }
+                else
+                {
+                    db.Surveys.Attach(survey);
+                }
                 db.SaveChanges();
             }
+            return "0";
         }
 
-        public void DeleteSurvey(Survey survey)
+        public string DeleteSurvey(Survey survey)
         {
             if (survey == null)
             {
@@ -48,23 +40,23 @@ namespace Qurvey.Backend
             }
             using (var db = new SurveyContext())
             {
+                db.Surveys.Attach(survey);
                 db.Surveys.Remove(survey);
                 db.SaveChanges();
             }
+            return "0";
         }
 
-        public Survey[] GetSurveys()
+        public Survey[] GetSurveys(string course)
         {
             using (var db = new SurveyContext())
             {
-                var query = from s in db.Surveys
-                            orderby s.Created descending
-                            select s;
+                var query = db.Surveys.Where(s => s.Course == course).OrderByDescending(s => s.Modified);
                 return query.ToArray<Survey>();
             }
         }
 
-        public void AddVote(Vote vote)
+        public string SaveVote(Vote vote)
         {
             if (vote == null)
             {
@@ -72,9 +64,31 @@ namespace Qurvey.Backend
             }
             using (var db = new SurveyContext())
             {
-                db.Votes.Add(vote);
+                if (vote.Id == 0)
+                {
+                    db.Votes.Add(vote);
+                }
+                else
+                {
+                    db.Votes.Attach(vote);
+                }
                 db.SaveChanges();
             }
+            return "0";
+        }
+
+        public string DeleteVote(Vote vote)
+        {
+            if (vote == null)
+            {
+                throw new ArgumentNullException();
+            }
+            using (var db = new SurveyContext())
+            {
+                db.Votes.Remove(vote);
+                db.SaveChanges();
+            }
+            return "0";
         }
 
         public Result[] GetVoteResult(Survey survey)
