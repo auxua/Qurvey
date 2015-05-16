@@ -37,19 +37,6 @@ namespace Qurvey
 			Detail = new NavigationPage (new pages.WelcomePage ());
 		}
 
-		/*public void OnMenuItemSelected (object sender, EventArgs e)
-		{
-			// Before Navigating, recolor the cell
-			if (menuPage.Menu.selected != null) {
-				menuPage.Menu.selected.SetColors (true);
-			}
-
-			// Select new
-			menuPage.Menu.selected = (menuPage.Menu.SelectedItem as NavMenuItem);
-			menuPage.Menu.selected.SetColors (false);
-
-			NavigateTo (e.SelectedItem as NavMenuItem);
-		}*/
 
 		/// <summary>
 		/// Depending on the selected item, go to the corresponding page
@@ -59,6 +46,18 @@ namespace Qurvey
 		{
 
 			try {
+                if (Detail is pages.CourseRoomPage)
+                {
+                    ((pages.CourseRoomPage)Detail).PopToRootAsync();
+                }
+                
+                if (menu.TargetType == typeof(pages.CourseRoomPage))
+                {
+                    //Application.Current.Properties["currentCID"] = menu.CID;
+                    Detail = new pages.CourseRoomPage(menu.CID,menu.Title);
+                    IsPresented = false;
+                    return;
+                }
 				Page displayPage = (Page)Activator.CreateInstance (menu.TargetType);
 				Detail = new NavigationPage (displayPage);
 
@@ -72,7 +71,6 @@ namespace Qurvey
 		}
 	}
 
-
 	/// <summary>
 	/// The MenuPage is the Master Page of the MasterDetailPage.
 	/// It contains the menu and gets colored correctly
@@ -83,6 +81,26 @@ namespace Qurvey
         public GroupedMenuListView Menu { get; set; }
 
 		//public MenuListView CoursesMenu { get; set; }
+
+        public static ObservableCollection<NavigationGroup> MenuItems = new MenuListGroupedData();
+
+        public static void AddCourseToMenu(string cid, string title)
+        {
+            NavigationGroup group = MenuItems[1];
+
+            if (group.ContainsCID(cid))
+            {
+                return;
+            }
+            // Add the Course to the Menu
+            NavMenuItem newCourse = new NavMenuItem();
+            newCourse.CID = cid;
+            newCourse.Icon = "l2plogo.png";
+            newCourse.TargetType = typeof(pages.CourseRoomPage);
+            newCourse.Title = title;
+            group.Add(newCourse);
+            
+        }
 
 		public MenuPage ()
 		{
@@ -96,7 +114,8 @@ namespace Qurvey
 
 			var menuLabel = new ContentView {
 				// Allow a bit padding to provide a better view
-				Padding = new Thickness (10, 5, 0, 5),
+				//Padding = new Thickness (10, 5, 0, 5),
+                Padding = new Thickness(10, 36, 0, 5),
 				Content = new Label {
 					// This color looks good on the Blue background
 					TextColor = Color.FromHex ("DCDCDC"),
@@ -105,21 +124,10 @@ namespace Qurvey
 					FontAttributes = FontAttributes.Bold
 				}
 			};
-            /*
-			var coursesLabel = new ContentView {
-				// Allow a bit padding to provide a better view
-				Padding = new Thickness (10, 36, 0, 5),
-				Content = new Label {
-					// This color looks good on the Blue background
-					TextColor = Color.FromHex ("DCDCDC"),
-					Text = "Courses",
-					FontSize = Device.GetNamedSize (NamedSize.Large, typeof(Label)),
-					FontAttributes = FontAttributes.Bold
-				}
-			};*/
 
-            var data = new MenuListGroupedData();
-            Menu = new GroupedMenuListView(data);
+            MenuItems = new MenuListGroupedData();
+            Menu = new GroupedMenuListView();
+            Menu.ItemsSource = MenuItems;
 
 			// Create the Layout of the page
 			var layout = new StackLayout {
@@ -153,6 +161,11 @@ namespace Qurvey
 		/// The page that should be opened when selecting this item
 		/// </summary>
 		public Type TargetType { get; set; }
+
+        /// <summary>
+        /// The Course room ID - only used for course rooms
+        /// </summary>
+        public string CID { get; set; }
 
 		// below: Event(handling) for (de)selecting the cell.
 		// This is used for creating consistency in color schemes between different platforms
@@ -234,6 +247,16 @@ namespace Qurvey
     public class NavigationGroup : ObservableCollection<NavMenuItem>
     {
         public string GroupName { get; private set; }
+
+        public bool ContainsCID(string cid)
+        {
+            foreach (NavMenuItem item in this.Items)
+            {
+                if (item.CID == cid)
+                    return true;
+            }
+            return false;
+        }
         
         public NavigationGroup(string gTitle)
         {
@@ -243,44 +266,21 @@ namespace Qurvey
 
 	/// <summary>
 	/// The menu is created using a adapted Listview.
-	/// By that most of the stuff is already done by default ;)
+	/// By that most of the stuff is already done by default.
+    /// Supports Groups
 	/// </summary>
-	public class MenuListView : ListView
-	{
-		public NavMenuItem selected { get; set; }
-
-		public MenuListView (List<NavMenuItem> data)
-		{
-			ItemsSource = data;
-			VerticalOptions = LayoutOptions.FillAndExpand;
-			BackgroundColor = Color.Transparent;
-
-			// Set Bindings
-			var cell = new DataTemplate (typeof(MenuImageCell));
-			cell.SetBinding (TextCell.TextProperty, "Title");
-			// Image Binding possible in here..
-			// cell.SetBinding(ImageCell.ImageSourceProperty, "IconSource");
-
-			ItemTemplate = cell;
-			// The first item is selected - the lines 2 and 3 are only for the color-fix...
-			//SelectedItem = data[0];
-			data [0].SetColors (false);
-			selected = data [0];
-		}
-	}
-
     public class GroupedMenuListView : ListView
     {
         public NavMenuItem selected { get; set; }
 
-        public GroupedMenuListView (ObservableCollection<NavigationGroup> data)
+        public GroupedMenuListView ()
         {
             IsGroupingEnabled = true;
             //GroupDisplayBinding = new Binding("GroupName");
             //GroupShortNameBinding = new Binding("GroupName");
             GroupHeaderTemplate = new DataTemplate(typeof(HeaderCell));
 
-            ItemsSource = data;
+            //ItemsSource = data;
             VerticalOptions = LayoutOptions.FillAndExpand;
             BackgroundColor = Color.Transparent;
 
@@ -293,8 +293,15 @@ namespace Qurvey
             ItemTemplate = cell;
             // The first item is selected - the lines 2 and 3 are only for the color-fix...
             //SelectedItem = data[0];
-            data[0][0].SetColors(false);
-            selected = data[0][0];
+            //data[0][0].SetColors(false);
+            //selected = data[0][0];
+        }
+
+        public void SetItemSource(ObservableCollection<NavigationGroup> source)
+        {
+            this.ItemsSource = source;
+            source[0][0].SetColors(false);
+            selected = source[0][0];
         }
     }
 
@@ -307,23 +314,24 @@ namespace Qurvey
 
             NavMenuItem NavConfig = new NavMenuItem()
             {
-                Title = "Config",
+                Title = "Welcome",
                 Icon = "info.png",
-                TargetType = typeof(pages.ConfigPage)
+                TargetType = typeof(pages.WelcomePage)
             };
 
             NavMenuItem NavAuthorize = new NavMenuItem()
             {
-                Title = "Authorize",
+                Title = "Config",
                 Icon = "info.png",
-                TargetType = typeof(pages.AuthorizePage)
+                TargetType = typeof(pages.ConfigPage)
             };
 
             NavMenuItem NavCoursePage = new NavMenuItem()
             {
                 Title = "Course Page",
                 Icon = "l2plogo.png",
-                TargetType = typeof(pages.CoursePage)
+                CID = "14ws-44149",
+                TargetType = typeof(pages.CourseRoomPage)
             };
 
             mainGroup.Add(NavConfig);
@@ -363,80 +371,4 @@ namespace Qurvey
         }
     }
 
-	/// <summary>
-	/// Here, we provide the technical navigation.
-	/// The Title and corresponding pages are added to the menu.
-	/// </summary>
-	public class MenuListData : List<NavMenuItem>
-	{
-		public MenuListData ()
-		{
-			this.Add (new NavMenuItem () {
-				Title = "Config",
-				Icon = "info.png",
-				TargetType = typeof(pages.ConfigPage)
-			});
-
-            this.Add(new NavMenuItem()
-            {
-                Title = "Authorize",
-                Icon = "info.png",
-                TargetType = typeof(pages.AuthorizePage)
-            });
-
-			this.Add (new NavMenuItem () {
-				Title = "BackendPage",
-				Icon = "info.png",
-				TargetType = typeof(pages.BackendPage)
-			});
-
-			this.Add (new NavMenuItem () {
-				Title = "About",
-				Icon = "info.png",
-				TargetType = typeof(pages.WelcomePage)
-			});
-
-			this.Add (new NavMenuItem () {
-				Title = "SurveyPage",
-				Icon = "info.png",
-				TargetType = typeof(pages.SurveyPage)
-			});
-
-			this.Add (new NavMenuItem () {
-				Title = "CoursePage",
-				Icon = "info.png",
-				TargetType = typeof(pages.CoursePage)
-			});
-		}
-	}
-
-	/// <summary>
-	/// Here, we provide the courses navigation.
-	/// The Title and corresponding pages are added to the menu.
-	/// </summary>
-	public class CoursesListData : List<NavMenuItem>
-	{
-		public CoursesListData ()
-		{
-			this.Add (new NavMenuItem () {
-				Title = "L2P App Development",
-				Icon = "l2plogo.png",
-				TargetType = typeof(pages.WelcomePage)
-			});
-
-			this.Add (new NavMenuItem () {
-				Title = "Machine Learning",
-				Icon = "l2plogo.png",
-				TargetType = typeof(pages.WelcomePage)
-			});
-
-			this.Add (new NavMenuItem () {
-				Title = "Model Checking",
-				Icon = "l2plogo.png",
-				TargetType = typeof(pages.WelcomePage)
-			});
-
-
-		}
-	}
 }

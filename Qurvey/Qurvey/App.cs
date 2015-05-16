@@ -13,6 +13,8 @@ namespace Qurvey
 			// The root page of your application
             MainPage = new RootPage();
 
+            api.AuthenticationManager.CheckState();
+
             //var re = new api.RESTCalls();
             //var ans = re.RestCall<api.L2PPingData>("", api.Config.L2PEndPoint + "Ping?accessToken=foo&p=pp",false);
 		}
@@ -29,7 +31,7 @@ namespace Qurvey
 
 		protected override void OnResume ()
 		{
-			// Handle when your app resumes
+            // App resumes
 		}
 	}
 }

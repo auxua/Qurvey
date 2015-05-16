@@ -67,7 +67,7 @@ namespace Qurvey.api
                 else
                 {
                     // For GET, use a simple httpClient
-                    var client = new HttpClient();
+                    HttpClient client = new HttpClient();
                     var response = await client.GetAsync(new Uri(endpoint));
                     var result = await response.Content.ReadAsStringAsync();
                     T1 answer = JsonConvert.DeserializeObject<T1>(result);

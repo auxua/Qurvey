@@ -5,29 +5,4 @@
     <ContentPage.Padding>
         30, 20, 20, 0
     </ContentPage.Padding>
-    <StackLayout Orientation="Vertical" VerticalOptions="StartAndExpand">
-        <ScrollView Orientation="Vertical" VerticalOptions="StartAndExpand">
-            <StackLayout Orientation="Vertical" VerticalOptions="StartAndExpand" Spacing="50">
-                <Label FontAttributes="Bold"
-               FontSize="Large"
-               HorizontalOptions="Center"
-               VerticalOptions="CenterAndExpand" >
-                    <Label.Text>
-                        How do you like this App?
-                    </Label.Text>
-                </Label>
-                <ListView x:Name="listView">
-                </ListView>
-
-                <Label FontAttributes="None"
-               FontSize="Medium"
-               HorizontalOptions="Center"
-               VerticalOptions="StartAndExpand" x:Name="label" >
-                    <Label.Text>
-                        Stuff about this App and so on...
-                    </Label.Text>
-                </Label>
-            </StackLayout>
-        </ScrollView>
-    </StackLayout>
 </ContentPage>
