@@ -8,6 +8,8 @@ using System.Threading.Tasks;
 using Newtonsoft.Json;
 using Qurvey.api.DataModel;
 
+using Xamarin.Forms;
+
 namespace Qurvey.api
 {
     class AuthenticationManager
@@ -16,23 +18,36 @@ namespace Qurvey.api
 
         public enum AuthenticationState
         {
-            NONE, // Not Authenticated, no Refresh Token known
-            ACTIVE, // Not necessarily authenticated at the moment, but can re-authenticate by getting an access Token using the refresh token or holding valid token at the moment
-            WAITING // There is an ongoing Authentication process (e.g. a user needs to confirm authorization in the browser
+            NONE = 0, // Not Authenticated, no Refresh Token known
+            ACTIVE = 1, // Not necessarily authenticated at the moment, but can re-authenticate by getting an access Token using the refresh token or holding valid token at the moment
+            WAITING = 2 // There is an ongoing Authentication process (e.g. a user needs to confirm authorization in the browser
         }
 
-        private static AuthenticationState State = AuthenticationState.NONE;
+        //private static AuthenticationState State = AuthenticationState.NONE;
 
         [MethodImpl(MethodImplOptions.Synchronized)]
         public static AuthenticationState getState()
         {
-            return State;
+            // Store the State independent from App Lifecycle
+            if (Application.Current.Properties.ContainsKey("AuthState"))
+            {
+                return (AuthenticationState)Enum.Parse(typeof(AuthenticationState), (string)Application.Current.Properties["AuthState"]);
+                //return (AuthenticationState)Application.Current.Properties["AuthState"];
+            }
+            else
+            {
+                setState(AuthenticationState.NONE);
+                return AuthenticationState.NONE;
+            }
+            //return State;
         }
 
         [MethodImpl(MethodImplOptions.Synchronized)]
         public static void setState(AuthenticationState authState)
         {
-            State = authState;
+            Application.Current.Properties["AuthState"] = authState.ToString("G");
+            Application.Current.SavePropertiesAsync();
+            //State = authState;
         }
 
         /// <summary>
@@ -41,7 +56,7 @@ namespace Qurvey.api
         [MethodImpl(MethodImplOptions.Synchronized)]
         public static void CheckState()
         {
-            if (State == AuthenticationState.WAITING)
+            if (getState() == AuthenticationState.WAITING)
             {
                 // Authentication Process ongoing - do nothing and wait
                 return;
@@ -114,7 +129,7 @@ namespace Qurvey.api
         /// <summary>
         /// Starts the Autehntication Process
         /// </summary>
-        /// <returns>returns the verifaication URL for this app or an empty string on fails</returns>
+        /// <returns>returns the verification URL for this app or an empty string on fails</returns>
         //[MethodImpl(MethodImplOptions.Synchronized)]
         public async static Task<string> StartAuthenticationProcessAsync()
         {
@@ -149,7 +164,7 @@ namespace Qurvey.api
         {
             CheckAuthMutex.WaitOne();
             var answer = await TokenCallAsync();
-            if (answer.status.StartsWith("Fail:") || answer.status.StartsWith("Error:"))
+            if (answer.status.StartsWith("Fail:") || answer.status.StartsWith("error:"))
             {
                 // Not working!
                 return false;

@@ -80,8 +80,8 @@ namespace Qurvey.api.DataModel
         public string courseTitle { get; set; }
         public string description { get; set; }
         public string url { get; set; }
-        //public bool status { get; set; }
-        //public string courseStatus { get; set; }
+        public bool status { get; set; }
+        public string courseStatus { get; set; }
         public int itemId { get; set; }
     }
 
