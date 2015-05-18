@@ -84,6 +84,11 @@ namespace Qurvey
 
         public static ObservableCollection<NavigationGroup> MenuItems = new MenuListGroupedData();
 
+        public static void ClearMenu()
+        {
+            MenuItems[1].Clear();
+        }
+
         public static void AddCourseToMenu(string cid, string title)
         {
             NavigationGroup group = MenuItems[1];

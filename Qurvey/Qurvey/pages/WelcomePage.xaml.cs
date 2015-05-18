@@ -141,16 +141,44 @@ namespace Qurvey.pages
 
         private async void GetAllData()
         {
+            bool useAll = App.isUsingAllCourses();
+            IsBusy = true;
+            
             if (api.AuthenticationManager.getState() != api.AuthenticationManager.AuthenticationState.ACTIVE)
             {
                 Device.BeginInvokeOnMainThread(() => DisplayAlert("Authorization needed", "Please authorize the App first", "OK"));
+                IsBusy = false;
                 return;
             }
 
             //var c = new System.Net.Http.HttpClient();
 
             // Get the courses!
-            var courses = await api.RESTCalls.L2PViewAllCourseInfoAsync();
+            L2PCourseInfoSetData courses;
+            if (useAll)
+            {
+                courses = await api.RESTCalls.L2PViewAllCourseInfoAsync();
+            }
+            else
+            {
+                string semester;
+                if (DateTime.Now.Month < 4)
+                {
+                    // winter semester but already in new year -> ws+last year
+                    semester = "ws" + DateTime.Now.AddYears(-1).Year.ToString().Substring(2);
+                }
+                else if (DateTime.Now.Month > 9)
+                {
+                    // winter semester, still in this year
+                    semester = "ws" + DateTime.Now.Year.ToString().Substring(2);
+                }
+                else
+                {
+                    // summer semester
+                    semester = "ss" + DateTime.Now.Year.ToString().Substring(2);
+                }
+                courses = await api.RESTCalls.L2PViewAllCourseIfoBySemesterAsync(semester);
+            }
             
             // Workaround (should be moved to Manager)
             if (courses == null)
@@ -162,14 +190,16 @@ namespace Qurvey.pages
             if (courses.dataset == null)
             {
                 Device.BeginInvokeOnMainThread(() => DisplayAlert("Error", "An error occured: " + courses.errorDescription, "OK"));
+                IsBusy = false;
                 return;
             }
 
+            MenuPage.ClearMenu();
             foreach (L2PCourseInfoData l2pcourse in courses.dataset)
             {
                 MenuPage.AddCourseToMenu(l2pcourse.uniqueid, l2pcourse.courseTitle);
             }
-
+            IsBusy = false;
             
         }
 	}

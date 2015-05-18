@@ -100,6 +100,20 @@ namespace Qurvey.api
         }
 
         /// <summary>
+        /// Workaround:
+        /// Check the Token for being valid by calling the L2P Api (Only in case of errors of the tokeninfo-endpoint)
+        /// </summary>
+        /// <returns>true, if the token is valid</returns>
+        public async static Task<bool> CheckValidTokenAsync()
+        {
+            string callURL = Config.L2PEndPoint + "/Ping?accessToken=" + Config.getAccessToken() + "&p=ping";
+            var answer = await RestCallAsync<L2PPingData>("", callURL, false);
+            if ((answer == null) || (answer.status == false))
+                return false;
+            return true;
+        }
+
+        /// <summary>
         /// Gets the Course Info for the provided Course
         /// </summary>
         /// <param name="cid">The course room id (14ss-xxxxx)</param>
@@ -127,6 +141,20 @@ namespace Qurvey.api
         {
             await api.AuthenticationManager.CheckAccessTokenAsync();
             string callURL = Config.L2PEndPoint + "/viewAllCourseInfo?accessToken=" + Config.getAccessToken();
+
+            var answer = await RestCallAsync<L2PCourseInfoSetData>("", callURL, false);
+            return answer;
+        }
+
+        /// <summary>
+        /// Gets all courses of the specified semester
+        /// </summary>
+        /// <param name="semester">the semester specifier (e.g. 14ss)</param>
+        /// <returns>A representation of all courses of the semester</returns>
+        public async static Task<L2PCourseInfoSetData> L2PViewAllCourseIfoBySemesterAsync(string semester)
+        {
+            await api.AuthenticationManager.CheckAccessTokenAsync();
+            string callURL = Config.L2PEndPoint + "/viewAllCourseInfoBySemester?accessToken=" + Config.getAccessToken()+"&semester="+semester;
 
             var answer = await RestCallAsync<L2PCourseInfoSetData>("", callURL, false);
             return answer;
