@@ -54,7 +54,7 @@ namespace Qurvey.api
         /// Forces the Manager to refresh the State and tries to regenerate an accessToken if possible
         /// </summary>
         [MethodImpl(MethodImplOptions.Synchronized)]
-        public static void CheckState()
+        public static async Task CheckStateAsync()
         {
             if (getState() == AuthenticationState.WAITING)
             {
@@ -73,7 +73,7 @@ namespace Qurvey.api
                 else 
                 {
                     // No Access Token, but refreshToken
-                    GenerateAccessTokenFromRefreshTokenAsync();
+                    await GenerateAccessTokenFromRefreshTokenAsync();
                     return;
                 }
             }
@@ -81,7 +81,7 @@ namespace Qurvey.api
             if (Config.getRefreshToken() == "")
             {
                 // No refreshtoken, but holding an Access Token - Check Token
-                CheckAccessTokenAsync();
+                await CheckAccessTokenAsync();
                 if (Config.getAccessToken() == "")
                 {
                     // Holding a valid AccesToken now
@@ -101,10 +101,11 @@ namespace Qurvey.api
         private static Mutex CheckAccessTokenMutex = new Mutex();
         /// <summary>
         /// Checks the AccessToken against the tokenInfo REST-Service.
-        /// If it fails, the accessToken is removed automatically
+        /// If it fails, the system tries to refresh using the authentication manager
+        /// If it still fails, accessToken is removed automatically
         /// </summary>
         //[MethodImpl(MethodImplOptions.Synchronized)]
-        private async static void CheckAccessTokenAsync()
+        public async static Task CheckAccessTokenAsync()
         {
             // use mutex for sync
             CheckAccessTokenMutex.WaitOne();
@@ -114,8 +115,16 @@ namespace Qurvey.api
             
             if (answer.state != "valid")
             {
-                // Invalid Token - delete it
-                Config.setAccessToken("");
+                // Try to refresh the token
+                await GenerateAccessTokenFromRefreshTokenAsync();
+                call = "{ \"client_id:\" \"" + Config.ClientID + "\" \"access_token\": \"" + Config.getAccessToken() + "\" }";
+
+                answer = await RESTCalls.RestCallAsync<OAuthTokenInfo>(call, Config.OAuthTokenInfoEndPoint, true);
+                if (answer.state != "valid")
+                {
+                    // Invalid Token, no refreshToken success  - delete it
+                    Config.setAccessToken("");
+                }
             }
             CheckAccessTokenMutex.ReleaseMutex();
         }

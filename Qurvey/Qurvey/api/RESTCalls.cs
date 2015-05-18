@@ -93,6 +93,7 @@ namespace Qurvey.api
         public async static Task<string> L2PPingCallAsync(string ping)
         {
             // Check Auth.
+            await api.AuthenticationManager.CheckAccessTokenAsync();
             string callURL = Config.L2PEndPoint + "/Ping?accessToken=" + Config.getAccessToken() + "&p=" + ping;
             var answer = await RestCallAsync<L2PPingData>("", callURL, false);
             return answer.comment;
@@ -105,6 +106,7 @@ namespace Qurvey.api
         /// <returns>A representation of the course room or null, if no data was available</returns>
         public async static Task<L2PCourseInfoData> L2PViewCourseInfoAsync(string cid)
         {
+            await api.AuthenticationManager.CheckAccessTokenAsync();
             string callURL = Config.L2PEndPoint + "/viewCourseInfo?accessToken=" + Config.getAccessToken() + "&cid=" + cid;
 
             var answer = await RestCallAsync<L2PCourseInfoSetData>("", callURL, false);
@@ -123,6 +125,7 @@ namespace Qurvey.api
         /// <returns>A representation of all courses</returns>
         public async static Task<L2PCourseInfoSetData> L2PViewAllCourseInfoAsync()
         {
+            await api.AuthenticationManager.CheckAccessTokenAsync();
             string callURL = Config.L2PEndPoint + "/viewAllCourseInfo?accessToken=" + Config.getAccessToken();
 
             var answer = await RestCallAsync<L2PCourseInfoSetData>("", callURL, false);
@@ -137,6 +140,7 @@ namespace Qurvey.api
         /// <returns>A Role representation</returns>
         public async static Task<L2PRole> L2PViewUserRoleAsync(string cid)
         {
+            await api.AuthenticationManager.CheckAccessTokenAsync();
             string callURL = Config.L2PEndPoint + "/viewUserRole?accessToken=" + Config.getAccessToken() + "&cid=" + cid;
 
             var answer = await RestCallAsync<L2PRole>("", callURL, false);

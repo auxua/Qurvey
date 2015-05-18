@@ -80,7 +80,7 @@ namespace Qurvey.pages
 
             Title = "Welcome";
 
-            api.AuthenticationManager.CheckState();
+            api.AuthenticationManager.CheckStateAsync();
             if (api.AuthenticationManager.getState() == api.AuthenticationManager.AuthenticationState.ACTIVE)
             {
                 this.AuthStatus = "authorized";
@@ -100,7 +100,7 @@ namespace Qurvey.pages
 
         async void authButton_Clicked(object sender, EventArgs e)
         {
-            api.AuthenticationManager.CheckState();
+            api.AuthenticationManager.CheckStateAsync();
             if (api.AuthenticationManager.getState() != api.AuthenticationManager.AuthenticationState.ACTIVE)
             {
                 await DisplayAlert("Authorization", "You will be redirected to the RWTH-Authorization Page.\n Please authorize the App and come back again.", "OK");
