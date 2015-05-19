@@ -85,6 +85,7 @@ namespace Qurvey.pages
 
             Padding = new Thickness(10, 20, 10, 4);
 
+
             Content = stack;
 
 		}
@@ -94,7 +95,7 @@ namespace Qurvey.pages
             if (done)
             {
                 // Some platforms ignore the disabled-state of the view
-                DisplayAlert("Not Allowed", "Sorry, you have already selected your answer", "OK");
+                await DisplayAlert("Not Allowed", "Sorry, you have already selected your answer", "OK");
                 return;
             }
             string selectedText = (string)e.Item;
@@ -109,7 +110,7 @@ namespace Qurvey.pages
             // sure! Let's tell the backend
             try
             {
-                await api.Backend.SaveAnswer(survey, selected);
+                await api.Backend.SaveAnswerAsync(survey, selected);
                 ListView listView = (ListView)sender;
                 done = true;
             }

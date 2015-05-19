@@ -84,8 +84,9 @@ namespace Qurvey.pages
             if (api.AuthenticationManager.getState() == api.AuthenticationManager.AuthenticationState.ACTIVE)
             {
                 this.AuthStatus = "authorized";
-                //Then, get all Courses...
-                this.getButton_Clicked(this, null);
+                //Then, get all Courses..., if not already done
+                if (MenuPage.NumberOfCourses() < 2)
+                    this.getButton_Clicked(this, null);
             }
 
             

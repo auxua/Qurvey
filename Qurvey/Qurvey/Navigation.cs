@@ -107,6 +107,11 @@ namespace Qurvey
             
         }
 
+        public static int NumberOfCourses()
+        {
+            return MenuItems[1].Count;
+        }
+
 		public MenuPage ()
 		{
 			Icon = "list.png";
