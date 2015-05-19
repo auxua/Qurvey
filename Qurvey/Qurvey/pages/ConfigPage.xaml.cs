@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Qurvey.api.DataModel;
 
 using Xamarin.Forms;
 
@@ -10,80 +11,110 @@ namespace Qurvey.pages
 {
 	public partial class ConfigPage : ContentPage
 	{
-        /// <summary>
-        /// A static refernce for the Label representing the progress of the OAuth Connection
-        /// Is visible from outside, but only the UI-Thread is allowed to change text!
-        /// </summary>
-        public static Label UpdateLabel;
-
 
         public ConfigPage()
         {
             //InitializeComponent();
 
-            // Not sure - Show a dialog box for credentials, or put it right on the page?
-
-
-            // The label for the User to tell, what to do
-            Label DescLabel = new Label
+            SwitchCell adminSwitch = new SwitchCell
             {
-                XAlign = TextAlignment.Center,
-                FontAttributes = FontAttributes.Italic,
-                Text = "Press the Button to Authorize the App \n "
+                Text = "I am Manager",
+                On = App.isAdmin(),
+            };
+            adminSwitch.OnChanged += (o,s) => { App.setAdmin(adminSwitch.On); };
+
+
+            SwitchCell courseSwitch = new SwitchCell
+            {
+                Text = "Get all courses",
+                On = App.isUsingAllCourses(),
+            };
+            courseSwitch.OnChanged += async (o, s) => { 
+                App.setUsingAllCourses(courseSwitch.On);
+                RefreshNavbar(courseSwitch.On);
             };
 
-            // The Label for the Updates
-            UpdateLabel = new Label
+
+            Content = new TableView
             {
-                XAlign = TextAlignment.Center,
-                FontAttributes = FontAttributes.Italic,
-                Text = " " //No Text on start
+                Intent = TableIntent.Settings,
+                Root = new TableRoot {
+                    new TableSection("Manager or Student?") {
+                        adminSwitch
+                    },
+                    new TableSection("All Courses/Semester Courses") {
+                        courseSwitch
+                    }
+                }
             };
 
-            // The Button, triggering an Authorization Process
-            Button UpdateButton = new Button
-            {
-                Text = "Authorize (Will open a web page of RWTH)"
-            };
-
-            // Connect the method for the Authorization with the Button
-            UpdateButton.Clicked += OnButtonClicked;
-
-            // Create embedding Scrollview to allow scrolling on this page (in advance - maybe later on the page will grow...)
-            ScrollView v = new ScrollView();
-            v.Orientation = ScrollOrientation.Vertical;
-
-
-            //Content = new StackLayout
-            StackLayout stack = new StackLayout
-            {
-                Padding = new Thickness(0.3, 0.1, 0.2, 0),
-                Orientation = StackOrientation.Vertical,
-                VerticalOptions = LayoutOptions.Center,
-                Children = { DescLabel, UpdateButton, UpdateLabel }
-            };
-
-            v.Content = stack;
-            Content = v;
-
-
-            Title = "Authorization";
+            Padding = new Thickness(15, 10, 15, 10);
+            Title = "Settings";
         }
 
-        /// <summary>
-        /// Triggers an authorizationa.
-        /// The log of this will be written into the UpdateLabel
-        /// </summary>
-        void OnButtonClicked(object sender, EventArgs e)
+        private async Task RefreshNavbar(bool useAll)
         {
-            // Tell user what will happen
-            UpdateLabel.Text = "\n Starting Authorization...";
+            IsBusy = true;
+            
 
+            if (api.AuthenticationManager.getState() != api.AuthenticationManager.AuthenticationState.ACTIVE)
+            {
+                Device.BeginInvokeOnMainThread(() => DisplayAlert("Authorization needed", "Please authorize the App first", "OK"));
+                IsBusy = false;
+                return;
+            }
 
+            //var c = new System.Net.Http.HttpClient();
 
-            UpdateLabel.Text += "\n finished Authorization";
+            // Get the courses!
+            L2PCourseInfoSetData courses;
+            if (useAll)
+            {
+                courses = await api.RESTCalls.L2PViewAllCourseInfoAsync();
+            }
+            else
+            {
+                string semester;
+                if (DateTime.Now.Month < 4)
+                {
+                    // winter semester but already in new year -> ws+last year
+                    semester = "ws" + DateTime.Now.AddYears(-1).Year.ToString().Substring(2);
+                }
+                else if (DateTime.Now.Month > 9)
+                {
+                    // winter semester, still in this year
+                    semester = "ws" + DateTime.Now.Year.ToString().Substring(2);
+                }
+                else
+                {
+                    // summer semester
+                    semester = "ss" + DateTime.Now.Year.ToString().Substring(2);
+                }
+                courses = await api.RESTCalls.L2PViewAllCourseIfoBySemesterAsync(semester);
+            }
 
+            // Workaround (should be moved to Manager)
+            if (courses == null)
+            {
+                await api.AuthenticationManager.GenerateAccessTokenFromRefreshTokenAsync();
+                courses = await api.RESTCalls.L2PViewAllCourseInfoAsync();
+            }
 
+            if (courses.dataset == null)
+            {
+                Device.BeginInvokeOnMainThread(() => DisplayAlert("Error", "An error occured: " + courses.errorDescription, "OK"));
+                IsBusy = false;
+                return;
+            }
+
+            MenuPage.ClearMenu();
+            foreach (L2PCourseInfoData l2pcourse in courses.dataset)
+            {
+                MenuPage.AddCourseToMenu(l2pcourse.uniqueid, l2pcourse.courseTitle);
+            }
+
+            IsBusy = false;
         }
+
 	}
 }

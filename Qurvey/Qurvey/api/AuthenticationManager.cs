@@ -8,6 +8,8 @@ using System.Threading.Tasks;
 using Newtonsoft.Json;
 using Qurvey.api.DataModel;
 
+using Xamarin.Forms;
+
 namespace Qurvey.api
 {
     class AuthenticationManager
@@ -16,32 +18,45 @@ namespace Qurvey.api
 
         public enum AuthenticationState
         {
-            NONE, // Not Authenticated, no Refresh Token known
-            ACTIVE, // Not necessarily authenticated at the moment, but can re-authenticate by getting an access Token using the refresh token or holding valid token at the moment
-            WAITING // There is an ongoing Authentication process (e.g. a user needs to confirm authorization in the browser
+            NONE = 0, // Not Authenticated, no Refresh Token known
+            ACTIVE = 1, // Not necessarily authenticated at the moment, but can re-authenticate by getting an access Token using the refresh token or holding valid token at the moment
+            WAITING = 2 // There is an ongoing Authentication process (e.g. a user needs to confirm authorization in the browser
         }
 
-        private static AuthenticationState State = AuthenticationState.NONE;
+        //private static AuthenticationState State = AuthenticationState.NONE;
 
         [MethodImpl(MethodImplOptions.Synchronized)]
         public static AuthenticationState getState()
         {
-            return State;
+            // Store the State independent from App Lifecycle
+            if (Application.Current.Properties.ContainsKey("AuthState"))
+            {
+                return (AuthenticationState)Enum.Parse(typeof(AuthenticationState), (string)Application.Current.Properties["AuthState"]);
+                //return (AuthenticationState)Application.Current.Properties["AuthState"];
+            }
+            else
+            {
+                setState(AuthenticationState.NONE);
+                return AuthenticationState.NONE;
+            }
+            //return State;
         }
 
         [MethodImpl(MethodImplOptions.Synchronized)]
         public static void setState(AuthenticationState authState)
         {
-            State = authState;
+            Application.Current.Properties["AuthState"] = authState.ToString("G");
+            Application.Current.SavePropertiesAsync();
+            //State = authState;
         }
 
         /// <summary>
         /// Forces the Manager to refresh the State and tries to regenerate an accessToken if possible
         /// </summary>
-        [MethodImpl(MethodImplOptions.Synchronized)]
-        public static void CheckState()
+        //[MethodImpl(MethodImplOptions.Synchronized)]
+        public static async Task CheckStateAsync()
         {
-            if (State == AuthenticationState.WAITING)
+            if (getState() == AuthenticationState.WAITING)
             {
                 // Authentication Process ongoing - do nothing and wait
                 return;
@@ -58,7 +73,7 @@ namespace Qurvey.api
                 else 
                 {
                     // No Access Token, but refreshToken
-                    GenerateAccessTokenFromRefreshTokenAsync();
+                    await GenerateAccessTokenFromRefreshTokenAsync();
                     return;
                 }
             }
@@ -66,7 +81,7 @@ namespace Qurvey.api
             if (Config.getRefreshToken() == "")
             {
                 // No refreshtoken, but holding an Access Token - Check Token
-                CheckAccessTokenAsync();
+                await CheckAccessTokenAsync();
                 if (Config.getAccessToken() == "")
                 {
                     // Holding a valid AccesToken now
@@ -86,22 +101,46 @@ namespace Qurvey.api
         private static Mutex CheckAccessTokenMutex = new Mutex();
         /// <summary>
         /// Checks the AccessToken against the tokenInfo REST-Service.
-        /// If it fails, the accessToken is removed automatically
+        /// If it fails, the system tries to refresh using the authentication manager
+        /// If it still fails, accessToken is removed automatically
         /// </summary>
         //[MethodImpl(MethodImplOptions.Synchronized)]
-        private async static void CheckAccessTokenAsync()
+        public async static Task CheckAccessTokenAsync()
         {
             // use mutex for sync
             CheckAccessTokenMutex.WaitOne();
-            string call = "{ \"client_id:\" \""+Config.ClientID+"\" \"access_token\": \""+Config.getAccessToken()+"\" }";
+            //string call = "{ \"client_id:\" \""+Config.ClientID+"\" \"access_token\": \""+Config.getAccessToken()+"\" }";
 
-            var answer = await RESTCalls.RestCallAsync<OAuthTokenInfo>(call, Config.OAuthTokenInfoEndPoint, true);
-            
-            if (answer.state != "valid")
+            //var answer = await RESTCalls.RestCallAsync<OAuthTokenInfo>("", Config.OAuthTokenInfoEndPoint+"?accessToken="+Config.getAccessToken()+"&client_id="+Config.ClientID, true);
+            var answer = await RESTCalls.CheckValidTokenAsync();
+
+            if (!answer)
             {
-                // Invalid Token - delete it
-                Config.setAccessToken("");
+                // Try to refresh the token
+                await GenerateAccessTokenFromRefreshTokenAsync();
+                //call = "{ \"client_id:\" \"" + Config.ClientID + "\" \"access_token\": \"" + Config.getAccessToken() + "\" }";
+
+                answer = await RESTCalls.CheckValidTokenAsync();
+                if (!answer)
+                {
+                    // Invalid Token, no refreshToken success  - delete it
+                    Config.setAccessToken("");
+                }
             }
+
+            /*if (answer.state != "valid")
+            {
+                // Try to refresh the token
+                await GenerateAccessTokenFromRefreshTokenAsync();
+                //call = "{ \"client_id:\" \"" + Config.ClientID + "\" \"access_token\": \"" + Config.getAccessToken() + "\" }";
+
+                answer = await RESTCalls.RestCallAsync<OAuthTokenInfo>("", Config.OAuthTokenInfoEndPoint + "?accessToken=" + Config.getAccessToken() + "&client_id=" + Config.ClientID, true);
+                if (answer.state != "valid")
+                {
+                    // Invalid Token, no refreshToken success  - delete it
+                    Config.setAccessToken("");
+                }
+            }*/
             CheckAccessTokenMutex.ReleaseMutex();
         }
 
@@ -114,7 +153,7 @@ namespace Qurvey.api
         /// <summary>
         /// Starts the Autehntication Process
         /// </summary>
-        /// <returns>returns the verifaication URL for this app or an empty string on fails</returns>
+        /// <returns>returns the verification URL for this app or an empty string on fails</returns>
         //[MethodImpl(MethodImplOptions.Synchronized)]
         public async static Task<string> StartAuthenticationProcessAsync()
         {
@@ -126,6 +165,7 @@ namespace Qurvey.api
                 string url = answer.verification_url + "?q=verify&d=" + answer.user_code;
                 Config.setDeviceToken(answer.device_code);
                 setState(AuthenticationState.WAITING);
+                expireTimeWaitingProcess = answer.expires_in;
                 Thread t = new Thread(new ThreadStart(ExpireThread));
                 t.Start();
                 StartAuthMutex.ReleaseMutex();
@@ -149,7 +189,7 @@ namespace Qurvey.api
         {
             CheckAuthMutex.WaitOne();
             var answer = await TokenCallAsync();
-            if (answer.status.StartsWith("Fail:") || answer.status.StartsWith("Error:"))
+            if (answer.status.StartsWith("Fail:") || answer.status.StartsWith("error:"))
             {
                 // Not working!
                 return false;

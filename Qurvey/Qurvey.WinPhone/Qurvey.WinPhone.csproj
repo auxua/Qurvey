@@ -119,7 +119,7 @@
     <None Include="Properties\WMAppManifest.xml">
       <SubType>Designer</SubType>
     </None>
-    <None Include="l2plogo.png" />
+    <Content Include="l2plogo.png" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="list.png" />
@@ -191,6 +191,12 @@
       <HintPath>..\..\packages\Xamarin.Forms.1.4.2.6355\lib\WP80\Xamarin.Forms.Xaml.dll</HintPath>
       <Private>True</Private>
     </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\Qurvey.Shared\Qurvey.Shared2.csproj">
+      <Project>{33c5de4a-702f-4ed9-9ecb-df10510ae425}</Project>
+      <Name>Qurvey.Shared2</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="..\Qurvey\Qurvey.projitems" Label="Shared" Condition="Exists('..\Qurvey\Qurvey.projitems')" />
   <Import Project="$(MSBuildExtensionsPath)\Microsoft\$(TargetFrameworkIdentifier)\$(TargetFrameworkVersion)\Microsoft.$(TargetFrameworkIdentifier).$(TargetFrameworkVersion).Overrides.targets" />
