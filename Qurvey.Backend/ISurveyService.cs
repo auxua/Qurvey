@@ -41,6 +41,6 @@ namespace Qurvey.Backend
 
         [OperationContract]
         [WebInvoke(Method = "POST", ResponseFormat = WebMessageFormat.Json, RequestFormat = WebMessageFormat.Json, BodyStyle = WebMessageBodyStyle.Bare, UriTemplate = "getvoteresult")]
-        Result[] GetVoteResult(Survey survey);
+        GetVoteResultResponse GetVoteResult(Survey survey);
     }
 }
