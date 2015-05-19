@@ -91,7 +91,7 @@ namespace Qurvey.pages
             */
 
             // Get results
-            var results = api.Backend.GetResultsAsync(survey).Result;
+            var results = api.Backend.GetVoteResultAsync(survey).Result;
 
             root = new TableRoot();
 
@@ -141,7 +141,7 @@ namespace Qurvey.pages
         async Task RefreshVotesAsync()
         {
             // Get results
-            var results = await api.Backend.GetResultsAsync(this.survey);
+            var results = await api.Backend.GetVoteResultAsync(this.survey);
 
             // Get the sum of all votes
             int sum = 0;

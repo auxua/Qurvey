@@ -110,49 +110,73 @@ namespace Qurvey.Backend
 
         public string SaveVote(Vote vote)
         {
-            if (vote == null)
+            try
             {
-                throw new ArgumentNullException();
+                if (vote == null)
+                {
+                    throw new ArgumentNullException();
+                }
+                using (var db = new SurveyContext())
+                {
+                    if (vote.Id == 0)
+                    {
+                        db.Votes.Add(vote);
+                    }
+                    else
+                    {
+                        db.Votes.Attach(vote);
+                    }
+                    db.SaveChanges();
+                }
+                return "0";
             }
-            using (var db = new SurveyContext())
+            catch (Exception e)
             {
-                if (vote.Id == 0)
-                {
-                    db.Votes.Add(vote);
-                }
-                else
-                {
-                    db.Votes.Attach(vote);
-                }
-                db.SaveChanges();
+                return e.Message;
             }
-            return "0";
         }
 
         public string DeleteVote(Vote vote)
         {
-            if (vote == null)
+            try
             {
-                throw new ArgumentNullException();
+                if (vote == null)
+                {
+                    throw new ArgumentNullException();
+                }
+                using (var db = new SurveyContext())
+                {
+                    db.Votes.Remove(vote);
+                    db.SaveChanges();
+                }
+                return "0";
             }
-            using (var db = new SurveyContext())
+            catch (Exception e)
             {
-                db.Votes.Remove(vote);
-                db.SaveChanges();
+                return e.Message;
             }
-            return "0";
         }
 
-        public Result[] GetVoteResult(Survey survey)
+        public GetVoteResultResponse GetVoteResult(Survey survey)
         {
-            if (survey == null)
+            Result[] res = null;
+            string error = null;
+            try
             {
-                throw new ArgumentNullException();
+                if (survey == null)
+                {
+                    throw new ArgumentNullException();
+                }
+                using (var db = new SurveyContext())
+                {
+                    res = db.getResultsFor(survey);
+                }
             }
-            using (var db = new SurveyContext())
+            catch (Exception e)
             {
-                return db.getResultsFor(survey);
+                error = e.Message;
             }
+            return new GetVoteResultResponse(res, error);
         }
     }
 }
