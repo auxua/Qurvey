@@ -1,6 +1,8 @@
 ﻿using Qurvey.Shared.Models;
 using System;
+using System.Collections.Generic;
 using System.Linq;
+using System.Web.Script.Serialization;
 
 namespace Qurvey.Backend
 {
@@ -11,49 +13,99 @@ namespace Qurvey.Backend
             return string.Format("You entered: {0}", value);
         }
 
+        public string PostData(string value)
+        {
+            return string.Format("You entered: {0}", value);
+        }
+
         public string SaveSurvey(Survey survey)
         {
-            if (survey == null)
+            try
             {
-                throw new ArgumentNullException();
+                if (survey == null)
+                {
+                    throw new ArgumentNullException();
+                }
+                using (var db = new SurveyContext())
+                {
+                    if (survey.Id == 0)
+                    {
+                        db.Surveys.Add(survey);
+                    }
+                    else
+                    {
+                        db.Surveys.Attach(survey);
+                    }
+                    db.SaveChanges();
+                }
+                return "0";
             }
-            using (var db = new SurveyContext())
+            catch (Exception e)
             {
-                if (survey.Id == 0)
-                {
-                    db.Surveys.Add(survey);
-                }
-                else
-                {
-                    db.Surveys.Attach(survey);
-                }
-                db.SaveChanges();
+                return e.Message;
             }
-            return "0";
         }
 
         public string DeleteSurvey(Survey survey)
         {
-            if (survey == null)
+            try
             {
-                throw new ArgumentNullException();
+                if (survey == null)
+                {
+                    throw new ArgumentNullException();
+                }
+                using (var db = new SurveyContext())
+                {
+                    db.Surveys.Attach(survey);
+                    db.Surveys.Remove(survey);
+                    db.SaveChanges();
+                }
+                return "0";
             }
-            using (var db = new SurveyContext())
+            catch (Exception e)
             {
-                db.Surveys.Attach(survey);
-                db.Surveys.Remove(survey);
-                db.SaveChanges();
+                return e.Message;
             }
-            return "0";
         }
 
-        public Survey[] GetSurveys(string course)
+        //public GetSurveysResponse GetSurveys(string course)
+        //{
+        //    try
+        //    {
+        //        Survey[] res = null;
+        //        using (var db = new SurveyContext())
+        //        {
+        //            db.Configuration.LazyLoadingEnabled = false;
+        //            res = db.getSurveysFor(course);
+        //           //return new GetSurveysResponse(new Survey[] { new Survey("Test") }, null);
+        //        }
+        //        string a = new JavaScriptSerializer().Serialize(res[0]);
+        //        res[0].Answers = new List<Answer>();
+        //        return new GetSurveysResponse(res, null);
+        //    }
+        //    catch (Exception e)
+        //    {
+        //        return new GetSurveysResponse(null, e.Message);
+        //    }
+        //}
+
+        public string GetSurveys(string course)
         {
-            using (var db = new SurveyContext())
+            Survey[] res = null;
+            string error = null;
+            try
             {
-                var query = db.Surveys.Where(s => s.Course == course).OrderByDescending(s => s.Modified);
-                return query.ToArray<Survey>();
+                using (var db = new SurveyContext())
+                {
+                    db.Configuration.LazyLoadingEnabled = false;
+                    res = db.getSurveysFor(course);
+                }
             }
+            catch (Exception e)
+            {
+                error = e.Message;
+            }
+            return new JavaScriptSerializer().Serialize(new GetSurveysResponse(res, error));
         }
 
         public string SaveVote(Vote vote)
