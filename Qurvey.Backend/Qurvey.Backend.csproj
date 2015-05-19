@@ -69,56 +69,14 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="SurveyService.svc" />
-    <Content Include="Web.config" />
+    <Content Include="Web.config">
+      <SubType>Designer</SubType>
+    </Content>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Migrations\201504301530354_InitialCreate.cs" />
-    <Compile Include="Migrations\201504301530354_InitialCreate.Designer.cs">
-      <DependentUpon>201504301530354_InitialCreate.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201505130741409_Version2.cs" />
-    <Compile Include="Migrations\201505130741409_Version2.Designer.cs">
-      <DependentUpon>201505130741409_Version2.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201505130752192_AnswerTest.cs" />
-    <Compile Include="Migrations\201505130752192_AnswerTest.Designer.cs">
-      <DependentUpon>201505130752192_AnswerTest.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201505130800158_AnswersAsCollection.cs" />
-    <Compile Include="Migrations\201505130800158_AnswersAsCollection.Designer.cs">
-      <DependentUpon>201505130800158_AnswersAsCollection.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201505131038341_AddAnswerPosition.cs" />
-    <Compile Include="Migrations\201505131038341_AddAnswerPosition.Designer.cs">
-      <DependentUpon>201505131038341_AddAnswerPosition.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201505131051418_AddSurveyAsKeyForVote.cs" />
-    <Compile Include="Migrations\201505131051418_AddSurveyAsKeyForVote.Designer.cs">
-      <DependentUpon>201505131051418_AddSurveyAsKeyForVote.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201505131059345_AddSurveyAsKeyForVote2.cs" />
-    <Compile Include="Migrations\201505131059345_AddSurveyAsKeyForVote2.Designer.cs">
-      <DependentUpon>201505131059345_AddSurveyAsKeyForVote2.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201505131106485_AddSurveyAsKeyForVote3.cs" />
-    <Compile Include="Migrations\201505131106485_AddSurveyAsKeyForVote3.Designer.cs">
-      <DependentUpon>201505131106485_AddSurveyAsKeyForVote3.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201505131107458_AddSurveyAsKeyForVote4.cs" />
-    <Compile Include="Migrations\201505131107458_AddSurveyAsKeyForVote4.Designer.cs">
-      <DependentUpon>201505131107458_AddSurveyAsKeyForVote4.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201505131108574_AddSurveyAsKeyForVote5.cs" />
-    <Compile Include="Migrations\201505131108574_AddSurveyAsKeyForVote5.Designer.cs">
-      <DependentUpon>201505131108574_AddSurveyAsKeyForVote5.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201505131651140_MoreSurveyFields.cs" />
-    <Compile Include="Migrations\201505131651140_MoreSurveyFields.Designer.cs">
-      <DependentUpon>201505131651140_MoreSurveyFields.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201505131653029_MoreSurveyFields2.cs" />
-    <Compile Include="Migrations\201505131653029_MoreSurveyFields2.Designer.cs">
-      <DependentUpon>201505131653029_MoreSurveyFields2.cs</DependentUpon>
+    <Compile Include="Migrations\201505182016488_InitialCreate.cs" />
+    <Compile Include="Migrations\201505182016488_InitialCreate.Designer.cs">
+      <DependentUpon>201505182016488_InitialCreate.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="SurveyService.svc.cs">
@@ -133,6 +91,7 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="packages.config" />
+    <None Include="Properties\PublishProfiles\qurvey12.pubxml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
@@ -141,48 +100,15 @@
     </None>
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Migrations\201504301530354_InitialCreate.resx">
-      <DependentUpon>201504301530354_InitialCreate.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201505130741409_Version2.resx">
-      <DependentUpon>201505130741409_Version2.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201505130752192_AnswerTest.resx">
-      <DependentUpon>201505130752192_AnswerTest.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201505130800158_AnswersAsCollection.resx">
-      <DependentUpon>201505130800158_AnswersAsCollection.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201505131038341_AddAnswerPosition.resx">
-      <DependentUpon>201505131038341_AddAnswerPosition.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201505131051418_AddSurveyAsKeyForVote.resx">
-      <DependentUpon>201505131051418_AddSurveyAsKeyForVote.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201505131059345_AddSurveyAsKeyForVote2.resx">
-      <DependentUpon>201505131059345_AddSurveyAsKeyForVote2.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201505131106485_AddSurveyAsKeyForVote3.resx">
-      <DependentUpon>201505131106485_AddSurveyAsKeyForVote3.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201505131107458_AddSurveyAsKeyForVote4.resx">
-      <DependentUpon>201505131107458_AddSurveyAsKeyForVote4.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201505131108574_AddSurveyAsKeyForVote5.resx">
-      <DependentUpon>201505131108574_AddSurveyAsKeyForVote5.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201505131651140_MoreSurveyFields.resx">
-      <DependentUpon>201505131651140_MoreSurveyFields.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201505131653029_MoreSurveyFields2.resx">
-      <DependentUpon>201505131653029_MoreSurveyFields2.cs</DependentUpon>
-    </EmbeddedResource>
-  </ItemGroup>
-  <ItemGroup>
     <ProjectReference Include="..\Qurvey.Shared\Qurvey.Shared.csproj">
       <Project>{773b082b-63d4-433f-ba0e-1781c5f4788a}</Project>
       <Name>Qurvey.Shared</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Migrations\201505182016488_InitialCreate.resx">
+      <DependentUpon>201505182016488_InitialCreate.cs</DependentUpon>
+    </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

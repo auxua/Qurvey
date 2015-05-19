@@ -14,13 +14,9 @@ namespace Qurvey.Shared.Models
         public int Id { get; set; }
 
         [DataMember]
-        //[Key]
-        //[Column(Order=1)]
         public string UserId { get; set; }
 
         [DataMember]
-        //[Key]
-        //[Column(Order = 2)]
         public Survey Survey { get; set; }
 
         [DataMember]

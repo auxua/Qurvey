@@ -12,6 +12,10 @@ namespace Qurvey.Backend
         string GetData(string value);
 
         [OperationContract]
+        [WebInvoke(Method = "POST", ResponseFormat = WebMessageFormat.Json, RequestFormat = WebMessageFormat.Json, BodyStyle = WebMessageBodyStyle.Bare, UriTemplate = "postdata")]
+        string PostData(string value);
+
+        [OperationContract]
         [WebInvoke(Method="POST", ResponseFormat=WebMessageFormat.Json, RequestFormat=WebMessageFormat.Json, BodyStyle=WebMessageBodyStyle.Bare, UriTemplate="savesurvey")]
         string SaveSurvey(Survey survey);
 
@@ -21,7 +25,11 @@ namespace Qurvey.Backend
 
         [OperationContract]
         [WebInvoke(Method = "POST", ResponseFormat = WebMessageFormat.Json, RequestFormat = WebMessageFormat.Json, BodyStyle = WebMessageBodyStyle.Bare, UriTemplate = "getsurveys")]
-        Survey[] GetSurveys(string course);
+        string GetSurveys(string course);
+
+        //[OperationContract]
+        //[WebInvoke(Method = "POST", ResponseFormat = WebMessageFormat.Json, RequestFormat = WebMessageFormat.Json, BodyStyle = WebMessageBodyStyle.Bare, UriTemplate = "getsurveys2")]
+        //string GetSurveys2(string course);
 
         [OperationContract]
         [WebInvoke(Method = "POST", ResponseFormat = WebMessageFormat.Json, RequestFormat = WebMessageFormat.Json, BodyStyle = WebMessageBodyStyle.Bare, UriTemplate = "savevote")]

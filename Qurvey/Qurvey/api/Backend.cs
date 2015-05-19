@@ -10,7 +10,7 @@ namespace Qurvey.api
 		private async static Task<T1> CallBackendAsync<T1> (string endpoint, object input) {
 			string inp = JsonConvert.SerializeObject (input);
 
-			endpoint = "http://qurvey.raederscheidt.de/SurveyService.svc/" + endpoint;
+			endpoint = "http://qurvey12.azurewebsites.net/SurveyService.svc/" + endpoint;
 			Task<T1> res = RESTCalls.RestCallAsync<T1> (inp, endpoint, true); 
 			return await res;
 		}

@@ -41,7 +41,7 @@ namespace Qurvey.Shared.Models
             return this.Id == other.Id;
         }
 
-        protected Survey()
+        public Survey()
         {
 
         }

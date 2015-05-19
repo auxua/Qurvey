@@ -22,6 +22,12 @@ namespace Qurvey.Backend.Test
                 db.SaveChanges();
             }
 
+            using (var db = new SurveyContext())
+            {
+                Survey[] res = db.getSurveysFor("TEST");
+                Assert.IsTrue(res.Length == 1);
+            }
+
             Survey fromDb;
             using (var db = new SurveyContext())
             {
@@ -50,6 +56,7 @@ namespace Qurvey.Backend.Test
         private Survey CreateTestSurvey()
         {
             Survey survey = new Survey(Title);
+            survey.Course = "TEST";
             survey.Answers =
                 new List<Answer>();
             survey.Answers.Add(new Answer("Answer 1", 0));
