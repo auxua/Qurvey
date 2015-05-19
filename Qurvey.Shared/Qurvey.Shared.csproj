@@ -48,6 +48,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Models\Answer.cs" />
+    <Compile Include="Models\GetVoteResultResponse.cs" />
     <Compile Include="Models\GetSurveysResponse.cs" />
     <Compile Include="Models\Result.cs" />
     <Compile Include="Models\Survey.cs" />
