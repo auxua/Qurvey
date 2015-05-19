@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Threading;
+using System.Threading.Tasks;
 using Xamarin.Forms;
 
 namespace Qurvey
@@ -13,7 +15,8 @@ namespace Qurvey
 			// The root page of your application
             MainPage = new RootPage();
 
-            api.AuthenticationManager.CheckStateAsync();
+            Task.Run(() => api.AuthenticationManager.CheckStateAsync()).Wait();
+            
 
             //var re = new api.RESTCalls();
             //var ans = re.RestCall<api.L2PPingData>("", api.Config.L2PEndPoint + "Ping?accessToken=foo&p=pp",false);

@@ -17,7 +17,6 @@ namespace Qurvey.pages
         private ObservableCollection<Survey> Surveys;
         //private List<Survey> Surveys;
 
-        private ActivityIndicator activityIndicator;
 
         private ListView SurveyList;
 
@@ -96,7 +95,18 @@ namespace Qurvey.pages
                 TextColor = Color.White,
                 BackgroundColor = Color.Red
             };
-            panicButton.Clicked += panicButton_Clicked;
+            
+            // For students, show panic button
+            // For admins, show Create button
+            if (App.isAdmin())
+            {
+                panicButton.Text = "Create new Survey";
+                panicButton.Clicked += newSurveyButton_Clicked;
+            }
+            else
+            {
+                panicButton.Clicked += panicButton_Clicked;
+            }
 
 
             /*activityIndicator = new ActivityIndicator();
@@ -118,6 +128,7 @@ namespace Qurvey.pages
                 VerticalOptions = LayoutOptions.Fill,
                 Children = { titleLabel, RefreshButton, descriptionLabel, /*activityIndicator,*/ SurveyList, panicButton }
             };
+            
 
             ContentPage content = new ContentPage();
             content.Content = stack;
@@ -129,6 +140,18 @@ namespace Qurvey.pages
             IsBusy = false;
 		}
 
+        /// <summary>
+        /// On Button press, go to a page for creating surveys
+        /// </summary>
+        void newSurveyButton_Clicked(object sender, EventArgs e)
+        {
+            NewSurveyPage surveyPage = new NewSurveyPage(this.cid);
+            this.PushAsync(surveyPage);
+        }
+
+        /// <summary>
+        /// Panic Button pressed - send the panic to the server!
+        /// </summary>
         async void panicButton_Clicked(object sender, EventArgs e)
         {
             try
@@ -141,11 +164,23 @@ namespace Qurvey.pages
             }
         }
 
+        /// <summary>
+        /// User wants to see a survey
+        /// </summary>
         void SurveyList_ItemTapped(object sender, ItemTappedEventArgs e)
         {
             // Use Tapped instead of selected to allow the re-selection of the item without crashing Android
             var item = (Survey)e.Item;
-            SurveyPage sp = new SurveyPage(item);
+            Page sp;
+            if (App.isAdmin())
+            {
+                sp = new SurveyResultPage(item);
+            }
+            else
+            {
+                sp = new SurveyPage(item);
+            }
+            
             PushAsync(sp);
         }
 
@@ -167,6 +202,9 @@ namespace Qurvey.pages
             PushAsync(sp);
         }*/
 
+        /// <summary>
+        /// Get the currently active surveys from the server
+        /// </summary>
         private async void RefreshButton_Clicked(object sender, EventArgs e)
         {
             this.IsBusy = true;

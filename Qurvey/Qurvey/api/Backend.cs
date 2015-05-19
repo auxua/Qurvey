@@ -21,6 +21,7 @@ namespace Qurvey.api
 			return await res;
 		}
 
+        // what string represents what semantics? (fail/error/ok...)
 		public async static Task<string> SaveSurveyAsync(Survey survey) {
 			return await CallBackendAsync<string> ("savesurvey", survey);
 		}
@@ -67,13 +68,47 @@ namespace Qurvey.api
         public async static Task<int> GetPanicsAync(string course)
         {
             // TODO:
+#if FAKE
+            var ran = new System.Random();
+            if (ran.Next(100) > 60)
+            {
+                return 7;
+            }
+            else
+            {
+                return 0;
+            }
+#else
             return 0;
+#endif
         }
 
         // Idea: Save the Answer the user selected
-        public async static Task SaveAnswer(Survey survey, Answer answer)
+        public async static Task SaveAnswerAsync(Survey survey, Answer answer)
         {
             // TODO:
+        }
+
+        // Idea: Get a list of the result of the survey
+        public async static Task<List<Result>> GetResultsAsync(Survey survey)
+        {
+            // TODO:
+#if FAKE
+            Result r1 = new Result();
+            r1.Answer = new Answer("I like it");
+            r1.Count = 42;
+
+            Result r2 = new Result();
+            r2.Answer = new Answer("I don't like that");
+            r2.Count = 15;
+
+            var list = new List<Result>();
+            list.Add(r1);
+            list.Add(r2);
+            return list;
+#else
+            return new List<Result>();
+#endif
         }
 	}
 }

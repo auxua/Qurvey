@@ -165,6 +165,7 @@ namespace Qurvey.api
                 string url = answer.verification_url + "?q=verify&d=" + answer.user_code;
                 Config.setDeviceToken(answer.device_code);
                 setState(AuthenticationState.WAITING);
+                expireTimeWaitingProcess = answer.expires_in;
                 Thread t = new Thread(new ThreadStart(ExpireThread));
                 t.Start();
                 StartAuthMutex.ReleaseMutex();

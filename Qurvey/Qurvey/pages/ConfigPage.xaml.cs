@@ -52,7 +52,7 @@ namespace Qurvey.pages
             Title = "Settings";
         }
 
-        private async void RefreshNavbar(bool useAll)
+        private async Task RefreshNavbar(bool useAll)
         {
             IsBusy = true;
             
