@@ -1,11 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿using Qurvey.Shared.Models;
 using System.Runtime.Serialization;
-using System.Text;
-using System.Threading.Tasks;
 
-namespace Qurvey.Shared.Models
+namespace Qurvey.Shared.Response
 {
     [DataContract]
     public class GetVoteResultResponse

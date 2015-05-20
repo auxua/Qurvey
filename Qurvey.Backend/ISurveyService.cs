@@ -1,4 +1,7 @@
 ﻿using Qurvey.Shared.Models;
+using Qurvey.Shared.Request;
+using Qurvey.Shared.Response;
+using System;
 using System.ServiceModel;
 using System.ServiceModel.Web;
 
@@ -27,10 +30,6 @@ namespace Qurvey.Backend
         [WebInvoke(Method = "POST", ResponseFormat = WebMessageFormat.Json, RequestFormat = WebMessageFormat.Json, BodyStyle = WebMessageBodyStyle.Bare, UriTemplate = "getsurveys")]
         string GetSurveys(string course);
 
-        //[OperationContract]
-        //[WebInvoke(Method = "POST", ResponseFormat = WebMessageFormat.Json, RequestFormat = WebMessageFormat.Json, BodyStyle = WebMessageBodyStyle.Bare, UriTemplate = "getsurveys2")]
-        //string GetSurveys2(string course);
-
         [OperationContract]
         [WebInvoke(Method = "POST", ResponseFormat = WebMessageFormat.Json, RequestFormat = WebMessageFormat.Json, BodyStyle = WebMessageBodyStyle.Bare, UriTemplate = "savevote")]
         string SaveVote(Vote vote);
@@ -42,5 +41,21 @@ namespace Qurvey.Backend
         [OperationContract]
         [WebInvoke(Method = "POST", ResponseFormat = WebMessageFormat.Json, RequestFormat = WebMessageFormat.Json, BodyStyle = WebMessageBodyStyle.Bare, UriTemplate = "getvoteresult")]
         GetVoteResultResponse GetVoteResult(Survey survey);
+
+        [OperationContract]
+        [WebInvoke(Method = "POST", ResponseFormat = WebMessageFormat.Json, RequestFormat = WebMessageFormat.Json, BodyStyle = WebMessageBodyStyle.Bare, UriTemplate = "getvoteforuser")]
+        VoteResponse GetVoteForUser(GetVoteForUserRequest req);
+
+        [OperationContract]
+        [WebInvoke(Method = "POST", ResponseFormat = WebMessageFormat.Json, RequestFormat = WebMessageFormat.Json, BodyStyle = WebMessageBodyStyle.Bare, UriTemplate = "savepanic")]
+        string SavePanic(Panic panic);
+
+        [OperationContract]
+        [WebInvoke(Method = "POST", ResponseFormat = WebMessageFormat.Json, RequestFormat = WebMessageFormat.Json, BodyStyle = WebMessageBodyStyle.Bare, UriTemplate = "countpanics")]
+        IntResponse CountPanics(CountPanicsRequest req);
+
+        [OperationContract]
+        [WebGet(UriTemplate = "createnewuser", ResponseFormat = WebMessageFormat.Json)]
+        UserResponse CreateNewUser();
     }
 }

@@ -48,17 +48,26 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Models\Answer.cs" />
-    <Compile Include="Models\GetVoteResultResponse.cs" />
-    <Compile Include="Models\GetSurveysResponse.cs" />
+    <Compile Include="Models\LogEntry.cs" />
+    <Compile Include="Request\CountPanicsRequest.cs" />
+    <Compile Include="Request\GetVoteForUserRequest.cs" />
+    <Compile Include="Response\GetVoteResultResponse.cs" />
+    <Compile Include="Response\GetSurveysResponse.cs" />
+    <Compile Include="Models\Panic.cs" />
     <Compile Include="Models\Result.cs" />
     <Compile Include="Models\Survey.cs" />
+    <Compile Include="Models\User.cs" />
     <Compile Include="Models\Vote.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Response\IntResponse.cs" />
+    <Compile Include="Response\UserResponse.cs" />
+    <Compile Include="Response\VoteResponse.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
     <None Include="packages.config" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

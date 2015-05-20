@@ -110,7 +110,8 @@ namespace Qurvey.pages
             // sure! Let's tell the backend
             try
             {
-                await api.Backend.SaveAnswerAsync(survey, selected);
+				Vote vote = new Vote(null, survey, selected); // TODO include User
+                await api.Backend.SaveVoteAsync(vote);
                 ListView listView = (ListView)sender;
                 done = true;
             }

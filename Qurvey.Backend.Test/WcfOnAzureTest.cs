@@ -5,6 +5,7 @@ using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Threading.Tasks;
 using System.Web.Script.Serialization;
+using Qurvey.Shared.Response;
 
 namespace Qurvey.Backend.Test
 {

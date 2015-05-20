@@ -78,6 +78,10 @@
     <Compile Include="Migrations\201505182016488_InitialCreate.Designer.cs">
       <DependentUpon>201505182016488_InitialCreate.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201505201423477_NewModels1.cs" />
+    <Compile Include="Migrations\201505201423477_NewModels1.Designer.cs">
+      <DependentUpon>201505201423477_NewModels1.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="SurveyService.svc.cs">
       <DependentUpon>SurveyService.svc</DependentUpon>
@@ -108,6 +112,9 @@
   <ItemGroup>
     <EmbeddedResource Include="Migrations\201505182016488_InitialCreate.resx">
       <DependentUpon>201505182016488_InitialCreate.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201505201423477_NewModels1.resx">
+      <DependentUpon>201505201423477_NewModels1.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

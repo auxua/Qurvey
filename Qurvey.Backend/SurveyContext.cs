@@ -1,7 +1,6 @@
 ﻿using Qurvey.Shared.Models;
-using System.Collections.Generic;
+using System;
 using System.Data.Entity;
-using System.Data.Entity.Infrastructure;
 using System.Linq;
 
 namespace Qurvey.Backend
@@ -10,25 +9,129 @@ namespace Qurvey.Backend
     {
         public SurveyContext() : base("QurveyContext") { }
 
-        public DbSet<Survey> Surveys { get; set; }
+        private DbSet<Survey> Surveys { get; set; }
 
-        public DbSet<Vote> Votes { get; set; }
+        private DbSet<Vote> Votes { get; set; }
+
+        private DbSet<Panic> Panics { get; set; }
+
+        private DbSet<LogEntry> Logs { get; set; }
+
+        private DbSet<User> Users { get; set; }
+
+        #region Survey
+        public Survey[] getSurveysFor(string course)
+        {
+            var query = this.Surveys.Where(s => s.Course == course).OrderByDescending(s => s.Modified);
+            return query.ToArray<Survey>();
+        }
+
+        public void SaveSurvey(Survey survey)
+        {
+            if (survey.Id == 0)
+            {
+                this.Surveys.Add(survey);
+            }
+            else
+            {
+                this.Surveys.Attach(survey);
+            }
+            this.SaveChanges();
+        }
+
+        public void DeleteSurvey(Survey survey)
+        {
+            this.Surveys.Attach(survey);
+            this.Surveys.Remove(survey);
+            this.SaveChanges();
+        }
+        #endregion Survey
+
+        #region Vote
+        public void SaveVote(Vote vote)
+        {
+            if (vote.Id == 0)
+            {
+                this.Votes.Add(vote);
+            }
+            else
+            {
+                this.Votes.Attach(vote);
+            }
+            this.SaveChanges();
+        }
+
+        public void DeleteVote(Vote vote)
+        {
+            this.Votes.Attach(vote);
+            this.Votes.Remove(vote);
+            this.SaveChanges();
+        }
+
+        public Vote GetVoteForUser(Survey survey, User user)
+        {
+            var query = this.Votes.Where(v => v.Survey.Id == survey.Id && v.User.Id == user.Id);
+            if (query.Count() > 1)
+            {
+                this.Log(string.Format("User {0} has voted multiple times for survey {1}", user.Id, survey.Id));
+            }
+            return query.FirstOrDefault<Vote>();
+        }
+        #endregion Vote
+
+        #region Panic
+        public void SavePanic(Panic panic)
+        {
+            if (panic.Id == 0)
+            {
+                this.Panics.Add(panic);
+            }
+            else
+            {
+                this.Panics.Attach(panic);
+            }
+            this.SaveChanges();
+        }
+
+        public void DeletePanic(Panic panic)
+        {
+            this.Panics.Attach(panic);
+            this.Panics.Remove(panic);
+            this.SaveChanges();
+        }
+
+        public int CountPanics(string course, DateTime since)
+        {
+            var query = this.Panics.Where(p => p.Course == course && p.Created > since);
+            return query.Count();
+        }
+        #endregion Panic
 
         public Result[] getResultsFor(Survey survey)
         {
             var query = this.Votes.Where(v => v.Survey.Id == survey.Id)
-                   .GroupBy(v => v.Answer, v => v.UserId, (answer, users) => new Result() { Answer = answer, Count = users.Count() })
+                   .GroupBy(v => v.Answer, v => v.User, (answer, users) => new Result() { Answer = answer, Count = users.Count() })
                    .OrderBy(r => r.Answer.Position);
             return query.ToArray<Result>();
         }
 
-        public Survey[] getSurveysFor(string course)
+        public void Log(string text)
         {
-            var query = this.Surveys.Where(s => s.Course == course).OrderByDescending(s => s.Modified);
-            //Survey s2 = this.Surveys.First();
-            //((IObjectContextAdapter)this).ObjectContext.Detach(s2);
-            //return new Survey[] {s2  };
-            return query.ToArray<Survey>();
+            this.Logs.Add(new LogEntry(text));
+            this.SaveChangesAsync();
+        }
+
+        public void SaveUser(User user)
+        {
+            if (user.Id == 0)
+            {
+                this.Users.Add(user);
+            }
+            else
+            {
+                this.Users.Attach(user);
+            }
+            this.SaveChanges();
         }
     }
 }

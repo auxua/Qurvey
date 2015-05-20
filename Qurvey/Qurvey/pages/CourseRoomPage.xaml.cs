@@ -156,7 +156,8 @@ namespace Qurvey.pages
         {
             try
             {
-                await api.Backend.SendPanicAsync(cid);
+				Panic panic = new Panic(cid, null); // TODO include User
+				await api.Backend.SavePanicAsync(panic);
             }
             catch (Exception ex)
             {
