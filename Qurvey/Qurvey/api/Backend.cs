@@ -3,11 +3,11 @@
 
 using System;
 using Qurvey.Shared.Models;
+using Qurvey.Shared.Response;
 using System.Threading.Tasks;
 using Newtonsoft.Json;
 using System.Collections.Generic;
-
-
+using Qurvey.Shared.Request;
 
 namespace Qurvey.api
 {
@@ -20,16 +20,40 @@ namespace Qurvey.api
 		/// Calls the backend async.
 		/// </summary>
 		/// <returns>The response</returns>
+		/// <param name="post">True = use POST; False = use GET</param>
+		/// <param name="endpoint">The endpoint</param>
+		/// <param name="input">The request</param>
+		/// <typeparam name="T1">The type of the response</typeparam>
+		private async static Task<T1> CallBackendAsync<T1> (bool post, string endpoint, object input)
+		{
+			string inp = JsonConvert.SerializeObject (input);
+
+			endpoint = "http://qurvey12.azurewebsites.net/SurveyService.svc/" + endpoint;
+			Task<T1> res = RESTCalls.RestCallAsync<T1> (inp, endpoint, post); 
+			return await res;
+		}
+
+		/// <summary>
+		/// Calls the backend async using POST.
+		/// </summary>
+		/// <returns>The response</returns>
 		/// <param name="endpoint">The endpoint</param>
 		/// <param name="input">The request</param>
 		/// <typeparam name="T1">The type of the response</typeparam>
 		private async static Task<T1> CallBackendAsync<T1> (string endpoint, object input) {
-			string inp = JsonConvert.SerializeObject (input);
-
-			endpoint = "http://qurvey12.azurewebsites.net/SurveyService.svc/" + endpoint;
-			Task<T1> res = RESTCalls.RestCallAsync<T1> (inp, endpoint, true); 
-			return await res;
+			return await CallBackendAsync<T1> (true, endpoint, input);
 		}
+
+		/// <summary>
+		/// Calls the backend async using GET.
+		/// </summary>
+		/// <returns>The response</returns>
+		/// <param name="endpoint">The endpoint</param>
+		/// <typeparam name="T1">The type of the response</typeparam>
+		private async static Task<T1> CallBackendAsync<T1> (string endpoint) {
+			return await CallBackendAsync<T1> (false, endpoint, null);
+		}
+
 
 		/// <summary>
 		/// Calls the backend async without expecting a response
@@ -37,7 +61,8 @@ namespace Qurvey.api
 		/// <returns>The backend void async.</returns>
 		/// <param name="endpoint">The endpoint</param>
 		/// <param name="input">The request</param>
-		private async static Task CallBackendVoidAsync (string endpoint, object input) {
+		private async static Task CallBackendVoidAsync (string endpoint, object input)
+		{
 			string res = await CallBackendAsync<string> (endpoint, input);
 			if (res != "0") {
 				throw new Exception (res);
@@ -48,16 +73,18 @@ namespace Qurvey.api
 		/// Saves a survey on the backend
 		/// </summary>
 		/// <param name="survey">The survey</param>
-		public async static Task SaveSurveyAsync(Survey survey) {
-			await CallBackendVoidAsync("savesurvey", survey);
+		public async static Task SaveSurveyAsync (Survey survey)
+		{
+			await CallBackendVoidAsync ("savesurvey", survey);
 		}
 
 		/// <summary>
 		/// Delete a survey on the backend
 		/// </summary>
 		/// <param name="survey">The survey</param>
-		public async static Task DeleteSurveyAsync(Survey survey) {
-			await CallBackendVoidAsync("deletesurvey", survey);
+		public async static Task DeleteSurveyAsync (Survey survey)
+		{
+			await CallBackendVoidAsync ("deletesurvey", survey);
 		}
 
 		/// <summary>
@@ -65,7 +92,8 @@ namespace Qurvey.api
 		/// </summary>
 		/// <returns>The surveys</returns>
 		/// <param name="course">Course.</param>
-		public async static Task<Survey[]> GetSurveysAsync(string course) {
+		public async static Task<Survey[]> GetSurveysAsync (string course)
+		{
 #if FAKE
             Survey s1 = new Survey("Isn't it a great app?");
             s1.Created = DateTime.Now;
@@ -90,8 +118,8 @@ namespace Qurvey.api
 			return surveys;
 #else
 			GetSurveysResponse res = await CallBackendAsync<GetSurveysResponse> ("getsurveys", course);
-			if(!string.IsNullOrEmpty(res.ExceptionMessage)) {
-				throw new Exception(res.ExceptionMessage);
+			if (!string.IsNullOrEmpty (res.ExceptionMessage)) {
+				throw new Exception (res.ExceptionMessage);
 			}
 			return res.Surveys;
 #endif
@@ -101,15 +129,17 @@ namespace Qurvey.api
 		/// Saves a vote on the backend in Azure
 		/// </summary>
 		/// <param name="vote">The vote</param>
-		public async static Task SaveVoteAsync(Vote vote) {
-			 await CallBackendVoidAsync("savevote", vote);
+		public async static Task SaveVoteAsync (Vote vote)
+		{
+			await CallBackendVoidAsync ("savevote", vote);
 		}
 
 		/// <summary>
 		/// Deletes a vote from the backend in Azure
 		/// </summary>
 		/// <param name="vote">The vote</param>
-		public async static Task DeleteVoteAsync(Vote vote) {
+		public async static Task DeleteVoteAsync (Vote vote)
+		{
 			await CallBackendVoidAsync ("deletevote", vote);
 		}
 
@@ -118,7 +148,8 @@ namespace Qurvey.api
 		/// </summary>
 		/// <returns>The vote result.</returns>
 		/// <param name="survey">Survey.</param>
-		public async static Task<Result[]> GetVoteResultAsync(Survey survey) {
+		public async static Task<Result[]> GetVoteResultAsync (Survey survey)
+		{
 			#if FAKE
 			Result r1 = new Result();
 			r1.Answer = new Answer("I like it");
@@ -131,23 +162,46 @@ namespace Qurvey.api
 			return new Result[]{r1,r2};
 			#else
 			GetVoteResultResponse res = await CallBackendAsync<GetVoteResultResponse> ("getvoteresult", survey);
-			if(!string.IsNullOrEmpty(res.ExceptionMessage)) {
-				throw new Exception(res.ExceptionMessage);
+			if (!string.IsNullOrEmpty (res.ExceptionMessage)) {
+				throw new Exception (res.ExceptionMessage);
 			}
 			return res.Results;
 			#endif
 		}
 
-        // Idea: Send a panic-indicator to the backend for the course
-        public async static Task SendPanicAsync(string course)
-        {
-            //TODO:
-        }
+		/// <summary>
+		/// Gets the vote for a user-survey pair. Returns null if the user hasnt voted on this survey
+		/// </summary>
+		/// <returns>The vote. Null if not-existing</returns>
+		/// <param name="survey">The survey.</param>
+		/// <param name="user">The User</param>
+		public async static Task<Vote> GetVoteForUserAsync (Survey survey, User user)
+		{
+			VoteResponse res = await CallBackendAsync<VoteResponse> ("getvoteforuser", new GetVoteForUserRequest(survey, user));
+			if (!string.IsNullOrEmpty (res.ExceptionMessage)) {
+				throw new Exception (res.ExceptionMessage);
+			}
+			return res.Vote;
+		}
 
-        // get the number of panics in the last... 2mins?
-        public async static Task<int> GetPanicsAync(string course)
-        {
-            // TODO:
+		/// <summary>
+		/// Saves a panic.
+		/// </summary>
+		/// <param name="panic">The Panic.</param>
+		public async static Task SavePanicAsync (Panic panic)
+		{
+			await CallBackendVoidAsync ("savepanic", panic);
+		}
+
+		/// <summary>
+		/// Counts the panics for a certain course since a certain time
+		/// </summary>
+		/// <returns>The number of panics</returns>
+		/// <param name="course">The course</param>
+		/// <param name="since">The DateTime since</param>
+		public async static Task<int> CountPanicsAsync (string course, DateTime since)
+		{
+			// TODO:
 #if FAKE
             var ran = new System.Random();
             if (ran.Next(100) > 60)
@@ -159,14 +213,21 @@ namespace Qurvey.api
                 return 0;
             }
 #else
-            return 0;
+			IntResponse res = await CallBackendAsync<IntResponse> ("countpanics", new CountPanicsRequest(course, since));
+			if (!string.IsNullOrEmpty (res.ExceptionMessage)) {
+				throw new Exception (res.ExceptionMessage);
+			}
+			return res.Int;
 #endif
-        }
+		}
 
-        // Idea: Save the Answer the user selected
-        public async static Task SaveAnswerAsync(Survey survey, Answer answer)
-        {
-            // TODO:
-        }
+		public async static Task<User> CreateNewUserAsync ()
+		{
+			UserResponse res = await CallBackendAsync<UserResponse> ("createnewuser");
+			if (!string.IsNullOrEmpty (res.ExceptionMessage)) {
+				throw new Exception (res.ExceptionMessage);
+			}
+			return res.User;
+		}
 	}
 }

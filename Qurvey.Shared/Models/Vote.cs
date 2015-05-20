@@ -11,10 +11,11 @@ namespace Qurvey.Shared.Models
 #if BACKEND
         [Key]
 #endif
+        [DataMember]
         public int Id { get; set; }
 
         [DataMember]
-        public string UserId { get; set; }
+        public User User { get; set; }
 
         [DataMember]
         public Survey Survey { get; set; }
@@ -27,10 +28,10 @@ namespace Qurvey.Shared.Models
 
         }
 
-        public Vote(string userId, Survey survey, Answer answer)
+        public Vote(User user, Survey survey, Answer answer)
             : this()
         {
-            this.UserId = userId;
+            this.User = user;
             this.Survey = survey;
             this.Answer = answer;
         }

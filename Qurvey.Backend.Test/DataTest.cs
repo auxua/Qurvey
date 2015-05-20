@@ -18,7 +18,7 @@ namespace Qurvey.Backend.Test
             Survey survey = CreateTestSurvey();
             using (var db = new SurveyContext())
             {
-                db.Surveys.Add(survey);
+                db.SaveSurvey(survey);
                 db.SaveChanges();
             }
 
@@ -37,7 +37,7 @@ namespace Qurvey.Backend.Test
                 Assert.IsTrue(fromDb.Answers.Count == 3);
                 Assert.IsTrue(fromDb.Answers.Where<Answer>(a => a.AnswerText == "Answer 2").Count() == 1);
 
-                db.Surveys.Remove(fromDb);
+                db.DeleteSurvey(fromDb);
                 db.SaveChanges();
             }
 
@@ -72,13 +72,13 @@ namespace Qurvey.Backend.Test
             Survey survey = CreateTestSurvey();
             using (var db = new SurveyContext())
             {
-                db.Surveys.Add(survey);
+                db.SaveSurvey(survey);
                 Vote v1 = new Vote("User1", survey, survey.Answers.ElementAt(0));
-                db.Votes.Add(v1);
+                db.SaveVote(v1);
                 Vote v2 = new Vote("User2", survey, survey.Answers.ElementAt(2));
-                db.Votes.Add(v2);
+                db.SaveVote(v2);
                 Vote v3 = new Vote("User3", survey, survey.Answers.ElementAt(0));
-                db.Votes.Add(v3);
+                db.SaveVote(v3);
                 db.SaveChanges();
             }
 

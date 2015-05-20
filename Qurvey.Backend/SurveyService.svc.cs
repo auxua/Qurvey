@@ -1,4 +1,6 @@
 ﻿using Qurvey.Shared.Models;
+using Qurvey.Shared.Request;
+using Qurvey.Shared.Response;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -28,15 +30,7 @@ namespace Qurvey.Backend
                 }
                 using (var db = new SurveyContext())
                 {
-                    if (survey.Id == 0)
-                    {
-                        db.Surveys.Add(survey);
-                    }
-                    else
-                    {
-                        db.Surveys.Attach(survey);
-                    }
-                    db.SaveChanges();
+                    db.SaveSurvey(survey);
                 }
                 return "0";
             }
@@ -56,9 +50,7 @@ namespace Qurvey.Backend
                 }
                 using (var db = new SurveyContext())
                 {
-                    db.Surveys.Attach(survey);
-                    db.Surveys.Remove(survey);
-                    db.SaveChanges();
+                    db.DeleteSurvey(survey);
                 }
                 return "0";
             }
@@ -118,15 +110,7 @@ namespace Qurvey.Backend
                 }
                 using (var db = new SurveyContext())
                 {
-                    if (vote.Id == 0)
-                    {
-                        db.Votes.Add(vote);
-                    }
-                    else
-                    {
-                        db.Votes.Attach(vote);
-                    }
-                    db.SaveChanges();
+                    db.SaveVote(vote);
                 }
                 return "0";
             }
@@ -146,8 +130,7 @@ namespace Qurvey.Backend
                 }
                 using (var db = new SurveyContext())
                 {
-                    db.Votes.Remove(vote);
-                    db.SaveChanges();
+                    db.DeleteVote(vote);
                 }
                 return "0";
             }
@@ -177,6 +160,89 @@ namespace Qurvey.Backend
                 error = e.Message;
             }
             return new GetVoteResultResponse(res, error);
+        }
+
+        public VoteResponse GetVoteForUser(GetVoteForUserRequest req)
+        {
+            Vote vote = null;
+            string error = null;
+            try
+            {
+                if (req.Survey == null || req.User == null)
+                {
+                    throw new ArgumentNullException();
+                }
+                using (var db = new SurveyContext())
+                {
+                    vote = db.GetVoteForUser(req.Survey, req.User);
+                }
+            }
+            catch (Exception e)
+            {
+                error = e.Message;
+            }
+            return new VoteResponse(vote, error);
+        }
+
+        public string SavePanic(Panic panic)
+        {
+            try
+            {
+                if (panic == null)
+                {
+                    throw new ArgumentNullException();
+                }
+                using (var db = new SurveyContext())
+                {
+                    db.SavePanic(panic);
+                }
+                return "0";
+            }
+            catch (Exception e)
+            {
+                return e.Message;
+            }
+        }
+
+        public IntResponse CountPanics(CountPanicsRequest req)
+        {
+            int res = -1;
+            string error = null;
+            try
+            {
+                if (req.Course == null || req.Since == null)
+                {
+                    throw new ArgumentNullException();
+                }
+                using (var db = new SurveyContext())
+                {
+                    res = db.CountPanics(req.Course, req.Since);
+                }
+            }
+            catch (Exception e)
+            {
+                error = e.Message;
+            }
+            return new IntResponse(res, error);
+        }
+
+        public UserResponse CreateNewUser()
+        {
+            User res = null;
+            string error = null;
+            try
+            {
+                using (var db = new SurveyContext())
+                {
+                    res = User.GenerateNewUser();
+                    db.SaveUser(res);
+                }
+            }
+            catch (Exception e)
+            {
+                error = e.Message;
+            }
+            return new UserResponse(res, error);
         }
     }
 }
