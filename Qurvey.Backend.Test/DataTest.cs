@@ -16,20 +16,20 @@ namespace Qurvey.Backend.Test
             Assert.IsNull(GetTestSurveyFromDb());
 
             Survey survey = CreateTestSurvey();
-            using (var db = new SurveyContext())
+            using (var db = new TestSurveyContext())
             {
                 db.SaveSurvey(survey);
                 db.SaveChanges();
             }
 
-            using (var db = new SurveyContext())
+            using (var db = new TestSurveyContext())
             {
                 Survey[] res = db.getSurveysFor("TEST");
                 Assert.IsTrue(res.Length == 1);
             }
 
             Survey fromDb;
-            using (var db = new SurveyContext())
+            using (var db = new TestSurveyContext())
             {
                 fromDb = db.Surveys.Where(s => s.Question == Title).FirstOrDefault<Survey>();
                 Assert.IsNotNull(fromDb);
@@ -47,7 +47,7 @@ namespace Qurvey.Backend.Test
         private Survey GetTestSurveyFromDb()
         {
             // Check that test question is not 
-            using (var db = new SurveyContext())
+            using (var db = new TestSurveyContext())
             {
                 return db.Surveys.Where(s => s.Question == Title).FirstOrDefault<Survey>();
             }
@@ -70,25 +70,25 @@ namespace Qurvey.Backend.Test
         {
             Assert.IsNull(GetTestSurveyFromDb());
             Survey survey = CreateTestSurvey();
-            using (var db = new SurveyContext())
+            using (var db = new TestSurveyContext())
             {
                 db.SaveSurvey(survey);
-                Vote v1 = new Vote("User1", survey, survey.Answers.ElementAt(0));
+                Vote v1 = new Vote(new User() { Code = "User1" }, survey, survey.Answers.ElementAt(0));
                 db.SaveVote(v1);
-                Vote v2 = new Vote("User2", survey, survey.Answers.ElementAt(2));
+                Vote v2 = new Vote(new User() { Code = "User2" }, survey, survey.Answers.ElementAt(2));
                 db.SaveVote(v2);
-                Vote v3 = new Vote("User3", survey, survey.Answers.ElementAt(0));
+                Vote v3 = new Vote(new User() { Code = "User3" }, survey, survey.Answers.ElementAt(0));
                 db.SaveVote(v3);
                 db.SaveChanges();
             }
 
-            using (var db = new SurveyContext())
+            using (var db = new TestSurveyContext())
             {
                 db.Surveys.Attach(survey);
                 var query = db.Votes.Where(v => v.Survey.Id == survey.Id);
                 Assert.IsNotNull(query);
                 Assert.IsTrue(query.Count() == 3);
-                Assert.IsTrue(query.Where(v => v.UserId == "User3").Count() == 1);
+                Assert.IsTrue(query.Where(v => v.User.Code == "User3").Count() == 1);
 
                 foreach(Vote v in query) {
                     db.Votes.Remove(v);
@@ -108,23 +108,23 @@ namespace Qurvey.Backend.Test
             Survey s = CreateTestSurvey();
             Survey s2 = CreateTestSurvey();
             s2.Question += "2";
-            using (var db = new SurveyContext())
+            using (var db = new TestSurveyContext())
             {
                 db.Surveys.Add(s);
                 db.Surveys.Add(s2);
                 db.SaveChanges();
-                Vote v1 = new Vote("User1", s, s.Answers.ElementAt(0));
+                Vote v1 = new Vote(new User() { Code = "User1" }, s, s.Answers.ElementAt(0));
                 db.Votes.Add(v1);
-                Vote v2 = new Vote("User2", s, s.Answers.ElementAt(2));
+                Vote v2 = new Vote(new User() { Code = "User2" }, s, s.Answers.ElementAt(2));
                 db.Votes.Add(v2);
-                Vote v3 = new Vote("User3", s, s.Answers.ElementAt(0));
+                Vote v3 = new Vote(new User() { Code = "User3" }, s, s.Answers.ElementAt(0));
                 db.Votes.Add(v3);
-                Vote v4 = new Vote("User3", s2, s2.Answers.ElementAt(0));
+                Vote v4 = new Vote(new User() { Code = "User3" }, s2, s2.Answers.ElementAt(0));
                 db.Votes.Add(v4);
                 db.SaveChanges();
             }
 
-            using (var db = new SurveyContext())
+            using (var db = new TestSurveyContext())
             {
                 Result[] res = db.getResultsFor(s);
                 Assert.IsNotNull(res);
@@ -142,7 +142,7 @@ namespace Qurvey.Backend.Test
                 db.SaveChanges();
             }
 
-            using (var db = new SurveyContext())
+            using (var db = new TestSurveyContext())
             {
                 db.Surveys.Attach(s);
                 db.Surveys.Remove(s);

@@ -2,22 +2,24 @@
 using System;
 using System.Data.Entity;
 using System.Linq;
+using System.Runtime.CompilerServices;
 
 namespace Qurvey.Backend
 {
+
     public class SurveyContext : DbContext
     {
         public SurveyContext() : base("QurveyContext") { }
 
-        private DbSet<Survey> Surveys { get; set; }
+        protected DbSet<Survey> Surveys { get; set; }
 
-        private DbSet<Vote> Votes { get; set; }
+        protected DbSet<Vote> Votes { get; set; }
 
-        private DbSet<Panic> Panics { get; set; }
+        protected DbSet<Panic> Panics { get; set; }
 
-        private DbSet<LogEntry> Logs { get; set; }
+        protected DbSet<LogEntry> Logs { get; set; }
 
-        private DbSet<User> Users { get; set; }
+        protected DbSet<User> Users { get; set; }
 
         #region Survey
         public Survey[] getSurveysFor(string course)
