@@ -73,6 +73,7 @@
   <ItemGroup>
     <Compile Include="DataTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="TestSurveyContext.cs" />
     <Compile Include="WcfOnAzureTest.cs" />
   </ItemGroup>
   <ItemGroup>
