@@ -151,5 +151,16 @@ namespace Qurvey.Backend.Test
                 db.SaveChanges();
             }
         }
+
+        [TestMethod]
+        public void TestUserGenSave()
+        {
+            User u = User.GenerateNewUser();
+            using (var db = new TestSurveyContext())
+            {
+                db.SaveUser(u);
+                db.SaveChanges();
+            }
+        }
     }
 }

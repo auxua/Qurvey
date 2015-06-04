@@ -89,8 +89,6 @@ namespace Qurvey.pages
                 if (MenuPage.NumberOfCourses() < 2)
                     this.getButton_Clicked(this, null);
             }
-
-            
 		}
 
         async void getButton_Clicked(object sender, EventArgs e)
