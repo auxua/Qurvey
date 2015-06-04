@@ -12,6 +12,8 @@ namespace Qurvey.Backend
 
         public DbSet<Survey> Surveys { get; set; }
 
+        public DbSet<Answer> Answers { get; set; }
+
         public DbSet<Vote> Votes { get; set; }
 
         public DbSet<Panic> Panics { get; set; }
@@ -40,6 +42,19 @@ namespace Qurvey.Backend
             this.SaveChanges();
         }
 
+        protected void SaveAnswer(Answer answer)
+        {
+            if (answer.Id == 0)
+            {
+                this.Answers.Add(answer);
+            }
+            else
+            {
+                this.Answers.Attach(answer);
+            }
+            this.SaveChanges();
+        }
+
         public void DeleteSurvey(Survey survey)
         {
             this.Surveys.Attach(survey);
@@ -55,6 +70,8 @@ namespace Qurvey.Backend
             this.SaveSurvey(vote.Survey);
             //this.Users.Attach(vote.User);
             this.SaveUser(vote.User);
+            //this.SaveAnswer(vote.Answer);
+
             if (vote.Id == 0)
             {
                 this.Votes.Add(vote);
