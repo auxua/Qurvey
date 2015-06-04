@@ -1,6 +1,7 @@
 ﻿using System;
 using Qurvey.Shared.Models;
 using Xamarin.Forms;
+using System.Threading.Tasks;
 
 namespace Qurvey.api
 {
@@ -31,7 +32,7 @@ namespace Qurvey.api
 
 		public User User { get; protected set; }
 
-		public async void AuthenticateWithBackend() {
+		public async Task AuthenticateWithBackend() {
 			if (IsAuthenticated) {
 				return;
 				//throw new Exception ("User is already authenticated with backend");
