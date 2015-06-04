@@ -1,6 +1,7 @@
 ﻿using System;
 using Qurvey.Shared.Models;
 using Xamarin.Forms;
+using System.Threading.Tasks;
 
 namespace Qurvey.api
 {
@@ -18,10 +19,10 @@ namespace Qurvey.api
 		}
 
 		protected BackendAuthManager() {
-			User user = (User) Application.Current.Properties["User"];
-			if (user == null) {
+			if (!Application.Current.Properties.ContainsKey("User")) {
 				IsAuthenticated = false;
 			} else {
+				User user = (User) Application.Current.Properties["User"];
 				IsAuthenticated = true;
 				User = user;
 			}
@@ -31,12 +32,13 @@ namespace Qurvey.api
 
 		public User User { get; protected set; }
 
-		public void AuthenticateWithBackend() {
+		public async Task AuthenticateWithBackend() {
 			if (IsAuthenticated) {
-				throw new Exception ("User is already authenticated with backend");
+				return;
+				//throw new Exception ("User is already authenticated with backend");
 			}
 
-			User user = Backend.CreateNewUserAsync().Result;
+			User user = await Backend.CreateNewUserAsync();
 			Application.Current.Properties ["User"] = user;
 			Application.Current.SavePropertiesAsync();
 			User = user;

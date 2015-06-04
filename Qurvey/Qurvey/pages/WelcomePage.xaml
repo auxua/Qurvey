@@ -1,23 +1,26 @@
-﻿<?xml version="1.0" encoding="utf-8" ?>
-<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
-             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             x:Class="Qurvey.pages.WelcomePage">
-    <ContentPage.Padding>
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms" xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml" x:Class="Qurvey.pages.WelcomePage">
+	<ContentPage.Padding>
         30, 20, 20, 0
     </ContentPage.Padding>
-    <StackLayout Orientation="Vertical" VerticalOptions="StartAndExpand">
-        <ScrollView Orientation="Vertical" VerticalOptions="StartAndExpand">
-            <StackLayout Orientation="Vertical" VerticalOptions="StartAndExpand" Spacing="50">
-                <Label FontAttributes="Bold"
-               FontSize="Large"
-               HorizontalOptions="Center"
-               VerticalOptions="CenterAndExpand" >
-                    <Label.Text>
-                        Welcome to Qurvey
-                    </Label.Text>
-                </Label>
-                
-            </StackLayout>
-        </ScrollView>
-    </StackLayout>
+	<StackLayout Orientation="Vertical" VerticalOptions="StartAndExpand">
+		<ScrollView Orientation="Vertical" VerticalOptions="StartAndExpand">
+			<StackLayout Orientation="Vertical" VerticalOptions="StartAndExpand" Spacing="50">
+				<Label FontAttributes="Bold" FontSize="Large" VerticalOptions="CenterAndExpand" Text="Welcome to Qurvey" HorizontalOptions="Center" />
+				<StackLayout Orientation="Vertical" Padding="20, 20, 10, 5" HorizontalOptions="CenterAndExpand" IsVisible="{Binding PleaseAuth}">
+					<Label Text="You need to authorize the app. After clicking the button below you will be redirected to the authorization page of RWTH." />
+					<Button Text="Authorize this app" IsEnabled="{Binding !Authorizing}" Clicked="authButton_Clicked" />
+					<ActivityIndicator IsRunning="{Binding Authorizing}" IsVisible="{Binding Authorizing}" />
+				</StackLayout>
+				<StackLayout Orientation="Vertical" Padding="20, 20, 10, 5" HorizontalOptions="CenterAndExpand" IsVisible="{Binding LoadingCourses}">
+					<Label Text="We're now loading your courses. Please wait ..." />
+					<ActivityIndicator IsRunning="true" />
+				</StackLayout>
+				<StackLayout Orientation="Vertical" Padding="20, 20, 10, 5" HorizontalOptions="CenterAndExpand" IsVisible="{Binding Ready}">
+					<Label Text="Please select a course." />
+				</StackLayout>
+				<Label TextColor="Red" Text="{Binding ErrorMessage}" IsVisible="{Binding HasErrorMessage}" />
+			</StackLayout>
+		</ScrollView>
+	</StackLayout>
 </ContentPage>
