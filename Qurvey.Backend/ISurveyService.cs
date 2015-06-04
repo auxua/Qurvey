@@ -11,7 +11,7 @@ namespace Qurvey.Backend
     public interface ISurveyService
     {
         [OperationContract]
-        [WebGet(UriTemplate="Data/{value}", ResponseFormat= WebMessageFormat.Json)]
+        [WebGet(UriTemplate = "Data/{value}", ResponseFormat = WebMessageFormat.Json)]
         string GetData(string value);
 
         [OperationContract]
@@ -19,7 +19,7 @@ namespace Qurvey.Backend
         string PostData(string value);
 
         [OperationContract]
-        [WebInvoke(Method="POST", ResponseFormat=WebMessageFormat.Json, RequestFormat=WebMessageFormat.Json, BodyStyle=WebMessageBodyStyle.Bare, UriTemplate="savesurvey")]
+        [WebInvoke(Method = "POST", ResponseFormat = WebMessageFormat.Json, RequestFormat = WebMessageFormat.Json, BodyStyle = WebMessageBodyStyle.Bare, UriTemplate = "savesurvey")]
         string SaveSurvey(Survey survey);
 
         [OperationContract]
@@ -27,8 +27,9 @@ namespace Qurvey.Backend
         string DeleteSurvey(Survey survey);
 
         [OperationContract]
-        [WebInvoke(Method = "POST", ResponseFormat = WebMessageFormat.Json, RequestFormat = WebMessageFormat.Json, BodyStyle = WebMessageBodyStyle.Bare, UriTemplate = "getsurveys")]
-        string GetSurveys(string course);
+        // [WebInvoke(Method = "POST", ResponseFormat = WebMessageFormat.Json, RequestFormat = WebMessageFormat.Json, BodyStyle = WebMessageBodyStyle.Bare, UriTemplate = "getsurveys")]
+        [WebGet(UriTemplate = "getsurveys/{course}", ResponseFormat = WebMessageFormat.Json)]
+        GetSurveysResponse GetSurveys(string course);
 
         [OperationContract]
         [WebInvoke(Method = "POST", ResponseFormat = WebMessageFormat.Json, RequestFormat = WebMessageFormat.Json, BodyStyle = WebMessageBodyStyle.Bare, UriTemplate = "savevote")]
