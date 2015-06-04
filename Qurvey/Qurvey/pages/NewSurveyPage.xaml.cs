@@ -30,8 +30,7 @@ namespace Qurvey.pages
                 FontAttributes = FontAttributes.Bold,
                 FontSize = Device.GetNamedSize(NamedSize.Large, typeof(Label)),
                 HorizontalOptions = LayoutOptions.CenterAndExpand,
-                VerticalOptions = LayoutOptions.StartAndExpand,
-				IsEnabled = false
+                VerticalOptions = LayoutOptions.StartAndExpand
             };
 
             editor = new Editor
@@ -95,24 +94,25 @@ namespace Qurvey.pages
             }
 
             // Create data representation
-            Answer a1 = new Answer(e1.Text);
-            Answer a2 = new Answer(e2.Text);
+            Answer a1 = new Answer(e1.Text, 0);
+            Answer a2 = new Answer(e2.Text, 1);
             List<Answer> answers = new List<Answer>();
             answers.Add(a1);
             answers.Add(a2);
             if (e3.Text != "")
             {
-                Answer a3 = new Answer(e3.Text);
+                Answer a3 = new Answer(e3.Text, 2);
                 answers.Add(a3);
             }
             if (e4.Text != "")
             {
-                Answer a4 = new Answer(e4.Text);
+                Answer a4 = new Answer(e4.Text, 3);
                 answers.Add(a4);
             }
             Survey sur = new Survey(editor.Text);
             sur.Answers = answers;
             sur.Status = Survey.SurveyStatus.Published; //TODO: workflow for non-published surveys
+			sur.Course = cid;
 
             // Send Survey to Server
             try
