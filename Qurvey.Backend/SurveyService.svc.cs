@@ -69,6 +69,7 @@ namespace Qurvey.Backend
                 using (var db = new SurveyContext())
                 {
                     db.Configuration.LazyLoadingEnabled = false;
+                    db.Configuration.ProxyCreationEnabled = false;
                     res = db.getSurveysFor(course);
                 }
             }
@@ -131,6 +132,8 @@ namespace Qurvey.Backend
                 }
                 using (var db = new SurveyContext())
                 {
+                    db.Configuration.LazyLoadingEnabled = false;
+                    db.Configuration.ProxyCreationEnabled = false;
                     res = db.getResultsFor(survey);
                 }
             }
@@ -153,6 +156,8 @@ namespace Qurvey.Backend
                 }
                 using (var db = new SurveyContext())
                 {
+                    db.Configuration.LazyLoadingEnabled = false;
+                    db.Configuration.ProxyCreationEnabled = false;
                     vote = db.GetVoteForUser(req.Survey, req.User);
                 }
             }
@@ -195,6 +200,8 @@ namespace Qurvey.Backend
                 }
                 using (var db = new SurveyContext())
                 {
+                    db.Configuration.LazyLoadingEnabled = false;
+                    db.Configuration.ProxyCreationEnabled = false;
                     res = db.CountPanics(req.Course, req.Since);
                 }
             }
