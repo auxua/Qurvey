@@ -18,10 +18,10 @@ namespace Qurvey.api
 		}
 
 		protected BackendAuthManager() {
-			User user = (User) Application.Current.Properties["User"];
-			if (user == null) {
+			if (!Application.Current.Properties.ContainsKey("User")) {
 				IsAuthenticated = false;
 			} else {
+				User user = (User) Application.Current.Properties["User"];
 				IsAuthenticated = true;
 				User = user;
 			}

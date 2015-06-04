@@ -81,6 +81,8 @@ namespace Qurvey.pages
 
             Title = "Welcome";
 
+			//AuthenticateWithBackend ();
+
             api.AuthenticationManager.CheckStateAsync();
             if (api.AuthenticationManager.getState() == api.AuthenticationManager.AuthenticationState.ACTIVE)
             {
@@ -144,6 +146,7 @@ namespace Qurvey.pages
 
 		private async void AuthenticateWithBackend() {
 			BackendAuthManager.Instance.AuthenticateWithBackend ();
+			this.statusLabel.Text += BackendAuthManager.Instance.User.Code;
 		}
 
         private async void GetAllData()
