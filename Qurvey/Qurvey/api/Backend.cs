@@ -8,6 +8,7 @@ using System.Threading.Tasks;
 using Newtonsoft.Json;
 using System.Collections.Generic;
 using Qurvey.Shared.Request;
+using System.Net.Http;
 
 namespace Qurvey.api
 {
@@ -117,7 +118,13 @@ namespace Qurvey.api
             Survey[] surveys = new Survey[2] { s1, s2 };
 			return surveys;
 #else
-			GetSurveysResponse res = await CallBackendAsync<GetSurveysResponse> ("getsurveys", course);
+			//GetSurveysResponse res = await CallBackendAsync<GetSurveysResponse> ("getsurveys/"+ course);
+
+			string endpoint = "http://qurvey12.azurewebsites.net/SurveyService.svc/" + "getsurveys/"+ course;
+			HttpClient client = new HttpClient();
+			var response = client.GetAsync(new Uri(endpoint)).Result;
+			var result = response.Content.ReadAsStringAsync().Result;
+			GetSurveysResponse res = JsonConvert.DeserializeObject<GetSurveysResponse>(result);
 			if (!string.IsNullOrEmpty (res.ExceptionMessage)) {
 				throw new Exception (res.ExceptionMessage);
 			}

@@ -107,10 +107,14 @@ namespace Qurvey
             
         }
 
-        public static int NumberOfCourses()
+        public static int NumberOfCourses
         {
-            return MenuItems[1].Count;
+			get{return MenuItems [1].Count;}
         }
+
+		public static bool HasCourses {
+			get { return NumberOfCourses >= 2; }
+		}
 
 		public MenuPage ()
 		{
