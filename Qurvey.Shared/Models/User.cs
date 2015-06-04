@@ -1,6 +1,7 @@
 ﻿using System;
 #if BACKEND
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 #endif
 using System.Linq;
 using System.Runtime.Serialization;
@@ -20,8 +21,18 @@ namespace Qurvey.Shared.Models
         [DataMember]
         public string Code { get; set; }
 
-        [DataMember]
+        [IgnoreDataMember]
         public DateTime Created { get; set; }
+
+        [DataMember]
+#if BACKEND
+        [NotMapped]
+#endif
+        public double CreatedTimestamp
+        {
+            get { return DateTimeTimestampConverter.DateTimeToUnixTimestamp(Created); }
+            set { Created = DateTimeTimestampConverter.UnixTimeStampToDateTime(value); }
+        }
 
         public User()
         {
