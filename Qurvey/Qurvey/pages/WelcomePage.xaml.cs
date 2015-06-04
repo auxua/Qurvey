@@ -10,12 +10,12 @@ using Qurvey.api;
 
 using Xamarin.Forms;
 using Qurvey.Shared.Models;
+using Qurvey.ViewModels;
 
 namespace Qurvey.pages
 {
 	public partial class WelcomePage : ContentPage
 	{
-
         private Label statusLabel;
 
         public string AuthStatus
@@ -28,7 +28,8 @@ namespace Qurvey.pages
 
 		public WelcomePage ()
 		{
-			//InitializeComponent ();
+			InitializeComponent ();
+			BindingContext = new WelcomeViewModel();
 
             Label titleLabel = new Label
             {
@@ -80,8 +81,6 @@ namespace Qurvey.pages
             Content = stack;
 
             Title = "Welcome";
-
-			//AuthenticateWithBackend ();
 
             api.AuthenticationManager.CheckStateAsync();
             if (api.AuthenticationManager.getState() == api.AuthenticationManager.AuthenticationState.ACTIVE)
@@ -144,7 +143,6 @@ namespace Qurvey.pages
 
 		private async void AuthenticateWithBackend() {
 			BackendAuthManager.Instance.AuthenticateWithBackend ();
-			this.statusLabel.Text += BackendAuthManager.Instance.User.Code;
 		}
 
         private async void GetAllData()

@@ -11,11 +11,7 @@
                 <Label FontAttributes="Bold"
                FontSize="Large"
                HorizontalOptions="Center"
-               VerticalOptions="CenterAndExpand" >
-                    <Label.Text>
-                        Welcome to Qurvey
-                    </Label.Text>
-                </Label>
+               VerticalOptions="CenterAndExpand" Text="{Binding Title}" />
                 
             </StackLayout>
         </ScrollView>
