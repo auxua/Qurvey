@@ -31,12 +31,13 @@ namespace Qurvey.api
 
 		public User User { get; protected set; }
 
-		public void AuthenticateWithBackend() {
+		public async void AuthenticateWithBackend() {
 			if (IsAuthenticated) {
-				throw new Exception ("User is already authenticated with backend");
+				return;
+				//throw new Exception ("User is already authenticated with backend");
 			}
 
-			User user = Backend.CreateNewUserAsync().Result;
+			User user = await Backend.CreateNewUserAsync();
 			Application.Current.Properties ["User"] = user;
 			Application.Current.SavePropertiesAsync();
 			User = user;
