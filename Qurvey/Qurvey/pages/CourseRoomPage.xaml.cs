@@ -102,6 +102,7 @@ namespace Qurvey.pages
             if (App.isAdmin())
             {
                 panicButton.Text = "Create new Survey";
+				panicButton.BackgroundColor = Color.Green;
                 panicButton.Clicked += newSurveyButton_Clicked;
             }
             else

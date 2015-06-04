@@ -30,7 +30,8 @@ namespace Qurvey.pages
                 FontAttributes = FontAttributes.Bold,
                 FontSize = Device.GetNamedSize(NamedSize.Large, typeof(Label)),
                 HorizontalOptions = LayoutOptions.CenterAndExpand,
-                VerticalOptions = LayoutOptions.StartAndExpand
+                VerticalOptions = LayoutOptions.StartAndExpand,
+				IsEnabled = false
             };
 
             editor = new Editor
