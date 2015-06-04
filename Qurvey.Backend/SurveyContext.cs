@@ -2,7 +2,6 @@
 using System;
 using System.Data.Entity;
 using System.Linq;
-using System.Runtime.CompilerServices;
 
 namespace Qurvey.Backend
 {

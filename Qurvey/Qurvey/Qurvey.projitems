@@ -52,6 +52,7 @@
       <DependentUpon>BackendPage.xaml</DependentUpon>
     </Compile>
     <Compile Include="$(MSBuildThisFileDirectory)api\Backend.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)api\BackendAuthManager.cs" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="$(MSBuildThisFileDirectory)pages\ConfigPage.xaml">

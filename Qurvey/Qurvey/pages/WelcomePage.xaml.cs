@@ -9,6 +9,7 @@ using Qurvey.api.DataModel;
 using Qurvey.api;
 
 using Xamarin.Forms;
+using Qurvey.Shared.Models;
 
 namespace Qurvey.pages
 {
@@ -40,7 +41,7 @@ namespace Qurvey.pages
             {
                 FontSize = Device.GetNamedSize(NamedSize.Medium, typeof(Label)),
                 FontAttributes = FontAttributes.None,
-                Text = "\n\n At the moment, the App is trying to get all your course rooms from L2P. If you haven't authorized the app yet, or the authorization has expired, you will be redirected to the authorization page of RWTH\n\n",
+                Text = "\n\nAt the moment, the App is trying to get all your course rooms from L2P. If you haven't authorized the app yet, or the authorization has expired, you will be redirected to the authorization page of RWTH\n\n",
             };
 
             Button authButton = new Button
@@ -131,6 +132,7 @@ namespace Qurvey.pages
                 if (auth)
                 {
                     this.AuthStatus = "authorized";
+					this.AuthenticateWithBackend();
                     return;
                 }
                 this.statusLabel.Text += "\n Checked";
@@ -139,6 +141,10 @@ namespace Qurvey.pages
             this.AuthStatus = "not authorized";
             //statusLabel.Text += "\n in manager: "+api.AuthenticationManager.getState();
         }
+
+		private async void AuthenticateWithBackend() {
+			BackendAuthManager.Instance.AuthenticateWithBackend ();
+		}
 
         private async void GetAllData()
         {
