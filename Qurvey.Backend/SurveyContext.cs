@@ -66,11 +66,9 @@ namespace Qurvey.Backend
         #region Vote
         public void SaveVote(Vote vote)
         {
-            //this.Surveys.Attach(vote.Survey);
-            this.SaveSurvey(vote.Survey);
-            //this.Users.Attach(vote.User);
-            this.SaveUser(vote.User);
-            //this.SaveAnswer(vote.Answer);
+            this.Surveys.Attach(vote.Survey);
+            this.Users.Attach(vote.User);
+            vote.Answer = vote.Survey.Answers.First<Answer>(a => a.Id == vote.Answer.Id);
 
             if (vote.Id == 0)
             {
