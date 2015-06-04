@@ -43,7 +43,7 @@ namespace Qurvey.Shared.Models
 
         public Survey()
         {
-
+           
         }
 
         public Survey(string question)

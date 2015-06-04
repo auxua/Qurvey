@@ -81,7 +81,7 @@ namespace Qurvey.Backend
         //    }
         //}
 
-        public string GetSurveys(string course)
+        public GetSurveysResponse GetSurveys(string course)
         {
             Survey[] res = null;
             string error = null;
@@ -97,7 +97,7 @@ namespace Qurvey.Backend
             {
                 error = e.Message;
             }
-            return new JavaScriptSerializer().Serialize(new GetSurveysResponse(res, error));
+            return new GetSurveysResponse(res, error);
         }
 
         public string SaveVote(Vote vote)
