@@ -20,6 +20,9 @@ namespace Qurvey.Shared.Models
         [DataMember]
         public string Code { get; set; }
 
+        [DataMember]
+        public DateTime Created { get; set; }
+
         public User()
         {
 
@@ -36,6 +39,7 @@ namespace Qurvey.Shared.Models
                 Enumerable.Repeat(chars, 30)
                           .Select(s => s[random.Next(s.Length)])
                           .ToArray());
+            u.Created = DateTime.Now;
             return u;
         }
     }

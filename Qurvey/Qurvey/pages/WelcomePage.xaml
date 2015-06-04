@@ -16,16 +16,7 @@
                         Welcome to Qurvey
                     </Label.Text>
                 </Label>
-
-
-                <Label FontAttributes="None"
-               FontSize="Medium"
-               HorizontalOptions="Center"
-               VerticalOptions="StartAndExpand" >
-                    <Label.Text>
-                        Stuff about this App and so on...
-                    </Label.Text>
-                </Label>
+                
             </StackLayout>
         </ScrollView>
     </StackLayout>
