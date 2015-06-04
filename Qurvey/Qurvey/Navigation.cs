@@ -46,15 +46,15 @@ namespace Qurvey
 		{
 
 			try {
-                if (Detail is pages.CourseRoomPage)
+                /*if (Detail is pages.CourseRoomPage)
                 {
                     ((pages.CourseRoomPage)Detail).PopToRootAsync();
-                }
+                }*/
                 
                 if (menu.TargetType == typeof(pages.CourseRoomPage))
                 {
                     //Application.Current.Properties["currentCID"] = menu.CID;
-                    Detail = new pages.CourseRoomPage(menu.CID,menu.Title);
+                    Detail = new NavigationPage(new pages.CourseRoomPage(menu.CID,menu.Title));
                     IsPresented = false;
                     return;
                 }
