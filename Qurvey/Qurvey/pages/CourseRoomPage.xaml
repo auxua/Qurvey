@@ -1,6 +1,20 @@
 <?xml version="1.0" encoding="utf-8" ?>
-<NavigationPage xmlns="http://xamarin.com/schemas/2014/forms"
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="Qurvey.pages.CourseRoomPage">
-	<Label Text="{Binding MainText}" VerticalOptions="Center" HorizontalOptions="Center" />
-</NavigationPage>
+  <StackLayout VerticalOptions="Fill" HorizontalOptions="CenterAndExpand" Orientation="Vertical">
+    <Label FontAttributes="Bold" FontSize="Large" Text="{Binding Title}" HorizontalOptions="Center" />
+    <Button Text="Refresh" Clicked="RefreshButton_Clicked" />
+    <Label FontAttributes="None" FontSize="Medium" Text="There are no Surveys for this course" VerticalOptions="CenterAndExpand" IsVisible="{Binding NoSurveys}" />
+    <Label FontAttributes="None" FontSize="Medium" Text="{Binding Status}" HorizontalOptions="Center" VerticalOptions="CenterAndExpand" />
+    <ListView ItemsSource="{Binding Surveys}" ItemTapped="SurveyList_ItemTapped">
+     <ListView.ItemTemplate>
+    	<DataTemplate>
+    		<TextCell Text="{Binding Question}" />
+    	</DataTemplate>
+     </ListView.ItemTemplate>
+    </ListView>
+    <Button Text="{Binding ButtonText}" BackgroundColor="Red" TextColor="White" FontAttributes="Bold" VerticalOptions="EndAndExpand" Clicked="newOrPanicButton_Clicked" />
+    
+  </StackLayout>
+</ContentPage>

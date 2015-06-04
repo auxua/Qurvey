@@ -1,5 +1,5 @@
 ﻿// FAKE forces the backend to provide fake-survey data for debugging purpose
-//#define FAKE
+#define FAKE
 
 using System;
 using Qurvey.Shared.Models;
@@ -122,8 +122,8 @@ namespace Qurvey.api
 
 			string endpoint = "http://qurvey12.azurewebsites.net/SurveyService.svc/" + "getsurveys/"+ course;
 			HttpClient client = new HttpClient();
-			var response = client.GetAsync(new Uri(endpoint)).Result;
-			var result = response.Content.ReadAsStringAsync().Result;
+			var response = await client.GetAsync(new Uri(endpoint));
+			var result = await response.Content.ReadAsStringAsync();
 			GetSurveysResponse res = JsonConvert.DeserializeObject<GetSurveysResponse>(result);
 			if (!string.IsNullOrEmpty (res.ExceptionMessage)) {
 				throw new Exception (res.ExceptionMessage);

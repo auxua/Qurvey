@@ -40,6 +40,7 @@
     </Compile>
     <Compile Include="$(MSBuildThisFileDirectory)api\Backend.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)api\BackendAuthManager.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)ViewModels\CourseRoomPageViewModel.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ViewModels\WelcomeViewModel.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -72,8 +73,5 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
     </EmbeddedResource>
-  </ItemGroup>
-  <ItemGroup>
-    <Folder Include="$(MSBuildThisFileDirectory)ViewModels\" />
   </ItemGroup>
 </Project>
