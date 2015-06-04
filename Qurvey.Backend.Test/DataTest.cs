@@ -1,5 +1,6 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Qurvey.Shared.Models;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -73,11 +74,11 @@ namespace Qurvey.Backend.Test
             using (var db = new TestSurveyContext())
             {
                 db.SaveSurvey(survey);
-                Vote v1 = new Vote(new User() { Code = "User1" }, survey, survey.Answers.ElementAt(0));
+                Vote v1 = new Vote(new User() { Code = "User1", Created = DateTime.Now }, survey, survey.Answers.ElementAt(0));
                 db.SaveVote(v1);
-                Vote v2 = new Vote(new User() { Code = "User2" }, survey, survey.Answers.ElementAt(2));
+                Vote v2 = new Vote(new User() { Code = "User2", Created = DateTime.Now }, survey, survey.Answers.ElementAt(2));
                 db.SaveVote(v2);
-                Vote v3 = new Vote(new User() { Code = "User3" }, survey, survey.Answers.ElementAt(0));
+                Vote v3 = new Vote(new User() { Code = "User3", Created = DateTime.Now }, survey, survey.Answers.ElementAt(0));
                 db.SaveVote(v3);
                 db.SaveChanges();
             }
@@ -113,13 +114,13 @@ namespace Qurvey.Backend.Test
                 db.Surveys.Add(s);
                 db.Surveys.Add(s2);
                 db.SaveChanges();
-                Vote v1 = new Vote(new User() { Code = "User1" }, s, s.Answers.ElementAt(0));
+                Vote v1 = new Vote(new User() { Code = "User1", Created = DateTime.Now }, s, s.Answers.ElementAt(0));
                 db.Votes.Add(v1);
-                Vote v2 = new Vote(new User() { Code = "User2" }, s, s.Answers.ElementAt(2));
+                Vote v2 = new Vote(new User() { Code = "User2", Created = DateTime.Now }, s, s.Answers.ElementAt(2));
                 db.Votes.Add(v2);
-                Vote v3 = new Vote(new User() { Code = "User3" }, s, s.Answers.ElementAt(0));
+                Vote v3 = new Vote(new User() { Code = "User3", Created = DateTime.Now }, s, s.Answers.ElementAt(0));
                 db.Votes.Add(v3);
-                Vote v4 = new Vote(new User() { Code = "User3" }, s2, s2.Answers.ElementAt(0));
+                Vote v4 = new Vote(new User() { Code = "User3", Created = DateTime.Now }, s2, s2.Answers.ElementAt(0));
                 db.Votes.Add(v4);
                 db.SaveChanges();
             }

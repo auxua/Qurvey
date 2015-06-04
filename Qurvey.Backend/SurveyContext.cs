@@ -51,8 +51,10 @@ namespace Qurvey.Backend
         #region Vote
         public void SaveVote(Vote vote)
         {
-            this.Surveys.Attach(vote.Survey);
-            this.Users.Attach(vote.User);
+            //this.Surveys.Attach(vote.Survey);
+            this.SaveSurvey(vote.Survey);
+            //this.Users.Attach(vote.User);
+            this.SaveUser(vote.User);
             if (vote.Id == 0)
             {
                 this.Votes.Add(vote);
@@ -85,7 +87,7 @@ namespace Qurvey.Backend
         #region Panic
         public void SavePanic(Panic panic)
         {
-            this.Users.Attach(panic.User);
+            this.SaveUser(panic.User);
             if (panic.Id == 0)
             {
                 this.Panics.Add(panic);
