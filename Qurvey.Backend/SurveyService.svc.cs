@@ -60,27 +60,6 @@ namespace Qurvey.Backend
             }
         }
 
-        //public GetSurveysResponse GetSurveys(string course)
-        //{
-        //    try
-        //    {
-        //        Survey[] res = null;
-        //        using (var db = new SurveyContext())
-        //        {
-        //            db.Configuration.LazyLoadingEnabled = false;
-        //            res = db.getSurveysFor(course);
-        //           //return new GetSurveysResponse(new Survey[] { new Survey("Test") }, null);
-        //        }
-        //        string a = new JavaScriptSerializer().Serialize(res[0]);
-        //        res[0].Answers = new List<Answer>();
-        //        return new GetSurveysResponse(res, null);
-        //    }
-        //    catch (Exception e)
-        //    {
-        //        return new GetSurveysResponse(null, e.Message);
-        //    }
-        //}
-
         public GetSurveysResponse GetSurveys(string course)
         {
             Survey[] res = null;
