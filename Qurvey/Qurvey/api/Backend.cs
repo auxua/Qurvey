@@ -1,5 +1,5 @@
 ﻿// FAKE forces the backend to provide fake-survey data for debugging purpose
-#define FAKE
+//#define FAKE
 
 using System;
 using Qurvey.Shared.Models;
