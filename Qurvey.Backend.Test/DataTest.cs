@@ -168,10 +168,12 @@ namespace Qurvey.Backend.Test
         {
             User u = User.GenerateNewUser();
             Panic p = new Panic("testCourse", u);
+            Panic p2 = new Panic("testCourse", u);
             using (var db = new TestSurveyContext())
             {
                 db.SaveUser(u);
                 db.SavePanic(p);
+                db.SavePanic(p2);
                 db.SaveChanges();
             }
         }
