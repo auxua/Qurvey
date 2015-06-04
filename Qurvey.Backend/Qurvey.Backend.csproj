@@ -94,6 +94,10 @@
     <Compile Include="Migrations\201506041659598_Timestamp1.Designer.cs">
       <DependentUpon>201506041659598_Timestamp1.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201506041831494_SaveAnswer.cs" />
+    <Compile Include="Migrations\201506041831494_SaveAnswer.Designer.cs">
+      <DependentUpon>201506041831494_SaveAnswer.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="SurveyService.svc.cs">
       <DependentUpon>SurveyService.svc</DependentUpon>
@@ -136,6 +140,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201506041659598_Timestamp1.resx">
       <DependentUpon>201506041659598_Timestamp1.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201506041831494_SaveAnswer.resx">
+      <DependentUpon>201506041831494_SaveAnswer.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>
