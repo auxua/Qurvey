@@ -23,7 +23,7 @@ namespace Qurvey.Backend
         #region Survey
         public Survey[] getSurveysFor(string course)
         {
-            var query = this.Surveys.Where(s => s.Course == course).OrderByDescending(s => s.Modified);
+            var query = this.Surveys.Include(s => s.Answers).Where(s => s.Course == course).OrderByDescending(s => s.Modified);
             return query.ToArray<Survey>();
         }
 
