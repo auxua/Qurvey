@@ -2,6 +2,7 @@
 using Qurvey.Shared.Models;
 using Xamarin.Forms;
 using System.Threading.Tasks;
+using Newtonsoft.Json;
 
 namespace Qurvey.api
 {
@@ -19,10 +20,10 @@ namespace Qurvey.api
 		}
 
 		protected BackendAuthManager() {
-			if (!Application.Current.Properties.ContainsKey("User")) {
+			if (!Application.Current.Properties.ContainsKey("UserAsString")) {
 				IsAuthenticated = false;
 			} else {
-				User user = (User) Application.Current.Properties["User"];
+				User user = JsonConvert.DeserializeObject<User>(Application.Current.Properties["UserAsString"] as string);
 				IsAuthenticated = true;
 				User = user;
 			}
@@ -39,7 +40,7 @@ namespace Qurvey.api
 			}
 
 			User user = await Backend.CreateNewUserAsync();
-			Application.Current.Properties ["User"] = user;
+			Application.Current.Properties ["UserAsString"] = JsonConvert.SerializeObject(user);
 			Application.Current.SavePropertiesAsync();
 			User = user;
 			IsAuthenticated = true;
