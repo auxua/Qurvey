@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using Qurvey.Shared.Models;
 
 using Xamarin.Forms;
+using Qurvey.api;
 
 namespace Qurvey.pages
 {
@@ -110,7 +111,7 @@ namespace Qurvey.pages
             // sure! Let's tell the backend
             try
             {
-				Vote vote = new Vote(null, survey, selected); // TODO include User
+				Vote vote = new Vote(BackendAuthManager.Instance.User, survey, selected);
                 await api.Backend.SaveVoteAsync(vote);
                 ListView listView = (ListView)sender;
                 done = true;
