@@ -38,9 +38,6 @@
     <Compile Include="$(MSBuildThisFileDirectory)pages\SurveyPage.xaml.cs">
       <DependentUpon>SurveyPage.xaml</DependentUpon>
     </Compile>
-    <Compile Include="$(MSBuildThisFileDirectory)pages\CoursePage.xaml.cs">
-      <DependentUpon>CoursePage.xaml</DependentUpon>
-    </Compile>
     <Compile Include="$(MSBuildThisFileDirectory)api\Backend.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)api\BackendAuthManager.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ViewModels\WelcomeViewModel.cs" />
@@ -55,9 +52,6 @@
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
     </EmbeddedResource>
     <EmbeddedResource Include="$(MSBuildThisFileDirectory)pages\SurveyPage.xaml">
-      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
-    </EmbeddedResource>
-    <EmbeddedResource Include="$(MSBuildThisFileDirectory)pages\CoursePage.xaml">
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
     </EmbeddedResource>
   </ItemGroup>

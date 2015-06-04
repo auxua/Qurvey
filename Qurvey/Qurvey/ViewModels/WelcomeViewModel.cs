@@ -1,10 +1,10 @@
 ﻿using System;
 using System.ComponentModel;
-using System.Windows.Input;
-using Xamarin.Forms;
-using Qurvey.api;
 using System.Threading;
+using System.Windows.Input;
+using Qurvey.api;
 using Qurvey.api.DataModel;
+using Xamarin.Forms;
 
 namespace Qurvey.ViewModels
 {
