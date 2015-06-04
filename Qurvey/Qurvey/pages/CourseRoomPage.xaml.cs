@@ -4,10 +4,9 @@ using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using Qurvey.Shared.Models;
-
-using Xamarin.Forms;
 using Qurvey.api;
+using Qurvey.Shared.Models;
+using Xamarin.Forms;
 
 namespace Qurvey.pages
 {
@@ -16,8 +15,6 @@ namespace Qurvey.pages
         private string cid;
 
         private ObservableCollection<Survey> Surveys;
-        //private List<Survey> Surveys;
-
 
         private ListView SurveyList;
 
@@ -91,8 +88,6 @@ namespace Qurvey.pages
             //SurveyList.ItemSelected += list_ItemSelected;
             SurveyList.ItemTapped += SurveyList_ItemTapped;
 
-
-
             Button panicButton = new Button
             {
                 Text = "PANIC",
@@ -113,7 +108,6 @@ namespace Qurvey.pages
             {
                 panicButton.Clicked += panicButton_Clicked;
             }
-
 
             /*activityIndicator = new ActivityIndicator();
             //activityIndicator.HorizontalOptions = LayoutOptions.CenterAndExpand;
