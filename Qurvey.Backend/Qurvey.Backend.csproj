@@ -82,6 +82,14 @@
     <Compile Include="Migrations\201505201423477_NewModels1.Designer.cs">
       <DependentUpon>201505201423477_NewModels1.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201506041041043_NewModels2.cs" />
+    <Compile Include="Migrations\201506041041043_NewModels2.Designer.cs">
+      <DependentUpon>201506041041043_NewModels2.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201506041046415_UserCreated.cs" />
+    <Compile Include="Migrations\201506041046415_UserCreated.Designer.cs">
+      <DependentUpon>201506041046415_UserCreated.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="SurveyService.svc.cs">
       <DependentUpon>SurveyService.svc</DependentUpon>
@@ -115,6 +123,12 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201505201423477_NewModels1.resx">
       <DependentUpon>201505201423477_NewModels1.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201506041041043_NewModels2.resx">
+      <DependentUpon>201506041041043_NewModels2.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201506041046415_UserCreated.resx">
+      <DependentUpon>201506041046415_UserCreated.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

@@ -10,15 +10,15 @@ namespace Qurvey.Backend
     {
         public SurveyContext() : base("QurveyContext") { }
 
-        protected DbSet<Survey> Surveys { get; set; }
+        public DbSet<Survey> Surveys { get; set; }
 
-        protected DbSet<Vote> Votes { get; set; }
+        public DbSet<Vote> Votes { get; set; }
 
-        protected DbSet<Panic> Panics { get; set; }
+        public DbSet<Panic> Panics { get; set; }
 
-        protected DbSet<LogEntry> Logs { get; set; }
+        public DbSet<LogEntry> Logs { get; set; }
 
-        protected DbSet<User> Users { get; set; }
+        public DbSet<User> Users { get; set; }
 
         #region Survey
         public Survey[] getSurveysFor(string course)
