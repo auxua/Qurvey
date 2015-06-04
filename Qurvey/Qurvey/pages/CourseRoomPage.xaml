@@ -5,8 +5,8 @@
   <StackLayout VerticalOptions="Fill" HorizontalOptions="CenterAndExpand" Orientation="Vertical">
     <Label FontAttributes="Bold" FontSize="Large" Text="{Binding Title}" HorizontalOptions="Center" />
     <Button Text="Refresh" Clicked="RefreshButton_Clicked" />
-    <Label FontAttributes="None" FontSize="Medium" Text="There are no Surveys for this course" VerticalOptions="CenterAndExpand" IsVisible="{Binding NoSurveys}" />
     <Label FontAttributes="None" FontSize="Medium" Text="{Binding Status}" HorizontalOptions="Center" VerticalOptions="CenterAndExpand" />
+    <Label FontAttributes="None" FontSize="Medium" Text="There are no Surveys for this course" VerticalOptions="CenterAndExpand" IsVisible="{Binding NoSurveys}" />
     <ListView ItemsSource="{Binding Surveys}" ItemTapped="SurveyList_ItemTapped">
      <ListView.ItemTemplate>
     	<DataTemplate>
