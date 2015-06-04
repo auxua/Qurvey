@@ -15,10 +15,6 @@
     <Compile Include="$(MSBuildThisFileDirectory)api\RESTCalls.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)App.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Navigation.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)pages\AuthorizePage.xaml.cs">
-      <DependentUpon>AuthorizePage.xaml</DependentUpon>
-      <SubType>Code</SubType>
-    </Compile>
     <Compile Include="$(MSBuildThisFileDirectory)pages\ConfigPage.xaml.cs">
       <DependentUpon>ConfigPage.xaml</DependentUpon>
       <SubType>Code</SubType>
@@ -45,12 +41,6 @@
     <Compile Include="$(MSBuildThisFileDirectory)pages\CoursePage.xaml.cs">
       <DependentUpon>CoursePage.xaml</DependentUpon>
     </Compile>
-    <Compile Include="$(MSBuildThisFileDirectory)pages\AddSurveyPage.xaml.cs">
-      <DependentUpon>AddSurveyPage.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="$(MSBuildThisFileDirectory)pages\BackendPage.xaml.cs">
-      <DependentUpon>BackendPage.xaml</DependentUpon>
-    </Compile>
     <Compile Include="$(MSBuildThisFileDirectory)api\Backend.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)api\BackendAuthManager.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ViewModels\WelcomeViewModel.cs" />
@@ -68,18 +58,6 @@
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
     </EmbeddedResource>
     <EmbeddedResource Include="$(MSBuildThisFileDirectory)pages\CoursePage.xaml">
-      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
-    </EmbeddedResource>
-    <EmbeddedResource Include="$(MSBuildThisFileDirectory)pages\AddSurveyPage.xaml">
-      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
-    </EmbeddedResource>
-    <EmbeddedResource Include="$(MSBuildThisFileDirectory)pages\BackendPage.xaml">
-      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
-    </EmbeddedResource>
-  </ItemGroup>
-  <ItemGroup>
-    <EmbeddedResource Include="$(MSBuildThisFileDirectory)pages\AuthorizePage.xaml">
-      <SubType>Designer</SubType>
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
     </EmbeddedResource>
   </ItemGroup>
