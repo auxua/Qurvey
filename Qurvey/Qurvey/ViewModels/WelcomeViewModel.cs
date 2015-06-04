@@ -143,6 +143,7 @@ namespace Qurvey.ViewModels
 
 		protected async void AuthenticateWithBackend() {
 			await BackendAuthManager.Instance.AuthenticateWithBackend ();
+			Console.WriteLine ("User token: {0}", BackendAuthManager.Instance.User.Code);
 			Authorizing = false;
 			PleaseAuth = false;
 			// Now load courses
