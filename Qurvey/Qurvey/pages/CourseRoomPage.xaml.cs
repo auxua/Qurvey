@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using Qurvey.Shared.Models;
 
 using Xamarin.Forms;
+using Qurvey.api;
 
 namespace Qurvey.pages
 {
@@ -19,6 +20,8 @@ namespace Qurvey.pages
 
 
         private ListView SurveyList;
+
+		private Label noSurveys;
 
 		public CourseRoomPage (string course, string title)
 		{
@@ -58,11 +61,12 @@ namespace Qurvey.pages
                 Text = title
             };
 
-            Label descriptionLabel = new Label
+            noSurveys = new Label
             {
                 FontSize = Device.GetNamedSize(NamedSize.Medium, typeof(Label)),
                 FontAttributes = FontAttributes.None,
-                Text = "Please find the current list of surveys below (maybe there is none). You can tap the refresh button to refresh the list of surveys"
+                Text = "There are no surveys for this course",
+				VerticalOptions = LayoutOptions.CenterAndExpand
             };
 
             Button RefreshButton = new Button
@@ -88,12 +92,14 @@ namespace Qurvey.pages
             SurveyList.ItemTapped += SurveyList_ItemTapped;
 
 
+
             Button panicButton = new Button
             {
                 Text = "PANIC",
                 FontAttributes = FontAttributes.Bold,
                 TextColor = Color.White,
-                BackgroundColor = Color.Red
+                BackgroundColor = Color.Red,
+				VerticalOptions = LayoutOptions.EndAndExpand
             };
             
             // For students, show panic button
@@ -126,15 +132,16 @@ namespace Qurvey.pages
                 Orientation = StackOrientation.Vertical,
                 HorizontalOptions = LayoutOptions.CenterAndExpand,
                 VerticalOptions = LayoutOptions.Fill,
-                Children = { titleLabel, RefreshButton, descriptionLabel, /*activityIndicator,*/ SurveyList, panicButton }
+                Children = { titleLabel, RefreshButton, noSurveys, /*activityIndicator,*/ SurveyList, panicButton }
             };
-            
 
+			noSurveys.IsVisible = Surveys.Count == 0;
+			SurveyList.IsVisible = Surveys.Count > 0;
+            
             ContentPage content = new ContentPage();
             content.Content = stack;
             content.Title = title;
             content.Padding = new Thickness(10, 20, 10, 4);
-
 
             PushAsync(content);
             IsBusy = false;
@@ -156,7 +163,7 @@ namespace Qurvey.pages
         {
             try
             {
-				Panic panic = new Panic(cid, null); // TODO include User
+				Panic panic = new Panic(cid, BackendAuthManager.Instance.User);
 				await api.Backend.SavePanicAsync(panic);
             }
             catch (Exception ex)
@@ -226,7 +233,8 @@ namespace Qurvey.pages
             {
                 Surveys.Add(survey);
             }
-            
+			noSurveys.IsVisible = Surveys.Count == 0;
+			SurveyList.IsVisible = Surveys.Count > 0;
 
             this.IsBusy = false;
         }
