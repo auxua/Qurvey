@@ -35,6 +35,7 @@ namespace Qurvey.pages
                 sp = new SurveyPage(item);
             }
 			Navigation.PushAsync (sp);
+			// TODO unselect item
         }
 	}
 }

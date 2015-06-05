@@ -34,6 +34,14 @@ namespace Qurvey.api
 			return await res;
 		}
 
+		private static T1 CallBackendSync<T1> (bool post, string endpoint, object input) {
+			string inp = JsonConvert.SerializeObject (input);
+
+			endpoint = "http://qurvey12.azurewebsites.net/SurveyService.svc/" + endpoint;
+			T1 res = RESTCalls.RestCallSync<T1> (inp, endpoint, post); 
+			return res;
+		}
+
 		/// <summary>
 		/// Calls the backend async using POST.
 		/// </summary>
@@ -157,23 +165,12 @@ namespace Qurvey.api
 		/// <param name="survey">Survey.</param>
 		public async static Task<Result[]> GetVoteResultAsync (Survey survey)
 		{
-			#if FAKE
-			Result r1 = new Result();
-			r1.Answer = new Answer("I like it");
-			r1.Count = 42;
-
-			Result r2 = new Result();
-			r2.Answer = new Answer("I don't like that");
-			r2.Count = 15;
-
-			return new Result[]{r1,r2};
-			#else
-			GetVoteResultResponse res = await CallBackendAsync<GetVoteResultResponse> ("getvoteresult", survey);
+			//GetVoteResultResponse res = await CallBackendAsync<GetVoteResultResponse> ("getvoteresult", survey);
+			GetVoteResultResponse res = CallBackendSync<GetVoteResultResponse>(true, "getvoteresult", survey);
 			if (!string.IsNullOrEmpty (res.ExceptionMessage)) {
 				throw new Exception (res.ExceptionMessage);
 			}
 			return res.Results;
-			#endif
 		}
 
 		/// <summary>
