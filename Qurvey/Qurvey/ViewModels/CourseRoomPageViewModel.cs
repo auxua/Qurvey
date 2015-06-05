@@ -8,12 +8,30 @@ using Xamarin.Forms;
 using Qurvey.Shared.Models;
 using System.Threading.Tasks;
 using System.Collections.Generic;
+using Qurvey.pages;
 
 namespace Qurvey.ViewModels
 {
     class CourseRoomPageViewModel : INotifyPropertyChanged
     {
         #region properties
+
+		private INavigation navigation;
+
+		private bool isBusy;
+
+		public bool IsBusy
+		{
+			get
+			{
+				return this.isBusy;
+			}
+			set
+			{
+				this.isBusy = value;
+				RaisePropertyChanged("IsBusy");
+			}
+		}
 
         private bool isAdmin;
 
@@ -26,14 +44,6 @@ namespace Qurvey.ViewModels
             set
             {
                 this.isAdmin = value;
-                if (value)
-                {
-                    this.buttonText = "Create New Survey";
-                }
-                else
-                {
-                    this.ButtonText = "Panic!";
-                }
                 RaisePropertyChanged("IsAdmin");
             }
         }
@@ -95,36 +105,18 @@ namespace Qurvey.ViewModels
             {
                 this.surveys = value;
                 RaisePropertyChanged("Surveys");
-            }
+				RaisePropertyChanged("NoSurveys");
+			}
         }
-
-        private bool noSurveys;
-
+			
         public bool NoSurveys
         {
             get
             {
-                return this.noSurveys;
-            }
-            set
-            {
-                this.noSurveys = value;
-                RaisePropertyChanged("NoSurveys");
-            }
-        }
+				if(this.Surveys == null)
+					return true;
 
-        private string buttonText;
-
-        public string ButtonText
-        {
-            get
-            {
-                return this.buttonText;
-            }
-            set
-            {
-                this.buttonText = value;
-                RaisePropertyChanged("ButtonText");
+				return this.Surveys.Count == 0;
             }
         }
 
@@ -152,25 +144,25 @@ namespace Qurvey.ViewModels
             }
         }
 
-        private async Task RefreshSurveys()
+        private async Task LoadSurveys()
         {
+			IsBusy = true;
             Survey[] sur = await api.Backend.GetSurveysAsync(cid);
             var lSurveys = new List<Survey>();
             
             // No Surveys available?
             if (sur == null)
             {
-                return;
+                return; // TODO throw error?
             }
             // If there are Surveys, add them!
             foreach (Survey survey in sur)
             {
                 lSurveys.Add(survey);
             }
-            NoSurveys = lSurveys.Count == 0;
             Surveys = lSurveys;
             Status = "Refreshed Surveys";
-            //SurveyList.IsVisible = Surveys.Count > 0;
+			IsBusy = false;
         }
 
         private ICommand panicCommand;
@@ -183,13 +175,25 @@ namespace Qurvey.ViewModels
             }
         }
 
+		private ICommand createSurveyCommand;
+
+		public ICommand CreateSurveyCommand
+		{
+			get
+			{
+				return createSurveyCommand;
+			}
+		}
+
         protected async Task PanicExecute()
         {
             try
             {
+				IsBusy = true;
                 Panic panic = new Panic(cid, BackendAuthManager.Instance.User);
                 await api.Backend.SavePanicAsync(panic);
                 Status = "Sent Panic";
+				IsBusy = false;
             }
             catch (Exception ex)
             {
@@ -197,9 +201,15 @@ namespace Qurvey.ViewModels
             }
         }
 
+		protected async Task CreateSurveyExecute()
+		{
+			NewSurveyPage surveyPage = new NewSurveyPage (CID);
+			this.navigation.PushAsync(surveyPage);
+		}
+
         #endregion
 
-        public CourseRoomPageViewModel(string course, string title)
+		public CourseRoomPageViewModel(string course, string title, INavigation navigation)
         {
             if ((course != null) && (course != ""))
             {
@@ -207,23 +217,18 @@ namespace Qurvey.ViewModels
             }
             else
             {
-                CID = "Unknown CID";
+                CID = "Unknown CID"; // TODO throw exception?
             }
-            //this.CID = course;
             this.Title = title;
-
+			this.navigation = navigation;
             this.IsAdmin = App.isAdmin();
 
-            this.NoSurveys = true;
+			LoadSurveys ();
 
             // Create Commands
-            this.refreshCommand = new Command(async () => await RefreshSurveys());
+            this.refreshCommand = new Command(async () => await LoadSurveys());
             this.panicCommand = new Command(async () => await PanicExecute());
-
-        }
-
-        
-
-        
+			this.createSurveyCommand = new Command(async () => await CreateSurveyExecute());
+        }   
     }
 }
