@@ -36,11 +36,8 @@ namespace Qurvey.api
                     var http = (HttpWebRequest)WebRequest.Create(new Uri(endpoint));
                     http.Accept = "application/json";
                     http.ContentType = "application/json";
-                    //http.ContentType = "application/x-www-form-urlencoded";
                     http.Method = "POST";
-                    //string parsedContent = "{ \"client_id\": \"" + Config.ClientID + "\", \"scope\": \"l2p.rwth userinfo.rwth\" }";
-                    
-                    //ASCIIEncoding encoding = new ASCIIEncoding();
+
                     Byte[] bytes = Encoding.UTF8.GetBytes(input);
 
                     using (var stream = await Task.Factory.FromAsync<Stream>(http.BeginGetRequestStream,
@@ -58,9 +55,6 @@ namespace Qurvey.api
                         var content = sr.ReadToEnd();
 
                         T1 answer = JsonConvert.DeserializeObject<T1>(content);
-
-                        //string content = response.Content.ReadAsStringAsync().Result;
-                        //Console.WriteLine(content);
                         return answer;
                     }
                 }
@@ -80,6 +74,54 @@ namespace Qurvey.api
                 return default(T1);
             }
         }
+
+		public static T1 RestCallSync<T1>(string input, string endpoint, bool post)
+		{
+			try
+			{
+				if (post)
+				{
+					var http = (HttpWebRequest)WebRequest.Create(new Uri(endpoint));
+					http.Accept = "application/json";
+					http.ContentType = "application/json";
+					http.Method = "POST";
+
+					Byte[] bytes = Encoding.UTF8.GetBytes(input);
+
+					using (var stream = Task.Factory.FromAsync<Stream>(http.BeginGetRequestStream,
+						http.EndGetRequestStream, null).Result)
+					{
+						// Write the bytes to the stream
+						stream.WriteAsync(bytes,0,bytes.Length);
+					}
+
+					using (var response = Task.Factory.FromAsync<WebResponse>(http.BeginGetResponse,
+						http.EndGetResponse, null).Result)
+					{
+						var stream = response.GetResponseStream();
+						var sr = new StreamReader(stream);
+						var content = sr.ReadToEnd();
+
+						T1 answer = JsonConvert.DeserializeObject<T1>(content);
+						return answer;
+					}
+				}
+				else
+				{
+					// For GET, use a simple httpClient
+					HttpClient client = new HttpClient();
+					var response = client.GetAsync(new Uri(endpoint)).Result;
+					var result = response.Content.ReadAsStringAsync().Result;
+					T1 answer = JsonConvert.DeserializeObject<T1>(result);
+					return answer;
+				}
+			}
+			catch (Exception ex)
+			{
+				var t = ex.Message;
+				return default(T1);
+			}
+		}
 
         #endregion
 
