@@ -12,30 +12,11 @@ namespace Qurvey.pages
 {
 	public partial class CourseRoomPage : ContentPage
 	{
-
 		public CourseRoomPage (string course, string title)
 		{
 			InitializeComponent ();
-            BindingContext = new ViewModels.CourseRoomPageViewModel(course, title);
+			BindingContext = new ViewModels.CourseRoomPageViewModel(course, title, this.Navigation);
 		}
-
-        void newOrPanicButton_Clicked(object sender, EventArgs e)
-        {
-            if (App.isAdmin())
-            {
-                // Being Admin, create new Survey
-                NewSurveyPage surveyPage = new NewSurveyPage(((ViewModels.CourseRoomPageViewModel)BindingContext).CID);
-                Navigation.PushAsync(surveyPage);
-            }
-            else
-            {
-                // Send Panic!
-                IsBusy = true;
-                ((ViewModels.CourseRoomPageViewModel)BindingContext).PanicCommand.Execute(null);
-                IsBusy = false;
-            }
-        }
-
 
         /// <summary>
         /// User wants to see a survey
@@ -53,20 +34,7 @@ namespace Qurvey.pages
             {
                 sp = new SurveyPage(item);
             }
-            
-            //PushAsync(sp);
 			Navigation.PushAsync (sp);
-        }
-
-        
-        /// <summary>
-        /// Get the currently active surveys from the server
-        /// </summary>
-        private async void RefreshButton_Clicked(object sender, EventArgs e)
-        {
-            this.IsBusy = true;
-            ((ViewModels.CourseRoomPageViewModel)BindingContext).RefreshCommand.Execute(null);
-            this.IsBusy = false;
         }
 	}
 }
