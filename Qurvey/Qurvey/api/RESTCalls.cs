@@ -82,8 +82,15 @@ namespace Qurvey.api
 						if (http.Headers == null)
 							http.Headers = new WebHeaderCollection();
 
+                        // Depends on OS!
+#if __ANDROID__
+
 						// Should work for every Android-Version now
 						http.IfModifiedSince = DateTime.UtcNow;
+#else
+                        // Windows Phone does not know these properties
+                        http.Headers[HttpRequestHeader.IfModifiedSince] = DateTime.UtcNow.ToString("r");
+#endif
 
 
 						using (var response = await Task.Factory.FromAsync<WebResponse>(http.BeginGetResponse,
