@@ -99,7 +99,7 @@ namespace Qurvey.ViewModels
 			}
 			Vote newVote = new Vote(BackendAuthManager.Instance.User, Survey, UsersAnswer);
 			await api.Backend.SaveVoteAsync(newVote);
-			usersVote = newVote;
+			usersVote = await Backend.GetVoteForUserAsync (Survey, BackendAuthManager.Instance.User);
 		}
 
 		public event PropertyChangedEventHandler PropertyChanged;
