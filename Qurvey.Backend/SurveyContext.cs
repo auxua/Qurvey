@@ -57,8 +57,15 @@ namespace Qurvey.Backend
 
         public void DeleteSurvey(Survey survey)
         {
-            this.Surveys.Attach(survey);
-            this.Surveys.Remove(survey);
+            this.Votes.RemoveRange(this.Votes.Where(v => v.Survey.Id == survey.Id));
+            foreach (Answer a in survey.Answers)
+                this.Answers.Attach(a);
+
+            this.Answers.RemoveRange(survey.Answers);
+            this.SaveChanges();
+            Survey surveyDb = this.Surveys.Where(s => s.Id == survey.Id).First<Survey>();
+            this.Surveys.Attach(surveyDb);
+            this.Surveys.Remove(surveyDb);
             this.SaveChanges();
         }
         #endregion Survey
