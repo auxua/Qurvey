@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using Qurvey.api;
 using Qurvey.Shared.Models;
 using Xamarin.Forms;
+using Qurvey.ViewModels;
 
 namespace Qurvey.pages
 {
@@ -15,7 +16,7 @@ namespace Qurvey.pages
 		public CourseRoomPage (string course, string title)
 		{
 			InitializeComponent ();
-			BindingContext = new ViewModels.CourseRoomPageViewModel(course, title, this.Navigation);
+			BindingContext = new CourseRoomPageViewModel(course, title, this.Navigation);
 		}
 
         /// <summary>
@@ -37,5 +38,13 @@ namespace Qurvey.pages
 			Navigation.PushAsync (sp);
 			// TODO unselect item
         }
+
+		public void OnDelete (object sender, EventArgs e) {
+			//Xamarin doesnt support the necessary Bindings
+			var mi = (MenuItem)sender;
+			Survey survey = (Survey)mi.CommandParameter;
+			var vm = (CourseRoomPageViewModel)this.BindingContext;
+			vm.DeleteSurveyExecute (survey);
+		}
 	}
 }

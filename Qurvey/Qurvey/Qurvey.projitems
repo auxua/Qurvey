@@ -44,6 +44,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)ViewModels\WelcomeViewModel.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Converters\NegateBooleanConverter.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ViewModels\SurveyViewModel.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Commands\DeleteSurveyCommand.cs" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="$(MSBuildThisFileDirectory)pages\ConfigPage.xaml">
@@ -78,5 +79,6 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="$(MSBuildThisFileDirectory)Converters\" />
+    <Folder Include="$(MSBuildThisFileDirectory)Commands\" />
   </ItemGroup>
 </Project>
