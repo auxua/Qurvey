@@ -109,7 +109,7 @@ namespace Qurvey.pages
                 Answer a4 = new Answer(e4.Text, 3);
                 answers.Add(a4);
             }
-            Survey sur = new Survey(editor.Text);
+            Survey sur = new Survey(editor.Text.Trim());
             sur.Answers = answers;
             sur.Status = Survey.SurveyStatus.Published; //TODO: workflow for non-published surveys
 			sur.Course = cid;

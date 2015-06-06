@@ -189,7 +189,7 @@ namespace Qurvey.api
         {
             CheckAuthMutex.WaitOne();
             var answer = await TokenCallAsync();
-            if (answer.status.StartsWith("Fail:") || answer.status.StartsWith("error:"))
+            if (answer == null || answer.status==null || answer.status.StartsWith("Fail:") || answer.status.StartsWith("error:"))
             {
                 // Not working!
                 return false;
