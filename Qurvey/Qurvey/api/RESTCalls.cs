@@ -79,10 +79,12 @@ namespace Qurvey.api
 						//http.ContentType = "text/xml; encoding='utf-8'";
 						http.Method = "GET";
 
-						/*if (http.Headers == null)
+						if (http.Headers == null)
 							http.Headers = new WebHeaderCollection();
 
-						http.Headers[HttpRequestHeader.IfModifiedSince] = DateTime.UtcNow.ToString("r");*/
+						// Should work for every Android-Version now
+						http.IfModifiedSince = DateTime.UtcNow;
+
 
 						using (var response = await Task.Factory.FromAsync<WebResponse>(http.BeginGetResponse,
 							http.EndGetResponse, null))
