@@ -83,6 +83,9 @@ namespace Qurvey.Backend
 
         public void DeleteVote(Vote vote)
         {
+            vote.Survey = this.Surveys.Where(s => s.Id == vote.Survey.Id).First<Survey>();
+            vote.User = this.Users.Where(u => u.Id == vote.User.Id).First<User>();
+            vote.Answer = this.Answers.Where(a => a.Id == vote.Answer.Id).First<Answer>();
             this.Votes.Attach(vote);
             this.Votes.Remove(vote);
             this.SaveChanges();
@@ -90,7 +93,9 @@ namespace Qurvey.Backend
 
         public Vote GetVoteForUser(Survey survey, User user)
         {
-            var query = this.Votes.Include(v => v.Answer).Where(v => v.Survey.Id == survey.Id && v.User.Id == user.Id);
+            var query = this.Votes
+                .Include(v => v.Answer).Include(v => v.Survey).Include(v => v.User)
+                .Where(v => v.Survey.Id == survey.Id && v.User.Id == user.Id);
             if (query.Count() > 1)
             {
                 this.Log(string.Format("User {0} has voted multiple times for survey {1}", user.Id, survey.Id));
