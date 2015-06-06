@@ -139,7 +139,7 @@ namespace Qurvey.Backend
         public void Log(string text)
         {
             this.Logs.Add(new LogEntry(text));
-            this.SaveChangesAsync();
+            this.SaveChanges();
         }
 
         public void SaveUser(User user)

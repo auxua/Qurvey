@@ -84,21 +84,21 @@ namespace Qurvey.ViewModels
 
 		private Vote usersVote;
 
-		protected void LoadUsersVote () {
-			usersVote = Backend.GetVoteForUserAsync (Survey, BackendAuthManager.Instance.User).Result;
+		protected async void LoadUsersVote () {
+			usersVote = await Backend.GetVoteForUserAsync (Survey, BackendAuthManager.Instance.User);
 			if(usersVote != null)
-				usersAnswer = usersVote.Answer;
+				UsersAnswer = usersVote.Answer;
 
 			IsBusy = false;
 		}
 
-		protected void SaveNewVote() {
+		protected async void SaveNewVote() {
 			if (usersVote != null) {
 				// Delete old vote if it exists
-				api.Backend.DeleteVoteAsync (usersVote);
+				await api.Backend.DeleteVoteAsync (usersVote);
 			}
 			Vote newVote = new Vote(BackendAuthManager.Instance.User, Survey, UsersAnswer);
-			api.Backend.SaveVoteAsync(newVote);
+			await api.Backend.SaveVoteAsync(newVote);
 			usersVote = newVote;
 		}
 
