@@ -165,13 +165,6 @@ namespace Qurvey.api
                         // Write the bytes to the stream
                         stream.WriteAsync(bytes, 0, bytes.Length); 
 					}
-
-                    if (http.HaveResponse)
-                    {
-                        // wait!
-                        int i;
-                    }
-
                     
 					using (var response = Task.Factory.FromAsync<WebResponse>(http.BeginGetResponse,
 						http.EndGetResponse, null).Result)
@@ -197,7 +190,6 @@ namespace Qurvey.api
 			}
 			catch (Exception ex)
 			{
-				var t = ex.Message;
 				return default(T1);
 			}
 		}
