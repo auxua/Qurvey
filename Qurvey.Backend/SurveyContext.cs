@@ -90,7 +90,7 @@ namespace Qurvey.Backend
 
         public Vote GetVoteForUser(Survey survey, User user)
         {
-            var query = this.Votes.Where(v => v.Survey.Id == survey.Id && v.User.Id == user.Id);
+            var query = this.Votes.Include(v => v.Answer).Where(v => v.Survey.Id == survey.Id && v.User.Id == user.Id);
             if (query.Count() > 1)
             {
                 this.Log(string.Format("User {0} has voted multiple times for survey {1}", user.Id, survey.Id));

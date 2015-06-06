@@ -155,13 +155,6 @@ namespace Qurvey.ViewModels
 			bool useAll = App.isUsingAllCourses();
 			//IsBusy = true;
 
-			/*if (api.AuthenticationManager.getState() != api.AuthenticationManager.AuthenticationState.ACTIVE)
-			{
-				Device.BeginInvokeOnMainThread(() => DisplayAlert("Authorization needed", "Please authorize the App first", "OK"));
-				IsBusy = false;
-				return;
-			}*/
-
 			// Get the courses!
 			L2PCourseInfoSetData courses;
 			if (useAll)
@@ -189,7 +182,7 @@ namespace Qurvey.ViewModels
 				courses = await api.RESTCalls.L2PViewAllCourseIfoBySemesterAsync(semester);
 			}
 
-			// Workaround (should be moved to Manager)
+			// TODO Workaround (should be moved to Manager)
 			if (courses == null)
 			{
 				await api.AuthenticationManager.GenerateAccessTokenFromRefreshTokenAsync();

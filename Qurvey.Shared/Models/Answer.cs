@@ -36,5 +36,19 @@ namespace Qurvey.Shared.Models
         {
             this.Position = position;
         }
+
+        public override bool Equals(object obj)
+        {
+            Answer other = obj as Answer;
+            if (other == null)
+                return false;
+
+            return this.Id == other.Id && this.AnswerText.Equals(other.AnswerText) && this.Position == other.Position;
+        }
+
+        public override int GetHashCode()
+        {
+            return this.Id;
+        }
     }
 }

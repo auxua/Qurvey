@@ -5,10 +5,13 @@
 			<converters:NegateBooleanConverter x:Key="negateConverter" />
 		</ResourceDictionary>
 	</ContentPage.Resources>
-	<StackLayout VerticalOptions="Fill" HorizontalOptions="CenterAndExpand" Orientation="Vertical">
+	<StackLayout VerticalOptions="Fill" HorizontalOptions="CenterAndExpand" IsVisible="{Binding IsBusy}">
+		<ActivityIndicator IsRunning="{Binding IsBusy}" />
+		<Label Text="Loading surveys ..." />
+	</StackLayout>
+	<StackLayout VerticalOptions="Fill" HorizontalOptions="CenterAndExpand" Orientation="Vertical" IsVisible="{Binding IsBusy, Converter={StaticResource negateConverter}}">
 		<Label FontAttributes="Bold" FontSize="Large" Text="{Binding Title}" HorizontalOptions="Center" />
 		<Button Text="Refresh" Command="{Binding RefreshCommand}" />
-		<ActivityIndicator IsRunning="{Binding IsBusy}" IsVisible="{Binding IsBusy}" />
 		<!--<Label FontAttributes="None" FontSize="Medium" Text="{Binding Status}" HorizontalOptions="Center" VerticalOptions="CenterAndExpand" />-->
 		<Label FontAttributes="None" FontSize="Medium" Text="There are no Surveys for this course" HorizontalOptions="CenterAndExpand" VerticalOptions="CenterAndExpand" IsVisible="{Binding NoSurveys}" />
 		<ListView x:Name="surveyListView" ItemsSource="{Binding Surveys}" ItemTapped="SurveyList_ItemTapped" IsVisible="{Binding NoSurveys, Converter={StaticResource negateConverter}}">

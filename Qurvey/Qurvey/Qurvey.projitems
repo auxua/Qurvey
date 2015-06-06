@@ -43,6 +43,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)ViewModels\CourseRoomPageViewModel.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ViewModels\WelcomeViewModel.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Converters\NegateBooleanConverter.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)ViewModels\SurveyViewModel.cs" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="$(MSBuildThisFileDirectory)pages\ConfigPage.xaml">
