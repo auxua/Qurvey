@@ -200,6 +200,62 @@ namespace Qurvey.ViewModels
 			this.refreshCommand = new Command (async () => await LoadSurveys ());
 			this.panicCommand = new Command (async () => await PanicExecute ());
 			this.createSurveyCommand = new Command (async () => await CreateSurveyExecute ());
+
+			// Start the panicThread if being admin
+			if (this.IsAdmin)
+			{
+				try {
+					this.panicThread = new Thread (new ThreadStart (panicWork));
+					panicThread.Start();
+				}
+				catch (Exception ex)
+				{
+					// should be mainly THreadState fails that may occur - just ignore it
+				}
+			}
+		}
+
+		~CourseRoomPageViewModel()
+		{
+			// Check the PanicTHread and end it if needed
+			if (this.panicThread != null)
+			{
+				try 
+				{
+					this.panicThread.Abort();
+				}
+				catch
+				{
+					// nothing
+				}
+			}
+		}
+
+		private Thread panicThread;
+
+		protected void panicWork() 
+		{
+			try {
+				while (true)
+				{
+					// Wait 30 sec.
+					Thread.Sleep (30 * 1000);
+					getLastPanicsAsync ();
+				}
+			}
+			catch (Exception ex)
+			{
+				// just die...
+			}
+		}
+
+		protected async void getLastPanicsAsync()
+		{
+			int result = await Backend.CountPanicsAsync(CID,DateTime.Now.AddMinutes(-1));
+			if (result > 1)
+			{
+				Device.BeginInvokeOnMainThread (() => App.Current.MainPage.DisplayAlert ("PANIC!", "Multiple people pressed the Panic button in the last 60 seconds!", "OK"));
+			}
 		}
 	}
 }

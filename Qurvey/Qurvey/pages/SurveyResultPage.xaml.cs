@@ -91,8 +91,8 @@ namespace Qurvey.pages
             */
 
             // Get results
-            //var results = api.Backend.GetVoteResultAsync(survey).Result;
-            var results = new Result[0];
+            var results = api.Backend.GetVoteResultAsync(survey).Result;
+            //var results = new Result[0];
 
             root = new TableRoot();
 
@@ -120,6 +120,10 @@ namespace Qurvey.pages
                 };
                 table.Root.Add(ts);
             }
+			TableSection tss = new TableSection(" Total Amount of Votes: ") {
+				new TextCell { Text=sum.ToString() }
+			};
+			table.Root.Add(tss);
 
             StackLayout stack = new StackLayout
             {
@@ -168,6 +172,10 @@ namespace Qurvey.pages
                 };
                 root.Add(ts);
             }
+			TableSection tss = new TableSection(" Total Amount of Votes: ") {
+				new TextCell { Text=sum.ToString() }
+			};
+			root.Add(tss);
 
             IsBusy = false;
         }

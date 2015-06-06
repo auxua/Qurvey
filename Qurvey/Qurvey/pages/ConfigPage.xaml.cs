@@ -48,7 +48,9 @@ namespace Qurvey.pages
                 }
             };
 
-            Padding = new Thickness(15, 10, 15, 10);
+			// In case of iOS the padding is done automatically by the table representation
+			if (Device.OS != TargetPlatform.iOS)
+            	Padding = new Thickness(15, 10, 15, 10);
             Title = "Settings";
         }
 
