@@ -9,6 +9,8 @@ using Newtonsoft.Json;
 using System.Collections.Generic;
 using Qurvey.Shared.Request;
 using System.Net.Http;
+using System.Net;
+using System.IO;
 
 namespace Qurvey.api
 {
@@ -126,14 +128,46 @@ namespace Qurvey.api
             Survey[] surveys = new Survey[2] { s1, s2 };
 			return surveys;
 #else
-			//GetSurveysResponse res = await CallBackendAsync<GetSurveysResponse> ("getsurveys/"+ course);
+			GetSurveysResponse res = await CallBackendAsync<GetSurveysResponse> ("getsurveys/"+ course);
 
-			string endpoint = "http://qurvey12.azurewebsites.net/SurveyService.svc/" + "getsurveys/"+ course;
+			/*string endpoint = "http://qurvey12.azurewebsites.net/SurveyService.svc/" + "getsurveys/"+ course;
 			HttpClient client = new HttpClient();
 			var response = await client.GetAsync(new Uri(endpoint));
 			var result = await response.Content.ReadAsStringAsync();
-			GetSurveysResponse res = JsonConvert.DeserializeObject<GetSurveysResponse>(result);
-			if (!string.IsNullOrEmpty (res.ExceptionMessage)) {
+			GetSurveysResponse res = JsonConvert.DeserializeObject<GetSurveysResponse>(result);*/
+
+            // Do it this manual way to avoid Caching mechanisms!
+            /*GetSurveysResponse res = null;
+
+            try
+            {
+                
+
+                var http = (HttpWebRequest)WebRequest.Create(new Uri("http://qurvey12.azurewebsites.net/SurveyService.svc/" + "getsurveys/" + course));
+                //http.Accept = "application/json";
+                //http.ContentType = "text/xml; encoding='utf-8'";
+                http.Method = "GET";
+
+                if (http.Headers == null)
+                    http.Headers = new WebHeaderCollection();
+
+                http.Headers[HttpRequestHeader.IfModifiedSince] = DateTime.UtcNow.ToString("r");
+
+                using (var response = await Task.Factory.FromAsync<WebResponse>(http.BeginGetResponse,
+                                 http.EndGetResponse, null))
+                {
+                    var stream = response.GetResponseStream();
+                    var sr = new StreamReader(stream);
+                    var content = sr.ReadToEnd();
+
+                    res = JsonConvert.DeserializeObject<GetSurveysResponse>(content);
+                }
+            }
+            catch (Exception)
+            {
+
+            }*/
+            if (!string.IsNullOrEmpty (res.ExceptionMessage)) {
 				throw new Exception (res.ExceptionMessage);
 			}
 			return res.Surveys;

@@ -61,11 +61,45 @@ namespace Qurvey.api
                 else
                 {
                     // For GET, use a simple httpClient
-                    HttpClient client = new HttpClient();
+                    /*HttpClient client = new HttpClient();
+                    client.DefaultRequestHeaders.Add("Cache-Control", "no-cache");
                     var response = await client.GetAsync(new Uri(endpoint));
                     var result = await response.Content.ReadAsStringAsync();
                     T1 answer = JsonConvert.DeserializeObject<T1>(result);
-                    return answer;
+                    return answer;*/
+
+                    T1 res = default(T1);
+
+                    try
+                    {
+
+
+                        var http = (HttpWebRequest)WebRequest.Create(new Uri(endpoint));
+                        //http.Accept = "application/json";
+                        //http.ContentType = "text/xml; encoding='utf-8'";
+                        http.Method = "GET";
+
+                        if (http.Headers == null)
+                            http.Headers = new WebHeaderCollection();
+
+                        http.Headers[HttpRequestHeader.IfModifiedSince] = DateTime.UtcNow.ToString("r");
+
+                        using (var response = await Task.Factory.FromAsync<WebResponse>(http.BeginGetResponse,
+                                         http.EndGetResponse, null))
+                        {
+                            var stream = response.GetResponseStream();
+                            var sr = new StreamReader(stream);
+                            var content = sr.ReadToEnd();
+
+                            res = JsonConvert.DeserializeObject<T1>(content);
+                            return res;
+                        }
+                        
+                    }
+                    catch (Exception)
+                    {
+                        return res;
+                    }
                 }
             }
             catch (Exception ex)
