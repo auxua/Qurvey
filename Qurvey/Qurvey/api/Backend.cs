@@ -201,6 +201,10 @@ namespace Qurvey.api
 		{
 			//GetVoteResultResponse res = await CallBackendAsync<GetVoteResultResponse> ("getvoteresult", survey);
 			GetVoteResultResponse res = CallBackendSync<GetVoteResultResponse>(true, "getvoteresult", survey);
+            //GetVoteResultResponse res = CallBackendSync<GetVoteResultResponse>(true, "getvoteresult", "");
+			if (res == null)
+				return new Result[0];
+			
 			if (!string.IsNullOrEmpty (res.ExceptionMessage)) {
 				throw new Exception (res.ExceptionMessage);
 			}

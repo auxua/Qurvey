@@ -187,6 +187,7 @@ namespace Qurvey.ViewModels
 			{
 				await api.AuthenticationManager.GenerateAccessTokenFromRefreshTokenAsync();
 				courses = await api.RESTCalls.L2PViewAllCourseInfoAsync();
+				return;
 			}
 
 			if (courses.dataset == null)

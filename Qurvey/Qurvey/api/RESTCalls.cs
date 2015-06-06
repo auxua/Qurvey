@@ -8,6 +8,7 @@ using System.Net.Http.Headers;
 using System.IO;
 using Newtonsoft.Json;
 using Qurvey.api.DataModel;
+using System.Threading;
 
 namespace Qurvey.api
 {
@@ -83,7 +84,7 @@ namespace Qurvey.api
 							http.Headers = new WebHeaderCollection();
 
                         // Depends on OS!
-#if __ANDROID__
+#if (__ANDROID__ || __IOS__)
 
 						// Should work for every Android-Version now
 						http.IfModifiedSince = DateTime.UtcNow;
@@ -117,16 +118,43 @@ namespace Qurvey.api
 				return default(T1);
 			}
 		}
-
 		public static T1 RestCallSync<T1>(string input, string endpoint, bool post)
 		{
 			try
 			{
 				if (post)
 				{
-					var http = (HttpWebRequest)WebRequest.Create(new Uri(endpoint));
-					http.Accept = "application/json";
+                    /*var client = new HttpClient();
+                    //client.BaseAddress = endpoint;
+                    
+                    client.PostAsync(endpoint,)
+                    
+                    client.Headers[HttpRequestHeader.IfModifiedSince] = DateTime.UtcNow.ToString("r");
+                    client.Headers[HttpRequestHeader.ContentType] = "application/json";
+
+                    Byte[] bytes = Encoding.UTF8.GetBytes(input);
+
+                    client.OpenWriteAsync(new Uri(endpoint), "POST");*/
+                    
+
+                    //var answer = client.UploadStringAsync(new Uri(endpoint), "POST", input);
+                    
+                    
+                    var http = (HttpWebRequest)WebRequest.Create(new Uri(endpoint));
+					//http.Accept = "application/json";
 					http.ContentType = "application/json";
+                    if (http.Headers == null)
+                        http.Headers = new WebHeaderCollection();
+
+                    // Depends on OS!
+#if (__ANDROID__ || __IOS__)
+
+						// Should work for every Android-Version now
+						http.IfModifiedSince = DateTime.UtcNow;
+#else
+                    // Windows Phone does not know these properties
+                    http.Headers[HttpRequestHeader.IfModifiedSince] = DateTime.UtcNow.ToString("r");
+#endif
 					http.Method = "POST";
 
 					Byte[] bytes = Encoding.UTF8.GetBytes(input);
@@ -134,10 +162,17 @@ namespace Qurvey.api
 					using (var stream = Task.Factory.FromAsync<Stream>(http.BeginGetRequestStream,
 						http.EndGetRequestStream, null).Result)
 					{
-						// Write the bytes to the stream
-						stream.WriteAsync(bytes,0,bytes.Length);
+                        // Write the bytes to the stream
+                        stream.WriteAsync(bytes, 0, bytes.Length); 
 					}
 
+                    if (http.HaveResponse)
+                    {
+                        // wait!
+                        int i;
+                    }
+
+                    
 					using (var response = Task.Factory.FromAsync<WebResponse>(http.BeginGetResponse,
 						http.EndGetResponse, null).Result)
 					{
@@ -148,6 +183,7 @@ namespace Qurvey.api
 						T1 answer = JsonConvert.DeserializeObject<T1>(content);
 						return answer;
 					}
+
 				}
 				else
 				{
@@ -165,6 +201,8 @@ namespace Qurvey.api
 				return default(T1);
 			}
 		}
+
+       
 
 		#endregion
 

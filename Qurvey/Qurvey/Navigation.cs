@@ -48,8 +48,12 @@ namespace Qurvey
 			try {
                 /*if (Detail is pages.CourseRoomPage)
                 {
-                    ((pages.CourseRoomPage)Detail).PopToRootAsync();
+                    ((pages.CourseRoomPage)Detail).Navigation.PopToRootAsync();
                 }*/
+
+                // If there is a Navigation inside the Page, Pop back to allow a working Navigation Stack
+                if (Detail.Navigation != null)
+                    Detail.Navigation.PopToRootAsync();
                 
                 if (menu.TargetType == typeof(pages.CourseRoomPage))
                 {
@@ -238,7 +242,7 @@ namespace Qurvey
 				//Source = "info.png",
 				HeightRequest = 30,
 			};
-			image.SetBinding (Image.SourceProperty, "Icon");
+			//image.SetBinding (Image.SourceProperty, "Icon");
 
 			var layout = new StackLayout {
 				Orientation = StackOrientation.Horizontal,
