@@ -35,7 +35,7 @@ namespace Qurvey.api
 				if (post)
 				{
 					var http = (HttpWebRequest)WebRequest.Create(new Uri(endpoint));
-					http.Accept = "application/json";
+					//http.Accept = "application/json";
 					http.ContentType = "application/json";
 					http.Method = "POST";
 
@@ -124,20 +124,62 @@ namespace Qurvey.api
 			{
 				if (post)
 				{
+#if WINDOWS_PHONE
+                    
                     /*var client = new HttpClient();
                     //client.BaseAddress = endpoint;
+
+                    StringContent content = new StringContent(input, Encoding.UTF8, "application/json");
+                    //content.Headers.Expires = DateTime.UtcNow;
+
+                    //var tt = client.GetStreamAsync(endpoint).ConfigureAwait(continueOnCapturedContext: false).GetAwaiter().GetResult();
+
+                    //Byte[] bytes = Encoding.UTF8.GetBytes(input);
+
+                    var m = new HttpRequestMessage(HttpMethod.Get, endpoint);
+                    //m.Content = content;
+
+                    HttpResponseMessage resp = client.SendAsync(m).Result;
+
+                    var t = client.PostAsync(endpoint, content).ConfigureAwait(continueOnCapturedContext:false).GetAwaiter();
+                    while (!t.IsCompleted)
+                    {
+                        Thread.Sleep(1000);
+                        
+                        //t.Wait();
+                    }
+
+                    //HttpResponseMessage answer = t.Result;
+                    HttpResponseMessage answer = t.GetResult();
+                    //HttpResponseMessage answer = client.PostAsync(endpoint, content).GetAwaiter().GetResult();
+                    string re = answer.Content.ReadAsStringAsync().Result;
+                    T1 response = JsonConvert.DeserializeObject<T1>(re);
+                    return response;*/
+
+                    WebClient wc = new WebClient();
+                    Uri uri = new Uri(endpoint);
+                    wc.Headers["ContentType"] = "application/json";
+                    wc.UploadStringCompleted += wc_UploadStringCompleted;
+                    wc.UploadStringAsync(uri, "POST", input);
+
                     
-                    client.PostAsync(endpoint,)
+                    var t = getPOSTResponse();
+
+                    T1 response = JsonConvert.DeserializeObject<T1>(t);
+                    return response;
+#else
+
+                    /*client.PostAsync(endpoint,)
                     
                     client.Headers[HttpRequestHeader.IfModifiedSince] = DateTime.UtcNow.ToString("r");
                     client.Headers[HttpRequestHeader.ContentType] = "application/json";
 
                     Byte[] bytes = Encoding.UTF8.GetBytes(input);
 
-                    client.OpenWriteAsync(new Uri(endpoint), "POST");*/
+                    client.OpenWriteAsync(new Uri(endpoint), "POST");
                     
 
-                    //var answer = client.UploadStringAsync(new Uri(endpoint), "POST", input);
+                    //var answer = client.UploadStringAsync(new Uri(endpoint), "POST", input);*/
                     
                     
                     var http = (HttpWebRequest)WebRequest.Create(new Uri(endpoint));
@@ -176,6 +218,7 @@ namespace Qurvey.api
 						T1 answer = JsonConvert.DeserializeObject<T1>(content);
 						return answer;
 					}
+#endif
 
 				}
 				else
@@ -194,7 +237,28 @@ namespace Qurvey.api
 			}
 		}
 
-       
+        static void wc_UploadStringCompleted(object sender, UploadStringCompletedEventArgs e)
+        {
+            try
+            {
+                Uploadresult = e.Result;
+            }
+            catch (Exception ex)
+            {
+                // fail!
+            }
+        }
+
+        private static string Uploadresult = null;
+
+        private static string getPOSTResponse()
+        {
+            while (Uploadresult == null)
+            {
+                Thread.Sleep(500);
+            }
+            return Uploadresult;
+        }
 
 		#endregion
 

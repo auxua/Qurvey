@@ -256,6 +256,11 @@ namespace Qurvey.api
             }
 #else
 			IntResponse res = await CallBackendAsync<IntResponse> ("countpanics", new CountPanicsRequest(course, since));
+            // In case of an error keep the App working
+            if (res == default(IntResponse))
+            {
+                return 0;
+            }
 			if (!string.IsNullOrEmpty (res.ExceptionMessage)) {
 				throw new Exception (res.ExceptionMessage);
 			}
