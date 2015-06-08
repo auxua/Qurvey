@@ -1,15 +1,13 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel;
 using System.Threading;
+using System.Threading.Tasks;
 using System.Windows.Input;
 using Qurvey.api;
-using Qurvey.api.DataModel;
-using Xamarin.Forms;
-using Qurvey.Shared.Models;
-using System.Threading.Tasks;
-using System.Collections.Generic;
 using Qurvey.pages;
-using Qurvey.Commands;
+using Qurvey.Shared.Models;
+using Xamarin.Forms;
 
 namespace Qurvey.ViewModels
 {
