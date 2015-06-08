@@ -9,8 +9,15 @@ namespace Qurvey.Shared.Request
         [DataMember]
         public string Course { get; set; }
 
-        [DataMember]
+        [IgnoreDataMember]
         public DateTime Since { get; set; }
+
+        [DataMember]
+        public double SinceTimestamp
+        {
+            get { return DateTimeTimestampConverter.DateTimeToUnixTimestamp(Since); }
+            set { Since = DateTimeTimestampConverter.UnixTimeStampToDateTime(value); }
+        }
 
         public CountPanicsRequest()
         {
