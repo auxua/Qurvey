@@ -138,6 +138,13 @@ namespace Qurvey.Backend
             var query = this.Panics.Where(p => p.Course == course && p.Created > since);
             return query.Count();
         }
+
+        public int CountLastPanics(string course, int seconds)
+        {
+            DateTime since = DateTime.Now.AddSeconds(-1*seconds);
+            var query = this.Panics.Where(p => p.Course == course && p.Created > since);
+            return query.Count();
+        }
         #endregion Panic
 
         public Result[] getResultsFor(Survey survey)

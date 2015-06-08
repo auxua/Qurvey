@@ -56,6 +56,10 @@ namespace Qurvey.Backend
         IntResponse CountPanics(CountPanicsRequest req);
 
         [OperationContract]
+        [WebInvoke(Method = "POST", ResponseFormat = WebMessageFormat.Json, RequestFormat = WebMessageFormat.Json, BodyStyle = WebMessageBodyStyle.Bare, UriTemplate = "countlastpanics")]
+        IntResponse CountLastPanics(CountLastPanicsRequest req);
+
+        [OperationContract]
         [WebGet(UriTemplate = "createnewuser", ResponseFormat = WebMessageFormat.Json)]
         UserResponse CreateNewUser();
     }

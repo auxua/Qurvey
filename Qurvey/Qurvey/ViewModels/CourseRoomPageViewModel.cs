@@ -252,6 +252,7 @@ namespace Qurvey.ViewModels
 		protected async void getLastPanicsAsync()
 		{
 			int result = await Backend.CountPanicsAsync(CID,DateTime.Now.AddMinutes(-1));
+            //int result = await Backend.CountLastPanicsAsync(CID, 60);
 			if (result > 1)
 			{
 				Device.BeginInvokeOnMainThread (() => App.Current.MainPage.DisplayAlert ("PANIC!", "Multiple people pressed the Panic button in the last 60 seconds!", "OK"));

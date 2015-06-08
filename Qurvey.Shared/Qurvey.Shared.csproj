@@ -50,6 +50,7 @@
     <Compile Include="DateTimeTimestampConverter.cs" />
     <Compile Include="Models\Answer.cs" />
     <Compile Include="Models\LogEntry.cs" />
+    <Compile Include="Request\CountLastPanicsRequest.cs" />
     <Compile Include="Request\CountPanicsRequest.cs" />
     <Compile Include="Request\GetVoteForUserRequest.cs" />
     <Compile Include="Response\GetVoteResultResponse.cs" />

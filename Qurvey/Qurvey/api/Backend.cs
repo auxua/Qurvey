@@ -255,7 +255,7 @@ namespace Qurvey.api
                 return 0;
             }
 #else
-			IntResponse res = await CallBackendAsync<IntResponse> ("countpanics", new CountPanicsRequest(course, since));
+			IntResponse res = await CallBackendAsync<IntResponse> ("countlastpanics", new CountPanicsRequest(course, since));
             // In case of an error keep the App working
             if (res == default(IntResponse))
             {
@@ -267,6 +267,34 @@ namespace Qurvey.api
 			return res.Int;
 #endif
 		}
+
+        public async static Task<int> CountLastPanics(string course, int seconds)
+        {
+            // TODO:
+#if FAKE
+            var ran = new System.Random();
+            if (ran.Next(100) > 60)
+            {
+                return 7;
+            }
+            else
+            {
+                return 0;
+            }
+#else
+            IntResponse res = await CallBackendAsync<IntResponse>("countpanics", new CountLastPanicsRequest(course, seconds));
+            // In case of an error keep the App working
+            if (res == default(IntResponse))
+            {
+                return 0;
+            }
+            if (!string.IsNullOrEmpty(res.ExceptionMessage))
+            {
+                throw new Exception(res.ExceptionMessage);
+            }
+            return res.Int;
+#endif
+        }
 
 		public async static Task<User> CreateNewUserAsync ()
 		{

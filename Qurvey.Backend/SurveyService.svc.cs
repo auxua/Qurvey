@@ -212,6 +212,30 @@ namespace Qurvey.Backend
             return new IntResponse(res, error);
         }
 
+        public IntResponse CountLastPanics(CountLastPanicsRequest req)
+        {
+            int res = -1;
+            string error = null;
+            try
+            {
+                if (req.Course == null || req.Seconds == null)
+                {
+                    throw new ArgumentNullException();
+                }
+                using (var db = new SurveyContext())
+                {
+                    db.Configuration.LazyLoadingEnabled = false;
+                    db.Configuration.ProxyCreationEnabled = false;
+                    res = db.CountLastPanics(req.Course, req.Seconds);
+                }
+            }
+            catch (Exception e)
+            {
+                error = e.Message;
+            }
+            return new IntResponse(res, error);
+        }
+
         public UserResponse CreateNewUser()
         {
             User res = null;

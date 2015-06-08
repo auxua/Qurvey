@@ -158,7 +158,9 @@ namespace Qurvey.api
 
                     WebClient wc = new WebClient();
                     Uri uri = new Uri(endpoint);
-                    wc.Headers["ContentType"] = "application/json";
+                    wc.Headers["Content-Type"] = "application/json";
+                    wc.Headers["Cache-Control"] = "no-cache";
+                    wc.Headers["Content-Length"] = input.Length.ToString();
                     wc.UploadStringCompleted += wc_UploadStringCompleted;
                     wc.UploadStringAsync(uri, "POST", input);
 

@@ -119,6 +119,8 @@
     <None Include="Properties\WMAppManifest.xml">
       <SubType>Designer</SubType>
     </None>
+    <Content Include="Icon76.png" />
+    <Content Include="Icon80.png" />
     <Content Include="l2plogo.png" />
   </ItemGroup>
   <ItemGroup>
