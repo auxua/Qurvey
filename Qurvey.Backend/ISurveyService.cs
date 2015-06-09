@@ -32,6 +32,10 @@ namespace Qurvey.Backend
         GetSurveysResponse GetSurveys(string course);
 
         [OperationContract]
+        [WebGet(UriTemplate = "getvoteresultbyid/{surveyid}", ResponseFormat = WebMessageFormat.Json)]
+        GetVoteResultResponse GetVoteResultByID(int surveyID);
+
+        [OperationContract]
         [WebInvoke(Method = "POST", ResponseFormat = WebMessageFormat.Json, RequestFormat = WebMessageFormat.Json, BodyStyle = WebMessageBodyStyle.Bare, UriTemplate = "savevote")]
         string SaveVote(Vote vote);
 

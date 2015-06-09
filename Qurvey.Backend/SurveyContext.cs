@@ -155,6 +155,14 @@ namespace Qurvey.Backend
             return query.ToArray<Result>();
         }
 
+        public Result[] getResultsFor(int surveyID)
+        {
+            var query = this.Votes.Where(v => v.Survey.Id == surveyID)
+                   .GroupBy(v => v.Answer, v => v.User, (answer, users) => new Result() { Answer = answer, Count = users.Count() })
+                   .OrderBy(r => r.Answer.Position);
+            return query.ToArray<Result>();
+        }
+
         public void Log(string text)
         {
             this.Logs.Add(new LogEntry(text));

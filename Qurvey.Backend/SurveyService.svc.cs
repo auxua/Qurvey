@@ -144,6 +144,30 @@ namespace Qurvey.Backend
             return new GetVoteResultResponse(res, error);
         }
 
+        public GetVoteResultResponse GetVoteResultByID(int surveyID)
+        {
+            Result[] res = null;
+            string error = null;
+            try
+            {
+                if (surveyID == null)
+                {
+                    throw new ArgumentNullException();
+                }
+                using (var db = new SurveyContext())
+                {
+                    db.Configuration.LazyLoadingEnabled = false;
+                    db.Configuration.ProxyCreationEnabled = false;
+                    res = db.getResultsFor(surveyID);
+                }
+            }
+            catch (Exception e)
+            {
+                error = e.Message;
+            }
+            return new GetVoteResultResponse(res, error);
+        }
+
         public VoteResponse GetVoteForUser(GetVoteForUserRequest req)
         {
             Vote vote = null;
