@@ -142,8 +142,7 @@ namespace Qurvey.Backend
         public int CountLastPanics(string course, int seconds)
         {
             DateTime since = DateTime.Now.AddSeconds(-1 * seconds);
-            var query = this.Panics.Where(p => p.Course == course && p.Created > since);
-            return query.Count();
+            return CountPanics(course, since);
         }
         #endregion Panic
 
