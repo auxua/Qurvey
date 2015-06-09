@@ -91,7 +91,19 @@ namespace Qurvey.pages
             */
 
             // Get results
-            var results = api.Backend.GetVoteResultAsync(survey).Result;
+
+            Result[] results;
+
+            if ((Device.OS == TargetPlatform.Android) || (Device.OS == TargetPlatform.iOS))
+            {
+                // Android/iOS is working that way
+                results = api.Backend.GetVoteResultAsync(survey).Result;
+            }
+            else
+            {
+                // WP will work hopefully that way
+                results = api.Backend.GetVoteResultByIDAsync(survey.Id).Result;
+            }
             //var results = new Result[0];
 
             root = new TableRoot();
