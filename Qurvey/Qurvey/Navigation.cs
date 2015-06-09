@@ -55,6 +55,18 @@ namespace Qurvey
                 if (Detail.Navigation != null)
                     Detail.Navigation.PopToRootAsync();
                 
+                //if (Detail is pages.CourseRoomPage)
+                if (Detail is NavigationPage)
+                {
+                    var page = ((NavigationPage)Detail).CurrentPage;
+                    if (page is pages.CourseRoomPage)
+                    {
+                        var bc = page.BindingContext as ViewModels.CourseRoomPageViewModel;
+                        // Stop worker Threads if existing (Destructors are not called in guarantee...)
+                        bc.CancelWork();
+                    }
+                }
+
                 if (menu.TargetType == typeof(pages.CourseRoomPage))
                 {
                     //Application.Current.Properties["currentCID"] = menu.CID;

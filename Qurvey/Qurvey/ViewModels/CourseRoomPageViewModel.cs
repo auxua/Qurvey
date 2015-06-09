@@ -215,19 +215,24 @@ namespace Qurvey.ViewModels
 
 		~CourseRoomPageViewModel()
 		{
-			// Check the PanicTHread and end it if needed
-			if (this.panicThread != null)
-			{
-				try 
-				{
-					this.panicThread.Abort();
-				}
-				catch
-				{
-					// nothing
-				}
-			}
+            this.CancelWork();
 		}
+
+        public void CancelWork()
+        {
+            // Check the PanicTHread and end it if needed
+            if (this.panicThread != null)
+            {
+                try
+                {
+                    this.panicThread.Abort();
+                }
+                catch
+                {
+                    // nothing
+                }
+            }
+        }
 
 		private Thread panicThread;
 

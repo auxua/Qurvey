@@ -262,7 +262,7 @@ namespace Qurvey.api
                 return 0;
             }
 #else
-            IntResponse res = await CallBackendAsync<IntResponse>("countlastpanics", new CountPanicsRequest(course, since));
+            IntResponse res = await CallBackendAsync<IntResponse>("countpanics", new CountPanicsRequest(course, since));
             // In case of an error keep the App working
             if (res == default(IntResponse))
             {
@@ -290,7 +290,7 @@ namespace Qurvey.api
                 return 0;
             }
 #else
-            IntResponse res = await CallBackendAsync<IntResponse>("countpanics", new CountLastPanicsRequest(course, seconds));
+            IntResponse res = await CallBackendAsync<IntResponse>("countlastpanics", new CountLastPanicsRequest(course, seconds));
             // In case of an error keep the App working
             if (res == default(IntResponse))
             {
