@@ -56,6 +56,8 @@ namespace Qurvey.api
 						var content = sr.ReadToEnd();
 
 						T1 answer = JsonConvert.DeserializeObject<T1>(content);
+                        //http.Abort();
+                        http = null;
 						return answer;
 					}
 				}
@@ -102,6 +104,8 @@ namespace Qurvey.api
 							var content = sr.ReadToEnd();
 
 							res = JsonConvert.DeserializeObject<T1>(content);
+                            //http.Abort();
+                            http = null;
 							return res;
 						}
 
@@ -168,6 +172,8 @@ namespace Qurvey.api
                     var t = getPOSTResponse();
 
                     T1 response = JsonConvert.DeserializeObject<T1>(t);
+                    //wc.CancelAsync();
+                    wc = null;
                     return response;
 #else
 
@@ -225,11 +231,15 @@ namespace Qurvey.api
 				}
 				else
 				{
-					// For GET, use a simple httpClient
+                    
+                    // For GET, use a simple httpClient
 					HttpClient client = new HttpClient();
+                    
 					var response = client.GetAsync(new Uri(endpoint)).Result;
 					var result = response.Content.ReadAsStringAsync().Result;
 					T1 answer = JsonConvert.DeserializeObject<T1>(result);
+                    //client.CancelPendingRequests();
+                    client = null;
 					return answer;
 				}
 			}

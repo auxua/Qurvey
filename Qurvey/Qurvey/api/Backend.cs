@@ -220,8 +220,8 @@ namespace Qurvey.api
         public async static Task<Result[]> GetVoteResultByIDAsync(int surveyID)
         {
             //GetVoteResultResponse res = await CallBackendAsync<GetVoteResultResponse> ("getvoteresult", survey);
-            GetVoteResultResponse res = await CallBackendAsync<GetVoteResultResponse>(false, "getvoteresultbyid/"+surveyID, null);
-            //GetVoteResultResponse res = CallBackendSync<GetVoteResultResponse>(true, "getvoteresult", "");
+            //GetVoteResultResponse res = await CallBackendAsync<GetVoteResultResponse>(false, "getvoteresultbyid/"+surveyID, null);
+            GetVoteResultResponse res = CallBackendSync<GetVoteResultResponse>(false, "getvoteresultbyid/"+surveyID, null);
             if (res == null)
                 return new Result[0];
 

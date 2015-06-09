@@ -8,6 +8,9 @@ using Qurvey.Shared.Models;
 
 using Xamarin.Forms;
 using System.ComponentModel;
+using Newtonsoft.Json;
+using System.Net.Http;
+
 
 namespace Qurvey.pages
 {
@@ -103,6 +106,7 @@ namespace Qurvey.pages
             {
                 // WP will work hopefully that way
                 results = api.Backend.GetVoteResultByIDAsync(survey.Id).Result;
+
             }
             //var results = new Result[0];
 
