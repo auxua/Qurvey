@@ -33,7 +33,7 @@ namespace Qurvey.Backend
 
         [OperationContract]
         [WebGet(UriTemplate = "getvoteresultbyid/{surveyid}", ResponseFormat = WebMessageFormat.Json)]
-        GetVoteResultResponse GetVoteResultByID(int surveyID);
+        GetVoteResultResponse GetVoteResultByID(string surveyID);
 
         [OperationContract]
         [WebInvoke(Method = "POST", ResponseFormat = WebMessageFormat.Json, RequestFormat = WebMessageFormat.Json, BodyStyle = WebMessageBodyStyle.Bare, UriTemplate = "savevote")]

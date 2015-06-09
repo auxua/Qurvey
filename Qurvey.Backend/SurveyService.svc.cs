@@ -144,7 +144,7 @@ namespace Qurvey.Backend
             return new GetVoteResultResponse(res, error);
         }
 
-        public GetVoteResultResponse GetVoteResultByID(int surveyID)
+        public GetVoteResultResponse GetVoteResultByID(string surveyID)
         {
             Result[] res = null;
             string error = null;
@@ -158,7 +158,7 @@ namespace Qurvey.Backend
                 {
                     db.Configuration.LazyLoadingEnabled = false;
                     db.Configuration.ProxyCreationEnabled = false;
-                    res = db.getResultsFor(surveyID);
+                    res = db.getResultsFor(Convert.ToInt32(surveyID));
                 }
             }
             catch (Exception e)
