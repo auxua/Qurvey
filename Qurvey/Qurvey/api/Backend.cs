@@ -217,6 +217,21 @@ namespace Qurvey.api
             return res.Results;
         }
 
+        public async static Task<Result[]> GetVoteResultByIDAsync(int surveyID)
+        {
+            //GetVoteResultResponse res = await CallBackendAsync<GetVoteResultResponse> ("getvoteresult", survey);
+            GetVoteResultResponse res = await CallBackendAsync<GetVoteResultResponse>(false, "getvoteresultbyid/"+surveyID, null);
+            //GetVoteResultResponse res = CallBackendSync<GetVoteResultResponse>(true, "getvoteresult", "");
+            if (res == null)
+                return new Result[0];
+
+            if (!string.IsNullOrEmpty(res.ExceptionMessage))
+            {
+                throw new Exception(res.ExceptionMessage);
+            }
+            return res.Results;
+        }
+
         /// <summary>
         /// Gets the vote for a user-survey pair. Returns null if the user hasnt voted on this survey
         /// </summary>
@@ -307,6 +322,7 @@ namespace Qurvey.api
         public async static Task<User> CreateNewUserAsync()
         {
             UserResponse res = await CallBackendAsync<UserResponse>("createnewuser");
+            // What to do on Fails? (e.g. res == null)
             if (!string.IsNullOrEmpty(res.ExceptionMessage))
             {
                 throw new Exception(res.ExceptionMessage);
