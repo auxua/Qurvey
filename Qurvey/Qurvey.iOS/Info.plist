@@ -41,7 +41,7 @@
 	<key>UILaunchStoryboardName</key>
 	<string>LaunchScreen.storyboard</string>
 	<key>CFBundleShortVersionString</key>
-	<string></string>
+	<string>1</string>
 	<key>UIPrerenderedIcon</key>
 	<true/>
 </dict>

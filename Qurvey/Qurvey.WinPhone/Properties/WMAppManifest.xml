@@ -2,7 +2,7 @@
 <Deployment xmlns="http://schemas.microsoft.com/windowsphone/2012/deployment" AppPlatformVersion="8.0">
   <DefaultLanguage xmlns="" code="en-US" />
   <App xmlns="" ProductID="{63b5709a-a986-4678-ab57-17a74da8a1c5}" Title="Qurvey" RuntimeType="Silverlight" Version="1.0.0.0" Genre="apps.normal" Author="Tobias Räderscheidt &amp; Arno Schmetz" Description="The Qurvey App" Publisher="" PublisherID="{b554dca6-56d4-43af-9f85-f6d28821e55a}">
-    <IconPath IsRelative="true" IsResource="false">Assets\ApplicationIcon.png</IconPath>
+    <IconPath IsRelative="true" IsResource="false">Icon512.png</IconPath>
     <Capabilities>
       <Capability Name="ID_CAP_WEBBROWSERCOMPONENT" />
       <Capability Name="ID_CAP_NETWORKING" />
@@ -13,9 +13,9 @@
     <Tokens>
       <PrimaryToken TokenID="PhoneApp1Token" TaskName="_default">
         <TemplateFlip>
-          <SmallImageURI IsRelative="true" IsResource="false">Icon76.png</SmallImageURI>
+          <SmallImageURI IsRelative="true" IsResource="false">Icon152.png</SmallImageURI>
           <Count>0</Count>
-          <BackgroundImageURI IsRelative="true" IsResource="false">Icon80.png</BackgroundImageURI>
+          <BackgroundImageURI IsRelative="true" IsResource="false">Icon1024.png</BackgroundImageURI>
           <Title>Qurvey</Title>
           <BackContent>
           </BackContent>
