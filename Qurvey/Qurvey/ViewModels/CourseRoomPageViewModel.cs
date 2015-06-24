@@ -77,6 +77,29 @@ namespace Qurvey.ViewModels
 			}
 		}
 
+        private bool isCreated;
+
+        public bool IsCreated
+        {
+            get
+            {
+                return this.isCreated;
+            }
+            set
+            {
+                this.isCreated = value;
+                // Now, do some work
+                if (value)
+                {
+                    Thread t = new Thread(new ThreadStart(InitVM));
+                    t.Start();
+                }
+                RaisePropertyChanged("IsCreated");
+                
+                
+            }
+        }
+
 		private List<Survey> surveys;
 
 		public List<Survey> Surveys {
@@ -192,14 +215,15 @@ namespace Qurvey.ViewModels
 			this.navigation = navigation;
 			this.IsAdmin = App.isAdmin ();
 
-			LoadSurveys ();
+			//LoadSurveys ();
 
 			// Create Commands
 			this.refreshCommand = new Command (async () => await LoadSurveys ());
 			this.panicCommand = new Command (async () => await PanicExecute ());
 			this.createSurveyCommand = new Command (async () => await CreateSurveyExecute ());
 
-			// Start the panicThread if being admin
+			/*
+            // Start the panicThread if being admin
 			if (this.IsAdmin)
 			{
 				try {
@@ -210,8 +234,31 @@ namespace Qurvey.ViewModels
 				{
 					// should be mainly THreadState fails that may occur - just ignore it
 				}
-			}
+			}*/
+
+            this.IsCreated = true;
+            
 		}
+
+        private async void InitVM()
+        {
+            IsBusy = true;
+            await LoadSurveys();
+            // Start the panicThread if being admin
+            if (this.IsAdmin)
+            {
+                try
+                {
+                    this.panicThread = new Thread(new ThreadStart(panicWork));
+                    panicThread.Start();
+                }
+                catch (Exception ex)
+                {
+                    // should be mainly THreadState fails that may occur - just ignore it
+                }
+            }
+            IsBusy = false;
+        }
 
 		~CourseRoomPageViewModel()
 		{

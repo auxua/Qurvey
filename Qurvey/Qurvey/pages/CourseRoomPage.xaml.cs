@@ -33,6 +33,11 @@ namespace Qurvey.pages
             }
             else
             {
+                if (Device.OS == TargetPlatform.WinPhone)
+                {
+                    Device.BeginInvokeOnMainThread(() => DisplayAlert("Not supported", "Due to technical reasons, this Action is not supported on WindowsPhone at the moment.", "OK"));
+                    return;
+                }
                 sp = new SurveyPage(item);
             }
 			Navigation.PushAsync (sp);
