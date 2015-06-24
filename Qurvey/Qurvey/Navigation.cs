@@ -254,10 +254,11 @@ namespace Qurvey
 				//Source = "info.png",
 				HeightRequest = 30,
 			};
-            if (Device.OS != TargetPlatform.iOS)
+            /*if (Device.OS != TargetPlatform.iOS)
             {
                 image.SetBinding(Image.SourceProperty, "Icon");
-            }
+            }*/
+            image.SetBinding(Image.SourceProperty, "Icon");
 
 			var layout = new StackLayout {
 				Orientation = StackOrientation.Horizontal,
