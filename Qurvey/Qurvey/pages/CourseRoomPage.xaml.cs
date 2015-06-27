@@ -29,15 +29,15 @@ namespace Qurvey.pages
             Page sp;
             if (App.isAdmin())
             {
-                sp = new SurveyResultPage(item);
-            }
-            else
-            {
                 if (Device.OS == TargetPlatform.WinPhone)
                 {
                     Device.BeginInvokeOnMainThread(() => DisplayAlert("Not supported", "Due to technical reasons, this Action is not supported on WindowsPhone at the moment.", "OK"));
                     return;
                 }
+                sp = new SurveyResultPage(item);
+            }
+            else
+            {
                 sp = new SurveyPage(item);
             }
 			Navigation.PushAsync (sp);
