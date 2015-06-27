@@ -129,7 +129,7 @@ namespace Qurvey.ViewModels
 			}
 		}
 
-		public Color HighlightColor { get { return App.HighlightColor; } }
+		//public Color HighlightColor { get { return App.HighlightColor; } }
 
 		public event PropertyChangedEventHandler PropertyChanged;
 
