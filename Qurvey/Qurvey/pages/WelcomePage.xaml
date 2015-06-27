@@ -8,8 +8,6 @@
       <OnPlatform x:Key="textColor"
                   x:TypeArguments="Color"
                   Android="#FF4F45" />
-
-      <Font x:Key="font">Large</Font>
      </ResourceDictionary>
     </ContentPage.Resources>
 	<StackLayout Orientation="Vertical" VerticalOptions="StartAndExpand">
