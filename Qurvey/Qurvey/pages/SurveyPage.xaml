@@ -1,23 +1,28 @@
 ﻿<?xml version="1.0" encoding="UTF-8"?>
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms" xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml" x:Class="Qurvey.pages.SurveyPage" xmlns:converters="clr-namespace:Qurvey.Converters">
-<ContentPage.Resources>
+	<ContentPage.Resources>
 		<ResourceDictionary>
 			<converters:NegateBooleanConverter x:Key="negateConverter" />
 		</ResourceDictionary>
 	</ContentPage.Resources>
-	<StackLayout VerticalOptions="Fill" HorizontalOptions="CenterAndExpand" IsVisible="{Binding IsBusy}">
-		<ActivityIndicator IsRunning="{Binding IsBusy}" />
-		<Label Text="Loading this survey ..." />
-	</StackLayout>
-	<StackLayout VerticalOptions="Fill" HorizontalOptions="CenterAndExpand" Orientation="Vertical" IsVisible="{Binding IsBusy, Converter={StaticResource negateConverter}}">
-		<Label FontAttributes="Bold" FontSize="Large" Text="{Binding SurveyQuestion}" HorizontalOptions="Center" />
-		<ListView VerticalOptions="Start" ItemsSource="{Binding SurveyAnswers}" SelectedItem="{Binding UsersAnswer, Mode=TwoWay}">
-			<ListView.ItemTemplate>
-				<DataTemplate>
-					<TextCell Text="{Binding AnswerText}" />
-				</DataTemplate>
-			</ListView.ItemTemplate>
-		</ListView>
-		<Label HorizontalOptions="Center" Text="{Binding SurveyCreatedModified}" />
+	<StackLayout VerticalOptions="Fill" HorizontalOptions="CenterAndExpand" Orientation="Vertical">
+		<StackLayout VerticalOptions="Fill" HorizontalOptions="CenterAndExpand" IsVisible="{Binding IsBusy}">
+			<ActivityIndicator IsRunning="{Binding IsBusy}" />
+			<Label Text="Loading this survey ..." />
+		</StackLayout>
+		<StackLayout VerticalOptions="Fill" HorizontalOptions="CenterAndExpand" Orientation="Vertical" IsVisible="{Binding IsBusy, Converter={StaticResource negateConverter}}">
+			<Label FontAttributes="Bold" FontSize="Medium" Text="{Binding SurveyQuestion}" HorizontalOptions="Center" />
+			<ListView VerticalOptions="Start" ItemsSource="{Binding SurveyAnswers}" SelectedItem="{Binding UsersAnswer, Mode=TwoWay}">
+				<ListView.ItemTemplate>
+					<DataTemplate>
+						<TextCell Text="{Binding AnswerText}" />
+					</DataTemplate>
+				</ListView.ItemTemplate>
+			</ListView>
+			<StackLayout Orientation="Vertical" VerticalOptions="EndAndExpand">
+				<Label HorizontalOptions="Start" Text="{Binding SurveyCreated}" />
+				<Label HorizontalOptions="Start" Text="{Binding SurveyModified}" />
+			</StackLayout>
+		</StackLayout>
 	</StackLayout>
 </ContentPage>
