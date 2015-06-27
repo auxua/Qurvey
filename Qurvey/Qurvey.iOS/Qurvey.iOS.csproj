@@ -179,7 +179,7 @@
     <BundleResource Include="Resources\Icon-Small-50%402x.png" />
   </ItemGroup>
   <ItemGroup>
-    <BundleResource Include="Resources\appbar.list.select.png" />
+    <BundleResource Include="Resources\appbarlistselect.png" />
   </ItemGroup>
   <ItemGroup>
     <BundleResource Include="Resources\Icon%402x.png" />

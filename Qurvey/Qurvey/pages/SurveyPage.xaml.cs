@@ -20,6 +20,8 @@ namespace Qurvey.pages
 		public SurveyPage (Survey survey)
 		{
 			InitializeComponent ();
+            if (Device.OS == TargetPlatform.Android)
+                NavigationPage.SetTitleIcon(this, "opac.png");
 			BindingContext = new ViewModels.SurveyViewModel (survey);
 		}
 

@@ -31,6 +31,8 @@ namespace Qurvey.Navigation
 			mainGroup.Add (NavConfig);
 			mainGroup.Add (NavAuthorize);
 			//courseGroup.Add (NavCoursePage);
+            // Debugging...
+            //mainGroup.Add(NavCoursePage);
 
 			this.Add (mainGroup);
 			//this.Add (courseGroup);

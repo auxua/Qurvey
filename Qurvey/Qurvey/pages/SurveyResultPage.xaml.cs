@@ -25,6 +25,8 @@ namespace Qurvey.pages
         public SurveyResultPage (Survey survey)
 		{
 			//InitializeComponent ();
+            if (Device.OS == TargetPlatform.Android)
+                NavigationPage.SetTitleIcon(this, "opac.png");
             IsBusy = true;
 
             this.survey = survey;

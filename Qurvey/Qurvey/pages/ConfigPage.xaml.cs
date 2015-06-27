@@ -16,6 +16,8 @@ namespace Qurvey.pages
         public ConfigPage()
         {
             //InitializeComponent();
+            if (Device.OS == TargetPlatform.Android)
+                NavigationPage.SetTitleIcon(this, "opac.png");
 
             SwitchCell adminSwitch = new SwitchCell
             {

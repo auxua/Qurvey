@@ -28,7 +28,16 @@ namespace Qurvey.Navigation
 
 			Master = menuPage;
 			// Set default Detail page
-			Detail = new NavigationPage (new pages.WelcomePage ());
+            if (Device.OS == TargetPlatform.Android)
+            {
+                Detail = new NavigationPage(new pages.WelcomePage()) { BarBackgroundColor = Color.FromHex("FF4F45") };
+            }
+            else
+            {
+                Detail = new NavigationPage(new pages.WelcomePage());
+            }
+
+            
 		}
 			
 		/// <summary>
@@ -51,13 +60,51 @@ namespace Qurvey.Navigation
 						bc.CancelWork ();
 					}
 				}
-
+                // CourseRoomPages
 				if (menu.TargetType == typeof(pages.CourseRoomPage)) {
-					Detail = new NavigationPage (new pages.CourseRoomPage (menu.CID, menu.Title));
+                    if (Device.OS == TargetPlatform.Android)
+                    {
+                        Detail = new NavigationPage(new pages.CourseRoomPage(menu.CID, menu.Title)) { BarBackgroundColor = Color.FromHex("FF4F45") };
+                    }
+                    else
+                    {
+                        Detail = new NavigationPage(new pages.CourseRoomPage(menu.CID, menu.Title));
+                    }
 					IsPresented = false;
 					return;
 				}
-				Page displayPage = (Page)Activator.CreateInstance (menu.TargetType);
+				
+                //Special Pages - manually for BarColors
+                if (menu.TargetType == typeof(pages.ConfigPage))
+                {
+                    if (Device.OS == TargetPlatform.Android)
+                    {
+                        Detail = new NavigationPage(new pages.ConfigPage()) { BarBackgroundColor = Color.FromHex("FF4F45") };
+                    }
+                    else
+                    {
+                        Detail = new NavigationPage(new pages.ConfigPage());
+                    }
+                    IsPresented = false;
+                    return;
+                }
+
+                if (menu.TargetType == typeof(pages.WelcomePage))
+                {
+                    if (Device.OS == TargetPlatform.Android)
+                    {
+                        Detail = new NavigationPage(new pages.WelcomePage()) { BarBackgroundColor = Color.FromHex("FF4F45") };
+                    }
+                    else
+                    {
+                        Detail = new NavigationPage(new pages.WelcomePage());
+                    }
+                    IsPresented = false;
+                    return;
+                }
+
+                // Should never come here!
+                Page displayPage = (Page)Activator.CreateInstance (menu.TargetType);
 				Detail = new NavigationPage (displayPage);
 
 				IsPresented = false;
