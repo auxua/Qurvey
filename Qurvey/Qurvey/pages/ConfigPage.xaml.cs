@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using Qurvey.api.DataModel;
 
 using Xamarin.Forms;
+using Qurvey.Navigation;
 
 namespace Qurvey.pages
 {

@@ -14,7 +14,6 @@
     <Compile Include="$(MSBuildThisFileDirectory)api\DataModel.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)api\RESTCalls.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)App.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Navigation.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)pages\ConfigPage.xaml.cs">
       <DependentUpon>ConfigPage.xaml</DependentUpon>
       <SubType>Code</SubType>
@@ -45,6 +44,14 @@
     <Compile Include="$(MSBuildThisFileDirectory)Converters\NegateBooleanConverter.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ViewModels\SurveyViewModel.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Commands\DeleteSurveyCommand.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Navigation\RootPage.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Navigation\MenuPage.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Navigation\NavMenuItem.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Navigation\MenuImageCell.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Navigation\NavigationGroup.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Navigation\GroupedMenuListView.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Navigation\MenuListGroupedData.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Navigation\HeaderCell.cs" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="$(MSBuildThisFileDirectory)pages\ConfigPage.xaml">
@@ -80,5 +87,6 @@
   <ItemGroup>
     <Folder Include="$(MSBuildThisFileDirectory)Converters\" />
     <Folder Include="$(MSBuildThisFileDirectory)Commands\" />
+    <Folder Include="$(MSBuildThisFileDirectory)Navigation\" />
   </ItemGroup>
 </Project>

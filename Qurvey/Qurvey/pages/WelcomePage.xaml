@@ -9,7 +9,7 @@
 				<Label FontAttributes="Bold" FontSize="Large" VerticalOptions="CenterAndExpand" Text="Welcome to Qurvey" HorizontalOptions="Center" />
 				<StackLayout Orientation="Vertical" Padding="20, 20, 10, 5" HorizontalOptions="CenterAndExpand" IsVisible="{Binding PleaseAuth}">
 					<Label Text="You need to authorize the app. After clicking the button below you will be redirected to the authorization page of RWTH." />
-					<Button Text="Authorize this app" IsEnabled="{Binding !Authorizing}" Clicked="authButton_Clicked" />
+					<Button Text="Authorize this app" Clicked="authButton_Clicked" TextColor="#FF4F45" />
 					<ActivityIndicator IsRunning="{Binding Authorizing}" IsVisible="{Binding Authorizing}" />
 				</StackLayout>
 				<StackLayout Orientation="Vertical" Padding="20, 20, 10, 5" HorizontalOptions="CenterAndExpand" IsVisible="{Binding LoadingCourses}">

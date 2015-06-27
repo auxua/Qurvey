@@ -5,6 +5,7 @@ using System.Windows.Input;
 using Qurvey.api;
 using Qurvey.api.DataModel;
 using Xamarin.Forms;
+using Qurvey.Navigation;
 
 namespace Qurvey.ViewModels
 {
