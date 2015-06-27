@@ -47,14 +47,22 @@ namespace Qurvey.ViewModels
 				return Survey.Question;
 			}
 		}
-
-		// Necessary because Xamarin doesnt support multi binding
-		public string SurveyCreatedModified {
+			
+		public string SurveyCreated {
 			get {
 				if (Survey == null)
 					return "";
 
-				return string.Format ("Created at {0} Last modified at {1}", Survey.Created, Survey.Modified);
+				return string.Format ("Survey was created at {0}", Survey.Created);
+			}
+		}
+
+		public string SurveyModified{
+			get {
+				if (Survey == null)
+					return "";
+
+				return string.Format ("Survey was last modified at {0}", Survey.Modified);
 			}
 		}
 
