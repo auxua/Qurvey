@@ -24,7 +24,7 @@ namespace Qurvey.Navigation
 		}
 
 		public static bool HasCourses {
-			get { return NumberOfCourses >= 2; }
+			get { return NumberOfCourses >= 1; }
 		}
 
 		public static void AddCourseToMenu(string cid, string title) {
