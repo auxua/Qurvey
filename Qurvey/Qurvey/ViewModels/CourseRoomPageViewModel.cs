@@ -95,8 +95,6 @@ namespace Qurvey.ViewModels
                     t.Start();
                 }
                 RaisePropertyChanged("IsCreated");
-                
-                
             }
         }
 
@@ -121,6 +119,8 @@ namespace Qurvey.ViewModels
 				return this.Surveys.Count == 0;
 			}
 		}
+
+		public Color HighlightColor { get { return App.HighlightColor; } }
 
 		public event PropertyChangedEventHandler PropertyChanged;
 

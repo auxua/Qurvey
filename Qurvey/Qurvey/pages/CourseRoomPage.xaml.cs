@@ -45,6 +45,11 @@ namespace Qurvey.pages
         }
 
 		public void OnDelete (object sender, EventArgs e) {
+			if (!App.isAdmin ()) {
+				Device.BeginInvokeOnMainThread(() => DisplayAlert("Forbidden", "Only course managers can delete surveys", "OK"));
+				return;
+			}
+				
 			//Xamarin doesnt support the necessary Bindings
 			var mi = (MenuItem)sender;
 			Survey survey = (Survey)mi.CommandParameter;

@@ -5,8 +5,8 @@
 			<converters:NegateBooleanConverter x:Key="negateConverter" />
 		</ResourceDictionary>
 	</ContentPage.Resources>
-	<StackLayout VerticalOptions="Fill" HorizontalOptions="CenterAndExpand" IsVisible="{Binding IsBusy}">
-		<ActivityIndicator IsRunning="{Binding IsBusy}" />
+	<StackLayout VerticalOptions="Fill" HorizontalOptions="CenterAndExpand" Orientation="Vertical" IsVisible="{Binding IsBusy}">
+		<ActivityIndicator IsRunning="{Binding IsBusy}" IsVisible="{Binding IsBusy}" />
 		<Label Text="Loading surveys ..." />
 	</StackLayout>
 	<StackLayout VerticalOptions="Fill" HorizontalOptions="CenterAndExpand" Orientation="Vertical" IsVisible="{Binding IsBusy, Converter={StaticResource negateConverter}}">
@@ -14,6 +14,7 @@
 		<Button Text="Refresh" Command="{Binding RefreshCommand}" />
 		<!---<Label FontAttributes="None" FontSize="Medium" Text="{Binding Status}" HorizontalOptions="Center" VerticalOptions="CenterAndExpand" /> -->
 		<Label FontAttributes="None" FontSize="Medium" Text="There are no Surveys for this course" HorizontalOptions="CenterAndExpand" VerticalOptions="CenterAndExpand" IsVisible="{Binding NoSurveys}" />
+		<Label FontAttributes="None" FontSize="Medium" Text="Please select a survey below" HorizontalOptions="CenterAndExpand" VerticalOptions="CenterAndExpand" IsVisible="{Binding NoSurveys, Converter={StaticResource negateConverter}}" TextColor="{Binding HighlightColor}" />
 		<ListView x:Name="surveyListView" ItemsSource="{Binding Surveys}" ItemTapped="SurveyList_ItemTapped" IsVisible="{Binding NoSurveys, Converter={StaticResource negateConverter}}">
 			<ListView.ItemTemplate>
 				<DataTemplate>
@@ -26,7 +27,7 @@
 				</DataTemplate>
 			</ListView.ItemTemplate>
 		</ListView>
-		<Button Text="Panic!" IsVisible="{Binding IsAdmin, Converter={StaticResource negateConverter}}" Command="{Binding PanicCommand}" BackgroundColor="Red" TextColor="White" FontAttributes="Bold" VerticalOptions="EndAndExpand" />
+		<Button Text="Panic!" IsVisible="{Binding IsAdmin, Converter={StaticResource negateConverter}}" Command="{Binding PanicCommand}" BackgroundColor="{Binding HighlightColor}" TextColor="White" FontAttributes="Bold" VerticalOptions="EndAndExpand" />
 		<Button Text="Create New Survey" IsVisible="{Binding IsAdmin}" Command="{Binding CreateSurveyCommand}" BackgroundColor="Green" TextColor="White" FontAttributes="Bold" VerticalOptions="EndAndExpand" />
 	</StackLayout>
 </ContentPage>
