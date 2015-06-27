@@ -119,6 +119,7 @@
     <None Include="Properties\WMAppManifest.xml">
       <SubType>Designer</SubType>
     </None>
+    <Content Include="appbar.list.select.png" />
     <Content Include="Icon1024.png" />
     <Content Include="Icon152.png" />
     <Content Include="Icon512.png" />
@@ -130,6 +131,7 @@
     <Content Include="list.png" />
     <Content Include="README_FIRST.txt" />
     <Content Include="info.png" />
+    <Content Include="settingsPadded.png" />
     <Content Include="SplashScreenImage.jpg">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>

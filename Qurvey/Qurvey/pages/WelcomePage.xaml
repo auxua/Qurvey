@@ -3,13 +3,22 @@
 	<ContentPage.Padding>
         30, 20, 20, 0
     </ContentPage.Padding>
+    <ContentPage.Resources>
+     <ResourceDictionary>
+      <OnPlatform x:Key="textColor"
+                  x:TypeArguments="Color"
+                  Android="#FF4F45" />
+
+      <Font x:Key="font">Large</Font>
+     </ResourceDictionary>
+    </ContentPage.Resources>
 	<StackLayout Orientation="Vertical" VerticalOptions="StartAndExpand">
 		<ScrollView Orientation="Vertical" VerticalOptions="StartAndExpand">
 			<StackLayout Orientation="Vertical" VerticalOptions="StartAndExpand" Spacing="50">
 				<Label FontAttributes="Bold" FontSize="Large" VerticalOptions="CenterAndExpand" Text="Welcome to Qurvey" HorizontalOptions="Center" />
 				<StackLayout Orientation="Vertical" Padding="20, 20, 10, 5" HorizontalOptions="CenterAndExpand" IsVisible="{Binding PleaseAuth}">
 					<Label Text="You need to authorize the app. After clicking the button below you will be redirected to the authorization page of RWTH." />
-					<Button Text="Authorize this app" Clicked="authButton_Clicked" TextColor="#FF4F45" />
+					<Button Text="Authorize this app" Clicked="authButton_Clicked" TextColor="{StaticResource textColor}" />
 					<ActivityIndicator IsRunning="{Binding Authorizing}" IsVisible="{Binding Authorizing}" />
 				</StackLayout>
 				<StackLayout Orientation="Vertical" Padding="20, 20, 10, 5" HorizontalOptions="CenterAndExpand" IsVisible="{Binding LoadingCourses}">
