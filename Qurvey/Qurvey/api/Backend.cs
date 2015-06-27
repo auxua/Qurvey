@@ -1,16 +1,10 @@
-﻿// FAKE forces the backend to provide fake-survey data for debugging purpose
-//#define FAKE
-
-using System;
+﻿using System;
 using Qurvey.Shared.Models;
 using Qurvey.Shared.Response;
 using System.Threading.Tasks;
 using Newtonsoft.Json;
 using System.Collections.Generic;
 using Qurvey.Shared.Request;
-using System.Net.Http;
-using System.Net;
-using System.IO;
 
 namespace Qurvey.api
 {
@@ -107,76 +101,14 @@ namespace Qurvey.api
         /// </summary>
         /// <returns>The surveys</returns>
         /// <param name="course">Course.</param>
-        public async static Task<Survey[]> GetSurveysAsync(string course)
+		public async static Task<List<Survey>> GetSurveysAsync(string course)
         {
-#if FAKE
-            Survey s1 = new Survey("Isn't it a great app?");
-            s1.Created = DateTime.Now;
-            s1.Modified = DateTime.Now.AddSeconds(1);
-            s1.Status = Survey.SurveyStatus.Published;
-            s1.Answers = new List<Answer>();
-            s1.Answers.Add(new Answer("YES!"));
-            s1.Answers.Add(new Answer("Maybe"));
-            s1.Answers.Add(new Answer("Not really!"));
-            s1.Answers.Add(new Answer("I like Cookies!"));
-
-            Survey s2 = new Survey("Questions should not be too long because it just looks a bit creepy and nobody will read it...");
-            s2.Created = DateTime.Now;
-            s2.Modified = DateTime.Now.AddSeconds(2);
-            s2.Status = Survey.SurveyStatus.Published;
-            s2.Answers = new List<Answer>();
-            s2.Answers.Add(new Answer("Right!"));
-            s2.Answers.Add(new Answer("Maybe.."));
-            s2.Answers.Add(new Answer("I think the same should hold for answers but I#m just a little student..."));
-
-            Survey[] surveys = new Survey[2] { s1, s2 };
-			return surveys;
-#else
             GetSurveysResponse res = await CallBackendAsync<GetSurveysResponse>("getsurveys/" + course);
-
-            /*string endpoint = "http://qurvey12.azurewebsites.net/SurveyService.svc/" + "getsurveys/"+ course;
-            HttpClient client = new HttpClient();
-            var response = await client.GetAsync(new Uri(endpoint));
-            var result = await response.Content.ReadAsStringAsync();
-            GetSurveysResponse res = JsonConvert.DeserializeObject<GetSurveysResponse>(result);*/
-
-            // Do it this manual way to avoid Caching mechanisms!
-            /*GetSurveysResponse res = null;
-
-            try
-            {
-                
-
-                var http = (HttpWebRequest)WebRequest.Create(new Uri("http://qurvey12.azurewebsites.net/SurveyService.svc/" + "getsurveys/" + course));
-                //http.Accept = "application/json";
-                //http.ContentType = "text/xml; encoding='utf-8'";
-                http.Method = "GET";
-
-                if (http.Headers == null)
-                    http.Headers = new WebHeaderCollection();
-
-                http.Headers[HttpRequestHeader.IfModifiedSince] = DateTime.UtcNow.ToString("r");
-
-                using (var response = await Task.Factory.FromAsync<WebResponse>(http.BeginGetResponse,
-                                 http.EndGetResponse, null))
-                {
-                    var stream = response.GetResponseStream();
-                    var sr = new StreamReader(stream);
-                    var content = sr.ReadToEnd();
-
-                    res = JsonConvert.DeserializeObject<GetSurveysResponse>(content);
-                }
-            }
-            catch (Exception)
-            {
-
-            }*/
             if (!string.IsNullOrEmpty(res.ExceptionMessage))
             {
                 throw new Exception(res.ExceptionMessage);
             }
-            return res.Surveys;
-#endif
+			return new List<Survey>(res.Surveys);
         }
 
         /// <summary>
@@ -204,9 +136,7 @@ namespace Qurvey.api
         /// <param name="survey">Survey.</param>
         public async static Task<Result[]> GetVoteResultAsync(Survey survey)
         {
-            //GetVoteResultResponse res = await CallBackendAsync<GetVoteResultResponse> ("getvoteresult", survey);
             GetVoteResultResponse res = CallBackendSync<GetVoteResultResponse>(true, "getvoteresult", survey);
-            //GetVoteResultResponse res = CallBackendSync<GetVoteResultResponse>(true, "getvoteresult", "");
             if (res == null)
                 return new Result[0];
 
@@ -219,8 +149,6 @@ namespace Qurvey.api
 
         public async static Task<Result[]> GetVoteResultByIDAsync(int surveyID)
         {
-            //GetVoteResultResponse res = await CallBackendAsync<GetVoteResultResponse> ("getvoteresult", survey);
-            //GetVoteResultResponse res = await CallBackendAsync<GetVoteResultResponse>(false, "getvoteresultbyid/"+surveyID, null);
             GetVoteResultResponse res = CallBackendSync<GetVoteResultResponse>(false, "getvoteresultbyid/"+surveyID, null);
             if (res == null)
                 return new Result[0];
@@ -265,18 +193,6 @@ namespace Qurvey.api
         /// <param name="since">The DateTime since</param>
         public async static Task<int> CountPanicsAsync(string course, DateTime since)
         {
-            // TODO:
-#if FAKE
-            var ran = new System.Random();
-            if (ran.Next(100) > 60)
-            {
-                return 7;
-            }
-            else
-            {
-                return 0;
-            }
-#else
             IntResponse res = await CallBackendAsync<IntResponse>("countpanics", new CountPanicsRequest(course, since));
             // In case of an error keep the App working
             if (res == default(IntResponse))
@@ -288,23 +204,10 @@ namespace Qurvey.api
                 throw new Exception(res.ExceptionMessage);
             }
             return res.Int;
-#endif
         }
 
         public async static Task<int> CountLastPanics(string course, int seconds)
         {
-            // TODO:
-#if FAKE
-            var ran = new System.Random();
-            if (ran.Next(100) > 60)
-            {
-                return 7;
-            }
-            else
-            {
-                return 0;
-            }
-#else
             IntResponse res = await CallBackendAsync<IntResponse>("countlastpanics", new CountLastPanicsRequest(course, seconds));
             // In case of an error keep the App working
             if (res == default(IntResponse))
@@ -316,7 +219,6 @@ namespace Qurvey.api
                 throw new Exception(res.ExceptionMessage);
             }
             return res.Int;
-#endif
         }
 
         public async static Task<User> CreateNewUserAsync()
@@ -330,5 +232,4 @@ namespace Qurvey.api
             return res.User;
         }
     }
-
 }

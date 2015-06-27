@@ -6,9 +6,9 @@
 		</ResourceDictionary>
 	</ContentPage.Resources>
 	<StackLayout VerticalOptions="Fill" HorizontalOptions="CenterAndExpand" Orientation="Vertical">
-		<StackLayout VerticalOptions="Fill" HorizontalOptions="CenterAndExpand" IsVisible="{Binding IsBusy}">
+		<StackLayout VerticalOptions="CenterAndExpand" HorizontalOptions="CenterAndExpand" Orientation="Vertical" IsVisible="{Binding IsBusy}">
 			<ActivityIndicator IsRunning="{Binding IsBusy}" />
-			<Label Text="Loading this survey ..." />
+			<Label FontAttributes="None" FontSize="Medium" HorizontalOptions="CenterAndExpand" VerticalOptions="CenterAndExpand" Text="Loading this survey ..." />
 		</StackLayout>
 		<StackLayout VerticalOptions="Fill" HorizontalOptions="CenterAndExpand" Orientation="Vertical" IsVisible="{Binding IsBusy, Converter={StaticResource negateConverter}}">
 			<Label FontAttributes="Bold" FontSize="Medium" Text="{Binding SurveyQuestion}" HorizontalOptions="Center" />

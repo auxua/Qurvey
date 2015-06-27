@@ -117,6 +117,18 @@ namespace Qurvey.ViewModels
 			}
 		}
 
+		private bool isRefreshing = false;
+
+		public bool IsRefreshing {
+			get {
+				return this.isRefreshing;
+			}
+			set {
+				this.isRefreshing = value;
+				RaisePropertyChanged ("IsRefreshing");
+			}
+		}
+
 		public Color HighlightColor { get { return App.HighlightColor; } }
 
 		public event PropertyChangedEventHandler PropertyChanged;
@@ -158,21 +170,9 @@ namespace Qurvey.ViewModels
 
 		private async Task LoadSurveys ()
 		{
-			IsBusy = true;
-			Survey[] sur = await api.Backend.GetSurveysAsync (cid);
-			Surveys = new List<Survey> (sur);
-			/*
-			// No Surveys available?
-			if (sur == null) {
-				return; // TODO throw error?
-			}
-			// If there are Surveys, add them!
-			foreach (Survey survey in sur) {
-				lSurveys.Add (survey);
-			}
-			Surveys = lSurveys;*/
-			Status = "Refreshed Surveys";
-			IsBusy = false;
+			List<Survey> sur = await api.Backend.GetSurveysAsync (cid);
+			Surveys = sur;
+			IsRefreshing = false;
 		}
 
 		protected async Task PanicExecute ()
@@ -286,14 +286,13 @@ namespace Qurvey.ViewModels
 				while (true) {
 					// Wait 30 sec.
 					Thread.Sleep (60 * 1000);
-					Survey[] sur = api.Backend.GetSurveysAsync (cid).Result;
-					if(sur.Length != Surveys.Count) {
-						Surveys = new List<Survey>(sur);
+					List<Survey> sur = api.Backend.GetSurveysAsync (cid).Result;
+					if(sur.Count != Surveys.Count) {
+						Surveys = sur;
 					}
 				}
 			} catch (Exception ex) {
 				// just die... TODO do something about it
-				Device.BeginInvokeOnMainThread (() => App.Current.MainPage.DisplayAlert ("Exception", ex.Message, "OK"));
 			}
 		}
 
