@@ -24,7 +24,7 @@ namespace Qurvey.Navigation
 		}
 
 		public static bool HasCourses {
-			get { return NumberOfCourses >= 2; }
+			get { return NumberOfCourses >= 1; }
 		}
 
 		public static void AddCourseToMenu(string cid, string title) {
@@ -33,7 +33,8 @@ namespace Qurvey.Navigation
 
 		public MenuPage ()
 		{
-			Icon = "list.png";
+			Icon = "appbarlistselect.png";
+            //Icon = "list.png";
 			Title = "Navigation"; // The Title property must be set.
 			// Use RWTH-Blue for Background
 			BackgroundColor = Color.FromHex ("00549F");
