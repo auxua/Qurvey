@@ -108,7 +108,9 @@
     <Content Include="Properties\AndroidManifest.xml" />
     <AndroidResource Include="Resources\Drawable\info.png" />
     <AndroidResource Include="Resources\Drawable\list.png" />
+    <AndroidResource Include="Resources\Drawable\orangeappbarlistselect.png" />
     <AndroidResource Include="Resources\Drawable\appbarlistselect.png" />
+    <AndroidResource Include="Resources\Drawable\opac.png" />
   </ItemGroup>
   <Import Project="..\Qurvey\Qurvey.projitems" Label="Shared" Condition="Exists('..\Qurvey\Qurvey.projitems')" />
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\Android\Xamarin.Android.CSharp.targets" />

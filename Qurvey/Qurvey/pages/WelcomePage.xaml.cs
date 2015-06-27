@@ -9,6 +9,11 @@ namespace Qurvey.pages
 		public WelcomePage ()
 		{
 			InitializeComponent ();
+            // Not tested completely because Android Auth. is not working anymore!
+            //NavigationPage.SetTitleIcon(this, "l2plogo.png");
+            if (Device.OS == TargetPlatform.Android)
+                NavigationPage.SetTitleIcon(this, "opac.png");
+            
 			BindingContext = new WelcomeViewModel ();
 		}
 

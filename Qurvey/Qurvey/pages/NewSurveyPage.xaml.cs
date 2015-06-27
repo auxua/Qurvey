@@ -21,7 +21,8 @@ namespace Qurvey.pages
         public NewSurveyPage (string CID)
 		{
 			//InitializeComponent ();
-
+            if (Device.OS == TargetPlatform.Android)
+                NavigationPage.SetTitleIcon(this, "opac.png");
             cid = CID;
 
             Label titleLabel = new Label

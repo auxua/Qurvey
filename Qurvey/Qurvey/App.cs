@@ -91,7 +91,7 @@ namespace Qurvey
             Application.Current.SavePropertiesAsync();
         }
 
-		public static Color HighlightColor { get { return Color.FromHex ("#FF4F45"); } }
+		//public static Color HighlightColor { get { return Color.FromHex ("#FF4F45"); } }
 
         #endregion
     }

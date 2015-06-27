@@ -16,6 +16,8 @@ namespace Qurvey.pages
 		public CourseRoomPage (string course, string title)
 		{
 			InitializeComponent ();
+            if (Device.OS == TargetPlatform.Android)
+                NavigationPage.SetTitleIcon(this, "opac.png");
 			BindingContext = new CourseRoomPageViewModel(course, title, this.Navigation);
 		}
 
