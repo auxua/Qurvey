@@ -8,7 +8,6 @@ namespace Qurvey.Navigation
 		public MenuListGroupedData ()
 		{
 			NavigationGroup mainGroup = new NavigationGroup ("Main Menu");
-			NavigationGroup courseGroup = new NavigationGroup ("Courses");
 
 			NavMenuItem NavConfig = new NavMenuItem () {
 				Title = "Welcome",
@@ -22,19 +21,38 @@ namespace Qurvey.Navigation
 				TargetType = typeof(pages.ConfigPage)
 			};
 
-			NavMenuItem NavCoursePage = new NavMenuItem () {
+			/*NavMenuItem NavCoursePage = new NavMenuItem () {
 				Title = "Course Page",
 				Icon = "l2plogo.png",
 				CID = "14ws-44149",
 				TargetType = typeof(pages.CourseRoomPage)
-			};
+			};*/
 
 			mainGroup.Add (NavConfig);
 			mainGroup.Add (NavAuthorize);
-			courseGroup.Add (NavCoursePage);
+			//courseGroup.Add (NavCoursePage);
 
 			this.Add (mainGroup);
-			this.Add (courseGroup);
+			//this.Add (courseGroup);
+		}
+
+		public bool HasCoursesGroup { get { return this.Count > 1; } }
+
+		public NavigationGroup CourseGroup {
+			get { 
+				if (!HasCoursesGroup)
+					AddCoursesGroup ();
+
+				return this [1]; 
+			} 
+		}
+
+		protected void AddCoursesGroup ()
+		{
+			if (!HasCoursesGroup) {
+				NavigationGroup courseGroup = new NavigationGroup ("Courses");
+				this.Add (courseGroup);
+			}
 		}
 	}
 }

@@ -30,8 +30,7 @@ namespace Qurvey.Navigation
 			// Set default Detail page
 			Detail = new NavigationPage (new pages.WelcomePage ());
 		}
-
-
+			
 		/// <summary>
 		/// Depending on the selected item, go to the corresponding page
 		/// </summary>
@@ -67,7 +66,6 @@ namespace Qurvey.Navigation
 					DisplayAlert ("Error", "Could not load Page: " + e.Message, "Damn!");
 				});
 			}
-
 		}
 	}
 }

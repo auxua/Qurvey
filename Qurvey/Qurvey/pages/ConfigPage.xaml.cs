@@ -110,7 +110,7 @@ namespace Qurvey.pages
                 return;
             }
 
-            MenuPage.ClearMenu();
+            MenuPage.ClearCoursesMenu();
             foreach (L2PCourseInfoData l2pcourse in courses.dataset)
             {
                 MenuPage.AddCourseToMenu(l2pcourse.uniqueid, l2pcourse.courseTitle);

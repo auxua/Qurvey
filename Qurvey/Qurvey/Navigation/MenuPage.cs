@@ -10,41 +10,25 @@ namespace Qurvey.Navigation
 	/// </summary>
 	public class MenuPage : ContentPage
 	{
-		//public MenuListView Menu { get; set; }
 		public GroupedMenuListView Menu { get; set; }
 
-		//public MenuListView CoursesMenu { get; set; }
+		public static MenuListGroupedData MenuItems = new MenuListGroupedData ();
 
-		public static ObservableCollection<NavigationGroup> MenuItems = new MenuListGroupedData ();
-
-		public static void ClearMenu ()
+		public static void ClearCoursesMenu ()
 		{
-			MenuItems [1].Clear ();
-		}
-
-		public static void AddCourseToMenu (string cid, string title)
-		{
-			NavigationGroup group = MenuItems [1];
-
-			if (group.ContainsCID (cid)) {
-				return;
-			}
-			// Add the Course to the Menu
-			NavMenuItem newCourse = new NavMenuItem ();
-			newCourse.CID = cid;
-			newCourse.Icon = "l2plogo.png";
-			newCourse.TargetType = typeof(pages.CourseRoomPage);
-			newCourse.Title = title;
-			group.Add (newCourse);
-
+			MenuItems.CourseGroup.Clear ();
 		}
 
 		public static int NumberOfCourses {
-			get{ return MenuItems [1].Count; }
+			get{ return MenuItems.CourseGroup.Count; }
 		}
 
 		public static bool HasCourses {
 			get { return NumberOfCourses >= 2; }
+		}
+
+		public static void AddCourseToMenu(string cid, string title) {
+			MenuItems.CourseGroup.AddCourse (cid, title);
 		}
 
 		public MenuPage ()

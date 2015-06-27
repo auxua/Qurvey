@@ -23,5 +23,19 @@ namespace Qurvey.Navigation
 		{
 			GroupName = gTitle;
 		}
+
+		public void AddCourse (string cid, string title)
+		{
+			if (ContainsCID (cid)) {
+				return;
+			}
+			// Add the Course to the Menu
+			NavMenuItem newCourse = new NavMenuItem ();
+			newCourse.CID = cid;
+			newCourse.Icon = "l2plogo.png";
+			newCourse.TargetType = typeof(pages.CourseRoomPage);
+			newCourse.Title = title;
+			Add (newCourse);
+		}
 	}
 }
