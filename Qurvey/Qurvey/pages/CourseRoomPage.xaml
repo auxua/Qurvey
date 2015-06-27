@@ -31,7 +31,7 @@
 					</DataTemplate>
 				</ListView.ItemTemplate>
 			</ListView>
-			<Button Text="Panic!" IsVisible="{Binding IsAdmin, Converter={StaticResource negateConverter}}" Command="{Binding PanicCommand}" BackgroundColor="{Binding HighlightColor}" TextColor="White" FontAttributes="Bold" VerticalOptions="EndAndExpand" />
+			<Button Text="Panic!" IsVisible="{Binding IsAdmin, Converter={StaticResource negateConverter}}" Command="{Binding PanicCommand}" BackgroundColor="{StaticResource textColor}" TextColor="White" FontAttributes="Bold" VerticalOptions="EndAndExpand" />
 			<Button Text="Create New Survey" IsVisible="{Binding IsAdmin}" Command="{Binding CreateSurveyCommand}" BackgroundColor="Green" TextColor="White" FontAttributes="Bold" VerticalOptions="EndAndExpand" />
 		</StackLayout>
 	</StackLayout>
