@@ -8,6 +8,7 @@ using Qurvey.api;
 using Qurvey.pages;
 using Qurvey.Shared.Models;
 using Xamarin.Forms;
+using System.Linq;
 
 namespace Qurvey.ViewModels
 {
@@ -77,26 +78,22 @@ namespace Qurvey.ViewModels
 			}
 		}
 
-        private bool isCreated;
+		private bool isCreated;
 
-        public bool IsCreated
-        {
-            get
-            {
-                return this.isCreated;
-            }
-            set
-            {
-                this.isCreated = value;
-                // Now, do some work
-                if (value)
-                {
-                    Thread t = new Thread(new ThreadStart(InitVM));
-                    t.Start();
-                }
-                RaisePropertyChanged("IsCreated");
-            }
-        }
+		public bool IsCreated {
+			get {
+				return this.isCreated;
+			}
+			set {
+				this.isCreated = value;
+				// Now, do some work
+				if (value) {
+					Thread t = new Thread (new ThreadStart (InitVM));
+					t.Start ();
+				}
+				RaisePropertyChanged ("IsCreated");
+			}
+		}
 
 		private List<Survey> surveys;
 
@@ -163,8 +160,8 @@ namespace Qurvey.ViewModels
 		{
 			IsBusy = true;
 			Survey[] sur = await api.Backend.GetSurveysAsync (cid);
-			var lSurveys = new List<Survey> ();
-            
+			Surveys = new List<Survey> (sur);
+			/*
 			// No Surveys available?
 			if (sur == null) {
 				return; // TODO throw error?
@@ -173,7 +170,7 @@ namespace Qurvey.ViewModels
 			foreach (Survey survey in sur) {
 				lSurveys.Add (survey);
 			}
-			Surveys = lSurveys;
+			Surveys = lSurveys;*/
 			Status = "Refreshed Surveys";
 			IsBusy = false;
 		}
@@ -191,7 +188,8 @@ namespace Qurvey.ViewModels
 			}
 		}
 
-		public async Task DeleteSurveyExecute (Survey s) {
+		public async Task DeleteSurveyExecute (Survey s)
+		{
 			await Backend.DeleteSurveyAsync (s);
 			await LoadSurveys ();
 		}
@@ -215,96 +213,95 @@ namespace Qurvey.ViewModels
 			this.navigation = navigation;
 			this.IsAdmin = App.isAdmin ();
 
-			//LoadSurveys ();
-
 			// Create Commands
 			this.refreshCommand = new Command (async () => await LoadSurveys ());
 			this.panicCommand = new Command (async () => await PanicExecute ());
 			this.createSurveyCommand = new Command (async () => await CreateSurveyExecute ());
 
-			/*
-            // Start the panicThread if being admin
-			if (this.IsAdmin)
-			{
-				try {
-					this.panicThread = new Thread (new ThreadStart (panicWork));
-					panicThread.Start();
-				}
-				catch (Exception ex)
-				{
-					// should be mainly THreadState fails that may occur - just ignore it
-				}
-			}*/
-
-            this.IsCreated = true;
+			this.IsCreated = true;
             
 		}
 
-        private async void InitVM()
-        {
-            IsBusy = true;
-            await LoadSurveys();
-            // Start the panicThread if being admin
-            if (this.IsAdmin)
-            {
-                try
-                {
-                    this.panicThread = new Thread(new ThreadStart(panicWork));
-                    panicThread.Start();
-                }
-                catch (Exception ex)
-                {
-                    // should be mainly THreadState fails that may occur - just ignore it
-                }
-            }
-            IsBusy = false;
-        }
-
-		~CourseRoomPageViewModel()
+		private async void InitVM ()
 		{
-            this.CancelWork();
+			IsBusy = true;
+			await LoadSurveys ();
+			// Start the panicThread if being admin
+			if (this.IsAdmin) {
+				try {
+					this.panicThread = new Thread (new ThreadStart (panicWork));
+					panicThread.Start ();
+				} catch (Exception ex) {
+					// should be mainly ThreadState fails that may occur - just ignore it
+				}
+			} else { // else start the refreshThread
+				try {
+					this.refreshThread = new Thread (new ThreadStart (refreshWork));
+					refreshThread.Start ();
+				} catch (Exception ex) {
+					// should be mainly ThreadState fails that may occur - just ignore it
+				}
+			}
+			IsBusy = false;
 		}
 
-        public void CancelWork()
-        {
-            // Check the PanicTHread and end it if needed
-            if (this.panicThread != null)
-            {
-                try
-                {
-                    this.panicThread.Abort();
-                }
-                catch
-                {
-                    // nothing
-                }
-            }
-        }
+		~CourseRoomPageViewModel ()
+		{
+			this.CancelWork ();
+		}
+
+		public void CancelWork ()
+		{
+			// Check the threads and end it if needed
+			try {
+				if (this.panicThread != null)
+					this.panicThread.Abort ();
+
+				if (this.refreshThread != null)
+					this.refreshThread.Abort ();
+			} catch {
+				// nothing // TODO do something about it
+			}
+		}
 
 		private Thread panicThread;
+		private Thread refreshThread;
 
-		protected void panicWork() 
+		protected void panicWork ()
 		{
 			try {
-				while (true)
-				{
+				while (true) {
 					// Wait 30 sec.
 					Thread.Sleep (30 * 1000);
 					getLastPanicsAsync ();
 				}
-			}
-			catch (Exception ex)
-			{
-				// just die...
+			} catch (Exception ex) {
+				// just die... TODO do something about it
 			}
 		}
 
-		protected async void getLastPanicsAsync()
+		protected void refreshWork () // TODO test this
 		{
-			int result = await Backend.CountPanicsAsync(CID,DateTime.Now.AddMinutes(-1));
-            //int result = await Backend.CountLastPanicsAsync(CID, 60);
-			if (result > 1)
-			{
+			try {
+				while (true) {
+					// Wait 30 sec.
+					Thread.Sleep (60 * 1000);
+					Survey[] sur = api.Backend.GetSurveysAsync (cid).Result;
+					if(sur.Length != Surveys.Count) {
+						Surveys = new List<Survey>(sur);
+					}
+				}
+			} catch (Exception ex) {
+				// just die... TODO do something about it
+				Device.BeginInvokeOnMainThread (() => App.Current.MainPage.DisplayAlert ("Exception", ex.Message, "OK"));
+			}
+		}
+
+		protected async void getLastPanicsAsync ()
+		{
+			int result = await Backend.CountPanicsAsync (CID, DateTime.Now.AddMinutes (-1));
+			//int result = await Backend.CountLastPanicsAsync(CID, 60);
+			if (result > 1) {
 				Device.BeginInvokeOnMainThread (() => App.Current.MainPage.DisplayAlert ("PANIC!", "Multiple people pressed the Panic button in the last 60 seconds!", "OK"));
 			}
 		}

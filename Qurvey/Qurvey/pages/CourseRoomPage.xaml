@@ -12,7 +12,7 @@
 		</StackLayout>
 		<StackLayout VerticalOptions="Fill" HorizontalOptions="CenterAndExpand" Orientation="Vertical" IsVisible="{Binding IsBusy, Converter={StaticResource negateConverter}}">
 			<Label FontAttributes="Bold" FontSize="Large" Text="{Binding Title}" HorizontalOptions="Center" />
-			<Button Text="Refresh" Command="{Binding RefreshCommand}" />
+			<!--<Button Text="Refresh" Command="{Binding RefreshCommand}" /> -->
 			<!---<Label FontAttributes="None" FontSize="Medium" Text="{Binding Status}" HorizontalOptions="Center" VerticalOptions="CenterAndExpand" /> -->
 			<Label FontAttributes="None" FontSize="Medium" Text="There are no Surveys for this course" HorizontalOptions="CenterAndExpand" VerticalOptions="CenterAndExpand" IsVisible="{Binding NoSurveys}" />
 			<Label FontAttributes="None" FontSize="Medium" Text="Please select a survey below" HorizontalOptions="CenterAndExpand" VerticalOptions="CenterAndExpand" IsVisible="{Binding NoSurveys, Converter={StaticResource negateConverter}}" TextColor="{Binding HighlightColor}" />
