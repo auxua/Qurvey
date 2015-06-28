@@ -15,7 +15,9 @@
 			<ListView VerticalOptions="Start" ItemsSource="{Binding SurveyAnswers}" SelectedItem="{Binding UsersAnswer, Mode=TwoWay}">
 				<ListView.ItemTemplate>
 					<DataTemplate>
-						<TextCell Text="{Binding AnswerText}" />
+						<ViewCell>
+							<Label Text="{Binding AnswerText}" />
+						</ViewCell>
 					</DataTemplate>
 				</ListView.ItemTemplate>
 			</ListView>
