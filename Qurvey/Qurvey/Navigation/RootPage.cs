@@ -36,8 +36,6 @@ namespace Qurvey.Navigation
             {
                 Detail = new NavigationPage(new pages.WelcomePage());
             }
-
-            
 		}
 			
 		/// <summary>
