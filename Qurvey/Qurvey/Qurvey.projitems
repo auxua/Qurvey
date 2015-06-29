@@ -51,6 +51,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)Navigation\GroupedMenuListView.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Navigation\MenuListGroupedData.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Navigation\HeaderCell.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)ViewModels\SurveyCellViewModel.cs" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="$(MSBuildThisFileDirectory)pages\ConfigPage.xaml">

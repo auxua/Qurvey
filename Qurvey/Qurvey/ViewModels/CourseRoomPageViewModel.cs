@@ -95,9 +95,9 @@ namespace Qurvey.ViewModels
 			}
 		}
 
-		private List<Survey> surveys;
+		private List<SurveyCellViewModel> surveys;
 
-		public List<Survey> Surveys {
+		public List<SurveyCellViewModel> Surveys {
 			get {
 				return this.surveys;
 			}
@@ -129,7 +129,7 @@ namespace Qurvey.ViewModels
 			}
 		}
 
-		//public Color HighlightColor { get { return App.HighlightColor; } }
+		public Color CellBackgroundColor { get; set; }
 
 		public event PropertyChangedEventHandler PropertyChanged;
 
@@ -171,7 +171,7 @@ namespace Qurvey.ViewModels
 		private async Task LoadSurveys ()
 		{
 			List<Survey> sur = await api.Backend.GetSurveysAsync (cid);
-			Surveys = sur;
+			Surveys = SurveyCellViewModel.CreateViewModels(sur, CellBackgroundColor);
 			IsRefreshing = false;
 		}
 
@@ -202,7 +202,7 @@ namespace Qurvey.ViewModels
 
 		#endregion
 
-		public CourseRoomPageViewModel (string course, string title, INavigation navigation)
+		public CourseRoomPageViewModel (string course, string title, INavigation navigation, Color cellBackgroundColor)
 		{
 			if ((course != null) && (course != "")) {
 				CID = course;
@@ -211,6 +211,7 @@ namespace Qurvey.ViewModels
 			}
 			this.Title = title;
 			this.navigation = navigation;
+			CellBackgroundColor = cellBackgroundColor;
 			this.IsAdmin = App.isAdmin ();
 
 			// Create Commands
@@ -219,7 +220,6 @@ namespace Qurvey.ViewModels
 			this.createSurveyCommand = new Command (async () => await CreateSurveyExecute ());
 
 			this.IsCreated = true;
-            
 		}
 
 		private async void InitVM ()
@@ -288,7 +288,7 @@ namespace Qurvey.ViewModels
 					Thread.Sleep (60 * 1000);
 					List<Survey> sur = api.Backend.GetSurveysAsync (cid).Result;
 					if(sur.Count != Surveys.Count) {
-						Surveys = sur;
+						Surveys = SurveyCellViewModel.CreateViewModels(sur, CellBackgroundColor);
 					}
 				}
 			} catch (Exception ex) {

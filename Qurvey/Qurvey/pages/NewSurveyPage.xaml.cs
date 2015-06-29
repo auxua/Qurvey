@@ -21,6 +21,7 @@ namespace Qurvey.pages
         public NewSurveyPage (string CID)
 		{
 			//InitializeComponent ();
+			BackgroundColor = Color.FromHex ("#2A2A2A");
             if (Device.OS == TargetPlatform.Android)
                 NavigationPage.SetTitleIcon(this, "opac.png");
             cid = CID;

@@ -16,6 +16,7 @@ namespace Qurvey.pages
         public ConfigPage()
         {
             //InitializeComponent();
+			BackgroundColor = Color.FromHex ("#2A2A2A");
             if (Device.OS == TargetPlatform.Android)
                 NavigationPage.SetTitleIcon(this, "opac.png");
 

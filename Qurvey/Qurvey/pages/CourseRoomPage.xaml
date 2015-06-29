@@ -19,19 +19,21 @@
 			<!---<Label FontAttributes="None" FontSize="Medium" Text="{Binding Status}" HorizontalOptions="Center" VerticalOptions="CenterAndExpand" /> -->
 			<Label FontAttributes="None" FontSize="Medium" Text="There are no Surveys for this course" HorizontalOptions="CenterAndExpand" VerticalOptions="CenterAndExpand" IsVisible="{Binding NoSurveys}" />
 			<Label FontAttributes="None" FontSize="Medium" Text="Please select a survey below" HorizontalOptions="CenterAndExpand" VerticalOptions="CenterAndExpand" IsVisible="{Binding NoSurveys, Converter={StaticResource negateConverter}}" TextColor="{StaticResource textColor}" />
-			<ListView x:Name="surveyListView" ItemsSource="{Binding Surveys}" ItemTapped="SurveyList_ItemTapped" IsVisible="{Binding NoSurveys, Converter={StaticResource negateConverter}}" IsPullToRefreshEnabled="true" RefreshCommand="{Binding RefreshCommand}" IsRefreshing="{Binding IsRefreshing}" >
+			<ListView x:Name="surveyListView" ItemsSource="{Binding Surveys}" ItemTapped="SurveyList_ItemTapped" IsVisible="{Binding NoSurveys, Converter={StaticResource negateConverter}}" IsPullToRefreshEnabled="true" RefreshCommand="{Binding RefreshCommand}" IsRefreshing="{Binding IsRefreshing}" SeparatorVisibility="None" >
 				<ListView.ItemTemplate>
 					<DataTemplate>
 						<ViewCell>
 							<ViewCell.ContextActions>
 								<MenuItem CommandParameter="{Binding}" Clicked="OnDelete" Text="Delete" IsDestructive="true" />
 							</ViewCell.ContextActions>
-							<Label Text="{Binding Question}" />
+							<StackLayout HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand" BackgroundColor="{Binding BackgroundColor}">
+								<Label Text="{Binding Question}" />
+							</StackLayout>
 						</ViewCell>
 					</DataTemplate>
 				</ListView.ItemTemplate>
 			</ListView>
-			<Button Text="Panic!" IsVisible="{Binding IsAdmin, Converter={StaticResource negateConverter}}" Command="{Binding PanicCommand}" BackgroundColor="{StaticResource textColor}" TextColor="White" FontAttributes="Bold" VerticalOptions="EndAndExpand" />
+			<Button Text="Panic!" IsVisible="{Binding IsAdmin, Converter={StaticResource negateConverter}}" Command="{Binding PanicCommand}" BackgroundColor="{StaticResource textColor}" TextColor="White" FontAttributes="Bold" VerticalOptions="EndAndExpand" x:Name="panicButton" />
 			<Button Text="Create New Survey" IsVisible="{Binding IsAdmin}" Command="{Binding CreateSurveyCommand}" BackgroundColor="#00549F" TextColor="White" FontAttributes="Bold" VerticalOptions="EndAndExpand" />
 		</StackLayout>
 	</StackLayout>

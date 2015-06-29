@@ -8,6 +8,7 @@ namespace Qurvey.pages
 	{
 		public WelcomePage ()
 		{
+			BackgroundColor = Color.FromHex ("#2A2A2A");
 			InitializeComponent ();
             // Not tested completely because Android Auth. is not working anymore!
             //NavigationPage.SetTitleIcon(this, "l2plogo.png");
