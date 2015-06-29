@@ -43,7 +43,6 @@
     <Compile Include="$(MSBuildThisFileDirectory)ViewModels\WelcomeViewModel.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Converters\NegateBooleanConverter.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ViewModels\SurveyViewModel.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Commands\DeleteSurveyCommand.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Navigation\RootPage.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Navigation\MenuPage.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Navigation\NavMenuItem.cs" />
@@ -86,7 +85,6 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="$(MSBuildThisFileDirectory)Converters\" />
-    <Folder Include="$(MSBuildThisFileDirectory)Commands\" />
     <Folder Include="$(MSBuildThisFileDirectory)Navigation\" />
   </ItemGroup>
 </Project>
