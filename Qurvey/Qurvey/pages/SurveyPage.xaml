@@ -16,7 +16,9 @@
 				<ListView.ItemTemplate>
 					<DataTemplate>
 						<ViewCell>
-							<Label Text="{Binding AnswerText}" />
+							<StackLayout HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand" BackgroundColor="{Binding BackgroundColor}">
+								<Label Text="{Binding AnswerText}" />
+							</StackLayout>
 						</ViewCell>
 					</DataTemplate>
 				</ListView.ItemTemplate>
