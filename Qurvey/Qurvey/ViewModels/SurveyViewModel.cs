@@ -33,6 +33,7 @@ namespace Qurvey.ViewModels
 			get { return survey; }
 			set {
 				survey = value;
+				surveyAnswers = AnswerViewModel.CreateViewModels (survey.Answers, CellBackgroundColor);
 				RaisePropertyChanged ("SurveyQuestion");
 				RaisePropertyChanged ("SurveyCreatedModified");
 				RaisePropertyChanged ("SurveyAnswers");
@@ -66,10 +67,12 @@ namespace Qurvey.ViewModels
 			}
 		}
 
-		public ICollection<Answer> SurveyAnswers {
+		private List<AnswerViewModel> surveyAnswers;
+
+		public ICollection<AnswerViewModel> SurveyAnswers {
 			get {
 				if (Survey == null)
-					return new List<Answer> ();
+					return new List<AnswerViewModel> ();
 
 				return Survey.Answers;
 			}
@@ -91,6 +94,8 @@ namespace Qurvey.ViewModels
 		}
 
 		private Vote usersVote;
+
+		public Color CellBackgroundColor { get; set; }
 
 		protected async void LoadUsersVote () {
 			usersVote = await Backend.GetVoteForUserAsync (Survey, BackendAuthManager.Instance.User);
@@ -119,8 +124,9 @@ namespace Qurvey.ViewModels
 			}
 		}
 
-		public SurveyViewModel (Survey survey)
+		public SurveyViewModel (Survey survey, Color cellBackgroundColor)
 		{
+			CellBackgroundColor = cellBackgroundColor;
 			Survey = survey;
 			IsBusy = true;
 			LoadUsersVote ();

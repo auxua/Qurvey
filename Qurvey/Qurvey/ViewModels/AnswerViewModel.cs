@@ -6,18 +6,14 @@ using System.Collections.Generic;
 
 namespace Qurvey.ViewModels
 {
-	public class SurveyCellViewModel : INotifyPropertyChanged
+	public class AnswerViewModel : INotifyPropertyChanged
 	{
-		private Survey survey;
+		public Answer Answer { get; set; }
 
-		public Survey Survey { 
+		public string AnswerText {
 			get {
-				return survey;
-			} 
-		}
-
-		public string Question {
-			get { return survey.Question; }
+				return Answer.AnswerText;
+			}
 		}
 
 		private Color backgroundColor;
@@ -32,10 +28,10 @@ namespace Qurvey.ViewModels
 			}
 		}
 
-		public SurveyCellViewModel (Survey survey, Color backgroundColor)
+		public AnswerViewModel (Answer answer, Color backgroundColor)
 		{
-			this.survey = survey;
-			RaisePropertyChanged ("Survey");
+			Answer = answer;
+			RaisePropertyChanged ("AnswerText");
 			BackgroundColor = backgroundColor;
 		}
 
@@ -48,13 +44,12 @@ namespace Qurvey.ViewModels
 			}
 		}
 
-		public static List<SurveyCellViewModel> CreateViewModels(List<Survey> surveys, Color backgroundColor) {
-			List<SurveyCellViewModel> l = new List<SurveyCellViewModel> ();
-			foreach (Survey s in surveys) {
-				l.Add (new SurveyCellViewModel (s, backgroundColor));
+		public static List<AnswerViewModel> CreateViewModels(List<AnswerViewModel> answers, Color backgroundColor) {
+			List<AnswerViewModel> l = new List<AnswerViewModel> ();
+			foreach (Answer a in answers) {
+				l.Add (new AnswerViewModel (a, backgroundColor));
 			}
 			return l;
 		}
 	}
 }
-
