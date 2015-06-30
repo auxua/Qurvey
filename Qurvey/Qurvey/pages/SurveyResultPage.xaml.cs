@@ -20,11 +20,14 @@ namespace Qurvey.pages
         
         public SurveyResultPage (Survey survey)
 		{
-			BackgroundColor = Color.FromHex ("#2A2A2A");
+			
 			Title = "Survey results for";
 
-            if (Device.OS == TargetPlatform.Android)
-                NavigationPage.SetTitleIcon(this, "opac.png");
+			if (Device.OS == TargetPlatform.Android) 
+			{
+				NavigationPage.SetTitleIcon (this, "opac.png");
+				BackgroundColor = Color.FromHex ("#2A2A2A");
+			}
             IsBusy = true;
 
             this.survey = survey;
