@@ -19,7 +19,8 @@
 				<ListView.ItemTemplate>
 					<DataTemplate>
 						<ViewCell>
-							<StackLayout HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand" BackgroundColor="{Binding BackgroundColor}">
+							<!---<StackLayout HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand" BackgroundColor="{Binding BackgroundColor}">-->
+							<StackLayout HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand" Padding="20,15,20,15">
 								<Label Text="{Binding AnswerText}" />
 							</StackLayout>
 						</ViewCell>

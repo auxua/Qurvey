@@ -91,8 +91,9 @@ namespace Qurvey.ViewModels
 						SaveNewVote ();
 					}
 					RaisePropertyChanged ("UsersAnswer");
-					usersAnswer.BackgroundColor = HighlightBackgroundColor;
-					usersAnswer.Selected = true;
+                    usersAnswer.Selected = true;
+                    usersAnswer.BackgroundColor = HighlightBackgroundColor;
+                    RaisePropertyChanged("UsersAnswer");
 				}
 			}
 		}
