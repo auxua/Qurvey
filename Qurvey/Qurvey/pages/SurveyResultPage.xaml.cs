@@ -21,6 +21,7 @@ namespace Qurvey.pages
         public SurveyResultPage (Survey survey)
 		{
 			
+			this.Padding = new Thickness (20, 20, 20, 5);
 			Title = "Survey results for";
 
 			if (Device.OS == TargetPlatform.Android) 

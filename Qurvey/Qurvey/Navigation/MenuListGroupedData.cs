@@ -16,7 +16,7 @@ namespace Qurvey.Navigation
 			};
 
 			NavMenuItem NavAuthorize = new NavMenuItem () {
-				Title = "Config",
+				Title = "Settings",
 				Icon = "info.png",
 				TargetType = typeof(pages.ConfigPage)
 			};

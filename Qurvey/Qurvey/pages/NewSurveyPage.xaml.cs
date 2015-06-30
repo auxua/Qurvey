@@ -22,6 +22,8 @@ namespace Qurvey.pages
 		{
 			//InitializeComponent ();
 
+			this.Padding = new Thickness (20, 20, 20, 5);
+
 			if (Device.OS == TargetPlatform.Android) 
 			{
 				NavigationPage.SetTitleIcon (this, "opac.png");
