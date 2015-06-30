@@ -29,7 +29,8 @@
 							<ViewCell.ContextActions>
 								<MenuItem CommandParameter="{Binding}" Clicked="OnDelete" Text="Delete" IsDestructive="true" />
 							</ViewCell.ContextActions>
-							<StackLayout HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand" BackgroundColor="{Binding BackgroundColor}">
+							<!---<StackLayout HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand" BackgroundColor="{Binding BackgroundColor}">-->
+							<StackLayout HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand" Padding="20,15,20,15">
 								<Label Text="{Binding Question}" />
 							</StackLayout>
 						</ViewCell>
