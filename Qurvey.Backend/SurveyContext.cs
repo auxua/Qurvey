@@ -5,7 +5,6 @@ using System.Linq;
 
 namespace Qurvey.Backend
 {
-
     public class SurveyContext : DbContext
     {
         public SurveyContext() : base("QurveyContext") { }

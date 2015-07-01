@@ -23,7 +23,7 @@
 			<Label FontAttributes="Bold" FontSize="Large" Text="{Binding Title}" HorizontalOptions="Center" />
 			<!--<Button Text="Refresh" Command="{Binding RefreshCommand}" /> -->
 			<!---<Label FontAttributes="None" FontSize="Medium" Text="{Binding Status}" HorizontalOptions="Center" VerticalOptions="CenterAndExpand" /> -->
-			<Label FontAttributes="None" FontSize="Medium" Text="There are no Surveys for this course" HorizontalOptions="CenterAndExpand" VerticalOptions="CenterAndExpand" IsVisible="{Binding NoSurveys}" />
+			<Label FontAttributes="None" FontSize="Medium" Text="There are no surveys for this course" HorizontalOptions="CenterAndExpand" VerticalOptions="CenterAndExpand" IsVisible="{Binding NoSurveys}" />
 			<Label FontAttributes="None" FontSize="Medium" Text="Please select a survey below" HorizontalOptions="CenterAndExpand" VerticalOptions="CenterAndExpand" IsVisible="{Binding NoSurveys, Converter={StaticResource negateConverter}}" TextColor="{StaticResource textColor}" />
 			<ListView x:Name="surveyListView" ItemsSource="{Binding Surveys}" ItemTapped="SurveyList_ItemTapped" IsVisible="{Binding NoSurveys, Converter={StaticResource negateConverter}}" IsPullToRefreshEnabled="true" RefreshCommand="{Binding RefreshCommand}" IsRefreshing="{Binding IsRefreshing}" SeparatorVisibility="None" >
 				<ListView.ItemTemplate>

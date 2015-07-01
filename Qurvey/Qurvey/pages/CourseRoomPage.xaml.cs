@@ -52,9 +52,9 @@ namespace Qurvey.pages
 				
 			//Xamarin doesnt support the necessary Bindings
 			var mi = (MenuItem)sender;
-			Survey survey = (Survey)mi.CommandParameter;
+			SurveyCellViewModel surveyCellViewModel = (SurveyCellViewModel)mi.CommandParameter;
 			var vm = (CourseRoomPageViewModel)this.BindingContext;
-			vm.DeleteSurveyExecute (survey);
+			vm.DeleteSurveyExecute (surveyCellViewModel.Survey);
 		}
 	}
 }
