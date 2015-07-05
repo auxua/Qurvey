@@ -21,6 +21,8 @@ namespace Qurvey.api
 	//protected internal static string device_code = "";
 
 	//protected internal static string refreshToken = "";
+	
+        internal const string BackendBaseUrl = "";
 
 	#region Supporting functions for storing tokens
 

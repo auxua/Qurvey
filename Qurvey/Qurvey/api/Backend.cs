@@ -25,7 +25,7 @@ namespace Qurvey.api
         {
             string inp = JsonConvert.SerializeObject(input);
 
-            endpoint = "http://qurvey12.azurewebsites.net/SurveyService.svc/" + endpoint;
+            endpoint = Config.BackendBaseUrl + endpoint;
             Task<T1> res = RESTCalls.RestCallAsync<T1>(inp, endpoint, post);
             return await res;
         }
@@ -34,7 +34,7 @@ namespace Qurvey.api
         {
             string inp = JsonConvert.SerializeObject(input);
 
-            endpoint = "http://qurvey12.azurewebsites.net/SurveyService.svc/" + endpoint;
+            endpoint = Config.BackendBaseUrl + endpoint;
             T1 res = RESTCalls.RestCallSync<T1>(inp, endpoint, post);
             return res;
         }
